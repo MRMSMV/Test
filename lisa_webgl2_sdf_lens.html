@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050608">
+<title>Л.И.С.А. — WebGL2 SDF Lens</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+html,body{
+    width:100%;
+    height:100%;
+    margin:0;
+    overflow:hidden;
+    background:#050608;
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",Arial,sans-serif;
+}
+body{
+    touch-action:none;
+    overscroll-behavior:none;
+}
+#app{
+    position:fixed;
+    inset:0;
+    overflow:hidden;
+    background:#050608;
+}
+#glCanvas{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    display:block;
+    touch-action:none;
+}
+#searchButton{
+    position:absolute;
+    z-index:10;
+    top:calc(env(safe-area-inset-top) + 18px);
+    right:18px;
+    width:46px;
+    height:46px;
+    border:1px solid rgba(255,255,255,.09);
+    border-radius:50%;
+    background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(255,255,255,.035));
+    box-shadow:0 10px 30px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.07);
+    display:grid;
+    place-items:center;
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+}
+#searchButton svg{
+    width:20px;height:20px;fill:none;
+    stroke:rgba(255,255,255,.82);stroke-width:1.8;
+}
+#searchOverlay{
+    position:absolute;
+    inset:0;
+    z-index:30;
+    opacity:0;
+    pointer-events:none;
+    background:rgba(3,4,6,.72);
+    backdrop-filter:blur(22px);
+    -webkit-backdrop-filter:blur(22px);
+    transition:opacity .2s ease;
+}
+#searchOverlay.active{opacity:1;pointer-events:auto}
+.searchPanel{
+    position:absolute;
+    left:18px;right:18px;
+    top:calc(env(safe-area-inset-top) + 76px);
+    height:56px;
+    border-radius:19px;
+    border:1px solid rgba(255,255,255,.10);
+    background:linear-gradient(145deg,rgba(255,255,255,.105),rgba(255,255,255,.035));
+    box-shadow:0 20px 60px rgba(0,0,0,.36),inset 0 1px 0 rgba(255,255,255,.06);
+    display:flex;align-items:center;
+    padding:0 14px 0 17px;
+}
+.searchPanel svg{width:20px;height:20px;fill:none;stroke:rgba(255,255,255,.52)}
+.searchPanel input{
+    flex:1;min-width:0;height:100%;border:0;outline:0;
+    background:transparent;color:white;font-size:17px;margin-left:12px;
+}
+.searchPanel input::placeholder{color:rgba(255,255,255,.38)}
+.closeSearch{
+    width:34px;height:34px;border:0;background:transparent;
+    color:rgba(255,255,255,.55);font-size:25px;line-height:1;
+}
+#glError{
+    position:absolute;
+    left:16px;right:16px;top:16px;
+    z-index:50;
+    display:none;
+    padding:14px 16px;
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:14px;
+    background:rgba(15,16,20,.94);
+    color:rgba(255,255,255,.86);
+    font:13px/1.4 -apple-system,BlinkMacSystemFont,sans-serif;
+}
+</style>
+</head>
+
+<body>
+<div id="app">
+    <canvas id="glCanvas"></canvas>
+
+    <button id="searchButton" aria-label="Поиск">
+        <svg viewBox="0 0 24 24">
+            <circle cx="10.8" cy="10.8" r="6.6"></circle>
+            <path d="M16 16l5 5"></path>
+        </svg>
+    </button>
+
+    <div id="searchOverlay">
+        <div class="searchPanel">
+            <svg viewBox="0 0 24 24">
+                <circle cx="10.8" cy="10.8" r="6.6"></circle>
+                <path d="M16 16l5 5"></path>
+            </svg>
+            <input id="searchInput" type="text" placeholder="Поиск"
+                   autocomplete="off" autocorrect="off" spellcheck="false">
+            <button id="closeSearch" class="closeSearch">×</button>
+        </div>
+    </div>
+
+    <div id="glError"></div>
+</div>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+
+<script>
+"use strict";
+
+/*
+ * Л.И.С.А.
+ * Vue 3 + WebGL2 + GLSL ES 3.0 + SDF
+ *
+ * Optical pipeline:
+ *   1. 2D source scene is rendered at device resolution.
+ *   2. Source is uploaded to a WebGL2 texture.
+ *   3. One fragment shader renders the whole screen.
+ *   4. Inside the lens, a rounded-rectangle SDF determines:
+ *        - exact lens geometry
+ *        - edge distance
+ *        - surface normal
+ *        - radial optical profile
+ *        - refraction displacement
+ *        - magnification
+ *   5. There are no stacked semi-transparent "refraction layers".
+ */
+
+const { createApp, reactive } = Vue;
+
+const state = reactive({
+    activeTab: 2,
+    lensX: 0,
+    lensY: 0,
+    lensW: 88,
+    lensH: 60,
+    targetX: 0,
+    targetY: 0,
+    targetSpeed: 0,
+    speed: 0,
+    scrollZoom: 0,
+    targetScrollZoom: 0,
+    dragging: false
+});
+
+const tabs = [
+    { title:"Контакты", icon:"contacts" },
+    { title:"Звонки", icon:"calls" },
+    { title:"Чаты", icon:"chat" },
+    { title:"Настройки", icon:"settings" }
+];
+
+const OPTICS = {
+    magnificationMin: 1.08,
+    magnificationMax: 1.22,
+    minWidth: 88,
+    maxWidth: 136,
+    minHeight: 60,
+    maxHeight: 82,
+    maxScrollZoom: 0.075,
+
+    /* optical displacement in screen pixels */
+    baseRefraction: 7.5,
+    movementRefraction: 4.0,
+
+    /* optical falloff */
+    edgeSoftness: 1.35,
+
+    /* how much of the outer lens participates in the stronger bend */
+    refractionEdge: 0.22
+};
+
+const canvas = document.getElementById("glCanvas");
+const errorBox = document.getElementById("glError");
+
+const sourceCanvas = document.createElement("canvas");
+const sourceCtx = sourceCanvas.getContext("2d", {
+    alpha:false,
+    desynchronized:true
+});
+
+let W = 1;
+let H = 1;
+let DPR = 1;
+let sourceDirty = true;
+
+const nav = {
+    x:0,y:0,width:0,height:68,radius:34
+};
+
+function showError(message){
+    errorBox.textContent = message;
+    errorBox.style.display = "block";
+}
+
+function updateNav(){
+    nav.width = Math.min(W - 28, 382);
+    nav.height = 68;
+    nav.x = (W - nav.width) / 2;
+
+    const bottom = /iPhone|iPad|iPod/i.test(navigator.userAgent) ? 28 : 18;
+    nav.y = H - nav.height - bottom;
+}
+
+function tabCenter(index){
+    const itemWidth = nav.width / tabs.length;
+    return nav.x + itemWidth * index + itemWidth / 2;
+}
+
+function roundedRectPath(c,x,y,w,h,r){
+    r = Math.min(r,w/2,h/2);
+    c.beginPath();
+    c.moveTo(x+r,y);
+    c.arcTo(x+w,y,x+w,y+h,r);
+    c.arcTo(x+w,y+h,x,y+h,r);
+    c.arcTo(x,y+h,x,y,r);
+    c.arcTo(x,y,x+w,y,r);
+    c.closePath();
+}
+
+function drawBackground(c){
+    c.fillStyle = "#050608";
+    c.fillRect(0,0,W,H);
+
+    const glow = c.createRadialGradient(
+        W*.5,H*.15,0,
+        W*.5,H*.15,Math.max(W,H)*.65
+    );
+    glow.addColorStop(0,"rgba(255,255,255,.045)");
+    glow.addColorStop(.55,"rgba(255,255,255,.012)");
+    glow.addColorStop(1,"rgba(255,255,255,0)");
+    c.fillStyle = glow;
+    c.fillRect(0,0,W,H);
+}
+
+function drawCard(c,x,y,w,h,title,subtitle,symbol){
+    roundedRectPath(c,x,y,w,h,24);
+    c.fillStyle = "rgba(255,255,255,.045)";
+    c.fill();
+    c.strokeStyle = "rgba(255,255,255,.055)";
+    c.lineWidth = 1;
+    c.stroke();
+
+    c.beginPath();
+    c.arc(x+38,y+38,18,0,Math.PI*2);
+    c.fillStyle = "rgba(255,255,255,.065)";
+    c.fill();
+
+    c.fillStyle = "rgba(255,255,255,.82)";
+    c.font = "19px -apple-system,BlinkMacSystemFont,sans-serif";
+    c.textAlign = "center";
+    c.textBaseline = "middle";
+    c.fillText(symbol,x+38,y+39);
+
+    c.textAlign = "left";
+    c.fillStyle = "rgba(255,255,255,.88)";
+    c.font = "600 16px -apple-system,BlinkMacSystemFont,sans-serif";
+    c.fillText(title,x+70,y+31);
+
+    c.fillStyle = "rgba(255,255,255,.38)";
+    c.font = "14px -apple-system,BlinkMacSystemFont,sans-serif";
+    c.fillText(subtitle,x+70,y+53);
+}
+
+function drawIcon(c,type,x,y,size,color){
+    c.save();
+    c.translate(x,y);
+    c.scale(size/24,size/24);
+    c.strokeStyle = color;
+    c.fillStyle = color;
+    c.lineWidth = 1.75;
+    c.lineCap = "round";
+    c.lineJoin = "round";
+
+    if(type==="contacts"){
+        c.beginPath();
+        c.arc(12,8,3.2,0,Math.PI*2);
+        c.stroke();
+        c.beginPath();
+        c.arc(12,17,5,Math.PI,0);
+        c.stroke();
+    }else if(type==="calls"){
+        c.beginPath();
+        c.moveTo(7,4);
+        c.lineTo(10,7);
+        c.lineTo(8,10);
+        c.bezierCurveTo(9.5,13.2,11,14.7,14,16);
+        c.lineTo(17,14);
+        c.lineTo(20,17);
+        c.bezierCurveTo(18,21,15,21,11,18);
+        c.bezierCurveTo(7,15,4,11,4,7);
+        c.closePath();
+        c.stroke();
+    }else if(type==="chat"){
+        roundedRectPath(c,4,5,16,12,4);
+        c.stroke();
+        c.beginPath();
+        c.moveTo(8,17);
+        c.lineTo(8,20);
+        c.lineTo(11,17);
+        c.stroke();
+    }else if(type==="settings"){
+        c.beginPath();
+        c.arc(12,12,3.2,0,Math.PI*2);
+        c.stroke();
+        for(let i=0;i<8;i++){
+            const a=i*Math.PI/4;
+            c.beginPath();
+            c.moveTo(Math.cos(a)*6,Math.sin(a)*6);
+            c.lineTo(Math.cos(a)*9,Math.sin(a)*9);
+            c.stroke();
+        }
+    }
+    c.restore();
+}
+
+function drawNavigation(c){
+    c.save();
+    c.shadowColor = "rgba(0,0,0,.17)";
+    c.shadowBlur = 20;
+    c.shadowOffsetY = 7;
+    roundedRectPath(c,nav.x,nav.y,nav.width,nav.height,nav.radius);
+    c.fillStyle = "rgba(255,255,255,.04)";
+    c.fill();
+    c.restore();
+
+    roundedRectPath(c,nav.x,nav.y,nav.width,nav.height,nav.radius);
+
+    const glass = c.createLinearGradient(nav.x,nav.y,nav.x,nav.y+nav.height);
+    glass.addColorStop(0,"rgba(255,255,255,.095)");
+    glass.addColorStop(.5,"rgba(255,255,255,.05)");
+    glass.addColorStop(1,"rgba(255,255,255,.03)");
+    c.fillStyle = glass;
+    c.fill();
+
+    c.strokeStyle = "rgba(255,255,255,.09)";
+    c.lineWidth = 1;
+    c.stroke();
+
+    c.beginPath();
+    c.moveTo(nav.x+30,nav.y+.7);
+    c.lineTo(nav.x+nav.width-30,nav.y+.7);
+    c.strokeStyle = "rgba(255,255,255,.08)";
+    c.stroke();
+
+    const itemWidth = nav.width / tabs.length;
+    for(let i=0;i<tabs.length;i++){
+        const cx = nav.x + itemWidth*i + itemWidth/2;
+        const centerY = nav.y + nav.height/2;
+        const iconY = centerY - 10;
+        const active = i === state.activeTab;
+
+        drawIcon(
+            c,tabs[i].icon,cx,iconY,23,
+            active ? "rgba(255,255,255,.98)" : "rgba(255,255,255,.46)"
+        );
+
+        c.textAlign = "center";
+        c.textBaseline = "top";
+        c.font = active
+            ? "600 9px -apple-system,BlinkMacSystemFont,sans-serif"
+            : "500 9px -apple-system,BlinkMacSystemFont,sans-serif";
+        c.fillStyle = active
+            ? "rgba(255,255,255,.80)"
+            : "rgba(255,255,255,.34)";
+        c.fillText(tabs[i].title,cx,centerY+8);
+    }
+    c.textAlign = "left";
+    c.textBaseline = "alphabetic";
+}
+
+function renderSource(){
+    if(!sourceDirty) return;
+
+    sourceCtx.setTransform(DPR,0,0,DPR,0,0);
+    sourceCtx.clearRect(0,0,W,H);
+
+    drawBackground(sourceCtx);
+
+    sourceCtx.fillStyle = "rgba(255,255,255,.92)";
+    sourceCtx.font = "700 27px -apple-system,BlinkMacSystemFont,sans-serif";
+    sourceCtx.fillText("Л.И.С.А.",22,76);
+
+    sourceCtx.fillStyle = "rgba(255,255,255,.36)";
+    sourceCtx.font = "14px -apple-system,BlinkMacSystemFont,sans-serif";
+    sourceCtx.fillText("Личный интеллектуальный ассистент",23,99);
+
+    const margin = 18;
+    const gap = 13;
+    const cardW = W - margin*2;
+    const cardH = 78;
+    const startY = Math.max(145,H*.20);
+
+    drawCard(sourceCtx,margin,startY,cardW,cardH,
+        "Контакты","Люди и профили","●");
+
+    drawCard(sourceCtx,margin,startY+cardH+gap,cardW,cardH,
+        "Звонки","История вызовов","⌕");
+
+    drawCard(sourceCtx,margin,startY+(cardH+gap)*2,cardW,cardH,
+        "Чаты","Последние сообщения","●");
+
+    drawNavigation(sourceCtx);
+    sourceDirty = false;
+}
+
+function getMagnification(){
+    const movement = Math.min(1,state.speed);
+    const scroll = Math.min(OPTICS.maxScrollZoom,state.scrollZoom);
+    return Math.min(
+        OPTICS.magnificationMax,
+        OPTICS.magnificationMin +
+        (OPTICS.magnificationMax-OPTICS.magnificationMin) *
+        (.35 + movement*.65) +
+        scroll
+    );
+}
+
+function lerp(a,b,t){
+    return a+(b-a)*t;
+}
+
+function updatePhysics(dt){
+    state.lensX = lerp(
+        state.lensX,state.targetX,
+        Math.min(1,dt*(state.dragging?25:14))
+    );
+
+    state.lensY = lerp(
+        state.lensY,state.targetY,
+        Math.min(1,dt*18)
+    );
+
+    state.speed = lerp(
+        state.speed,state.targetSpeed,
+        Math.min(1,dt*10)
+    );
+
+    state.targetSpeed *= Math.pow(.045,dt);
+
+    state.scrollZoom = lerp(
+        state.scrollZoom,state.targetScrollZoom,
+        Math.min(1,dt*6)
+    );
+
+    state.targetScrollZoom *= Math.pow(.20,dt);
+
+    const movement = Math.min(1,state.speed);
+    const scroll = Math.min(1,state.scrollZoom/OPTICS.maxScrollZoom);
+    const growth = Math.max(movement,scroll*.9);
+
+    const targetW = OPTICS.minWidth +
+        (OPTICS.maxWidth-OPTICS.minWidth)*growth;
+    const targetH = OPTICS.minHeight +
+        (OPTICS.maxHeight-OPTICS.minHeight)*growth;
+
+    state.lensW = lerp(state.lensW,targetW,Math.min(1,dt*13));
+    state.lensH = lerp(state.lensH,targetH,Math.min(1,dt*13));
+}
+
+function snapToTab(index){
+    index = Math.max(0,Math.min(tabs.length-1,index));
+    state.activeTab = index;
+    state.targetX = tabCenter(index);
+    state.targetY = nav.y + nav.height/2;
+    state.targetSpeed = .30;
+    sourceDirty = true;
+}
+
+function nearestTab(px){
+    const itemWidth = nav.width/tabs.length;
+    const index = Math.floor((px-nav.x)/itemWidth);
+    return Math.max(0,Math.min(tabs.length-1,index));
+}
+
+function pointInLens(px,py){
+    const dx = px-state.lensX;
+    const dy = py-state.lensY;
+    const rx = state.lensW/2+12;
+    const ry = state.lensH/2+12;
+    return dx*dx/(rx*rx)+dy*dy/(ry*ry)<=1;
+}
+
+function pointInNav(px,py){
+    return px>=nav.x-14 &&
+           px<=nav.x+nav.width+14 &&
+           py>=nav.y-22 &&
+           py<=nav.y+nav.height+22;
+}
+
+function onPointerDown(e){
+    const rect = canvas.getBoundingClientRect();
+    const px = e.clientX-rect.left;
+    const py = e.clientY-rect.top;
+
+    if(pointInLens(px,py)){
+        state.dragging = true;
+        state.pointerId = e.pointerId;
+        state.grabOffsetX = px-state.lensX;
+        state.lastPointerX = px;
+        state.lastMoveTime = performance.now();
+        try{canvas.setPointerCapture(e.pointerId)}catch(_){}
+        e.preventDefault();
+        return;
+    }
+
+    if(pointInNav(px,py)){
+        snapToTab(nearestTab(px));
+        e.preventDefault();
+    }
+}
+
+function onPointerMove(e){
+    if(!state.dragging || e.pointerId!==state.pointerId) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const px = e.clientX-rect.left;
+
+    const half = nav.width/tabs.length/2;
+    const minX = nav.x+half;
+    const maxX = nav.x+nav.width-half;
+
+    state.targetX = Math.max(
+        minX,
+        Math.min(maxX,px-state.grabOffsetX)
+    );
+    state.targetY = nav.y+nav.height/2;
+
+    const now = performance.now();
+    const delta = Math.max(8,now-state.lastMoveTime);
+    const dx = px-state.lastPointerX;
+    const velocity = Math.abs(dx)/delta;
+
+    state.targetSpeed = Math.min(1,velocity*1.8);
+    state.lastPointerX = px;
+    state.lastMoveTime = now;
+
+    e.preventDefault();
+}
+
+function onPointerUp(e){
+    if(e.pointerId!==state.pointerId) return;
+    state.dragging = false;
+    state.pointerId = null;
+    snapToTab(nearestTab(state.targetX));
+}
+
+function onWheel(e){
+    if(Math.abs(e.deltaY)>0){
+        state.targetScrollZoom = Math.min(
+            OPTICS.maxScrollZoom,
+            state.targetScrollZoom + Math.abs(e.deltaY)*.00045
+        );
+    }
+
+    if(Math.abs(e.deltaX)>0){
+        state.targetX += e.deltaX*.72;
+        const half = nav.width/tabs.length/2;
+        state.targetX = Math.max(
+            nav.x+half,
+            Math.min(nav.x+nav.width-half,state.targetX)
+        );
+        state.targetSpeed = Math.min(1,Math.abs(e.deltaX)*.025);
+    }
+    e.preventDefault();
+}
+
+/* =========================================================
+   WEBGL2
+   ========================================================= */
+
+const gl = canvas.getContext("webgl2",{
+    alpha:false,
+    antialias:false,
+    depth:false,
+    stencil:false,
+    premultipliedAlpha:false,
+    preserveDrawingBuffer:false
+});
+
+if(!gl){
+    showError("WebGL2 недоступен в этом браузере/режиме устройства.");
+    throw new Error("WebGL2 unavailable");
+}
+
+/*
+ * Full-screen triangle.
+ * No geometry is needed for the lens itself:
+ * the SDF exists entirely in the fragment shader.
+ */
+const vertexShaderSource = `#version 300 es
+precision highp float;
+
+const vec2 POS[3] = vec2[3](
+    vec2(-1.0,-1.0),
+    vec2( 3.0,-1.0),
+    vec2(-1.0, 3.0)
+);
+
+out vec2 vUV;
+
+void main(){
+    vec2 p = POS[gl_VertexID];
+    vUV = p * 0.5 + 0.5;
+    gl_Position = vec4(p,0.0,1.0);
+}
+`;
+
+const fragmentShaderSource = `#version 300 es
+precision highp float;
+
+uniform sampler2D uScene;
+
+uniform vec2 uResolution;
+uniform vec2 uLensCenter;
+uniform vec2 uLensHalfSize;
+uniform float uRadius;
+
+uniform float uMagnification;
+uniform float uRefraction;
+uniform float uEdgeSoftness;
+uniform float uRefractionEdge;
+
+out vec4 outColor;
+
+/* Exact rounded-box SDF. */
+float sdRoundBox(vec2 p, vec2 b, float r){
+    vec2 q = abs(p) - b + vec2(r);
+    return length(max(q,0.0))
+         + min(max(q.x,q.y),0.0)
+         - r;
+}
+
+/* Stable numerical SDF normal. */
+vec2 sdfNormal(vec2 p, vec2 halfSize, float radius){
+    float e = 0.75;
+    float dx =
+        sdRoundBox(p + vec2(e,0.0),halfSize,radius) -
+        sdRoundBox(p - vec2(e,0.0),halfSize,radius);
+    float dy =
+        sdRoundBox(p + vec2(0.0,e),halfSize,radius) -
+        sdRoundBox(p - vec2(0.0,e),halfSize,radius);
+    return normalize(vec2(dx,dy));
+}
+
+void main(){
+    vec2 uv = vUV;
+
+    /*
+     * WebGL texture coordinates are bottom-left in this pipeline.
+     * The source canvas is uploaded with UNPACK_FLIP_Y_WEBGL.
+     */
+    vec2 pixel = vec2(
+        uv.x * uResolution.x,
+        uv.y * uResolution.y
+    );
+
+    vec2 p = pixel - uLensCenter;
+
+    float d = sdRoundBox(
+        p,
+        uLensHalfSize,
+        uRadius
+    );
+
+    /*
+     * A real SDF mask, with a subpixel transition.
+     * No rectangular clipping and no stacked alpha layers.
+     */
+    float aa = max(
+        fwidth(d) * 1.25,
+        0.75
+    );
+
+    float inside = 1.0 - smoothstep(0.0,aa,d);
+
+    /*
+     * Normal exists around the whole rounded rectangle:
+     * left, right, top, bottom and all four corners.
+     */
+    vec2 n = sdfNormal(
+        p,
+        uLensHalfSize,
+        uRadius
+    );
+
+    /*
+     * Normalized position inside the lens.
+     */
+    vec2 q = p / uLensHalfSize;
+
+    /*
+     * Rounded radial coordinate. 0=center, 1=outer region.
+     */
+    float radial = clamp(length(q),0.0,1.25);
+
+    /*
+     * Refraction is strongest in the outer optical band,
+     * but fades continuously to zero before the hard boundary.
+     *
+     * This is deliberately NOT a center "dip".
+     */
+    float bandStart = max(
+        0.0,
+        1.0 - uRefractionEdge
+    );
+
+    float edgeT = smoothstep(
+        bandStart,
+        1.0,
+        radial
+    );
+
+    /*
+     * Interior optical profile prevents the center from becoming muddy.
+     * The central magnified image remains clean.
+     */
+    float interior = 1.0 - smoothstep(
+        0.15,
+        0.92,
+        radial
+    );
+
+    /*
+     * Curvature component:
+     * normal bends the image according to the actual SDF surface.
+     * radial component keeps the optical field symmetric.
+     */
+    vec2 radialDir = normalize(
+        p + vec2(0.0001)
+    );
+
+    vec2 opticalDir = normalize(
+        mix(radialDir,n,0.62)
+    );
+
+    /*
+     * The sign is inward at the edge, producing the lens-like
+     * compression/expansion transition rather than a random shift.
+     */
+    vec2 bend = -opticalDir * edgeT;
+
+    /*
+     * Subtle second-order curvature.
+     * It is symmetrical around the entire lens.
+     */
+    bend += n * (edgeT * edgeT * 0.22);
+
+    /*
+     * Movement adds a small tangential component, but never
+     * destroys the geometry of the SDF field.
+     */
+    vec2 tangent = vec2(-n.y,n.x);
+
+    float movementPhase =
+        sin((p.x+p.y)*0.018);
+
+    bend += tangent *
+        movementPhase *
+        edgeT *
+        0.045;
+
+    /*
+     * Convert pixel displacement to UV.
+     */
+    vec2 displacementUV =
+        bend *
+        uRefraction /
+        uResolution;
+
+    /*
+     * Magnification is centered exactly at the lens center.
+     */
+    vec2 magnifiedUV =
+        uLensCenter / uResolution +
+        (uv - uLensCenter / uResolution)
+        / uMagnification;
+
+    /*
+     * Optical sampling point.
+     */
+    vec2 opticalUV =
+        magnifiedUV +
+        displacementUV;
+
+    opticalUV = clamp(
+        opticalUV,
+        vec2(0.001),
+        vec2(0.999)
+    );
+
+    vec4 normalScene = texture(
+        uScene,
+        uv
+    );
+
+    vec4 lensScene = texture(
+        uScene,
+        opticalUV
+    );
+
+    /*
+     * Very subtle glass transmission.
+     * No blur and no repeated texture stacking.
+     */
+    float transmission =
+        inside *
+        (0.985 + interior * 0.015);
+
+    vec3 color = mix(
+        normalScene.rgb,
+        lensScene.rgb,
+        transmission
+    );
+
+    /*
+     * A barely visible optical rim.
+     * It is derived from the SDF itself, so it follows the
+     * complete rounded geometry instead of being a CSS-like border.
+     */
+    float rim = 1.0 - smoothstep(
+        0.0,
+        1.25,
+        abs(d)
+    );
+
+    /*
+     * Keep rim extremely subtle to preserve transparency.
+     */
+    color += vec3(0.018) * rim * inside;
+
+    outColor = vec4(
+        color,
+        1.0
+    );
+}
+`;
+
+function compileShader(type,source){
+    const shader = gl.createShader(type);
+    gl.shaderSource(shader,source);
+    gl.compileShader(shader);
+
+    if(!gl.getShaderParameter(shader,gl.COMPILE_STATUS)){
+        const log = gl.getShaderInfoLog(shader);
+        gl.deleteShader(shader);
+        throw new Error(log || "Shader compilation failed");
+    }
+    return shader;
+}
+
+function createProgram(vsSource,fsSource){
+    const vs = compileShader(gl.VERTEX_SHADER,vsSource);
+    const fs = compileShader(gl.FRAGMENT_SHADER,fsSource);
+    const program = gl.createProgram();
+
+    gl.attachShader(program,vs);
+    gl.attachShader(program,fs);
+    gl.linkProgram(program);
+
+    if(!gl.getProgramParameter(program,gl.LINK_STATUS)){
+        const log = gl.getProgramInfoLog(program);
+        gl.deleteProgram(program);
+        throw new Error(log || "Program link failed");
+    }
+
+    gl.deleteShader(vs);
+    gl.deleteShader(fs);
+    return program;
+}
+
+let program;
+
+try{
+    program = createProgram(
+        vertexShaderSource,
+        fragmentShaderSource
+    );
+}catch(err){
+    showError("Ошибка GLSL/WebGL2: " + err.message);
+    throw err;
+}
+
+const vao = gl.createVertexArray();
+gl.bindVertexArray(vao);
+
+const sceneTexture = gl.createTexture();
+gl.bindTexture(gl.TEXTURE_2D,sceneTexture);
+
+gl.texParameteri(
+    gl.TEXTURE_2D,
+    gl.TEXTURE_MIN_FILTER,
+    gl.LINEAR
+);
+gl.texParameteri(
+    gl.TEXTURE_2D,
+    gl.TEXTURE_MAG_FILTER,
+    gl.LINEAR
+);
+gl.texParameteri(
+    gl.TEXTURE_2D,
+    gl.TEXTURE_WRAP_S,
+    gl.CLAMP_TO_EDGE
+);
+gl.texParameteri(
+    gl.TEXTURE_2D,
+    gl.TEXTURE_WRAP_T,
+    gl.CLAMP_TO_EDGE
+);
+
+gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);
+
+const loc = {
+    scene: gl.getUniformLocation(program,"uScene"),
+    resolution: gl.getUniformLocation(program,"uResolution"),
+    lensCenter: gl.getUniformLocation(program,"uLensCenter"),
+    lensHalfSize: gl.getUniformLocation(program,"uLensHalfSize"),
+    radius: gl.getUniformLocation(program,"uRadius"),
+    magnification: gl.getUniformLocation(program,"uMagnification"),
+    refraction: gl.getUniformLocation(program,"uRefraction"),
+    edgeSoftness: gl.getUniformLocation(program,"uEdgeSoftness"),
+    refractionEdge: gl.getUniformLocation(program,"uRefractionEdge")
+};
+
+function uploadScene(){
+    gl.bindTexture(gl.TEXTURE_2D,sceneTexture);
+
+    gl.texImage2D(
+        gl.TEXTURE_2D,
+        0,
+        gl.RGBA,
+        gl.RGBA,
+        gl.UNSIGNED_BYTE,
+        sourceCanvas
+    );
+}
+
+function resize(){
+    W = Math.max(1,window.innerWidth);
+    H = Math.max(1,window.innerHeight);
+    DPR = Math.min(window.devicePixelRatio || 1,3);
+
+    canvas.width = Math.round(W*DPR);
+    canvas.height = Math.round(H*DPR);
+
+    sourceCanvas.width = Math.round(W*DPR);
+    sourceCanvas.height = Math.round(H*DPR);
+
+    updateNav();
+
+    if(!state.lensX){
+        state.lensX = tabCenter(state.activeTab);
+        state.targetX = state.lensX;
+    }
+
+    state.lensY = nav.y + nav.height/2;
+    state.targetY = state.lensY;
+
+    sourceDirty = true;
+
+    gl.viewport(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+}
+
+window.addEventListener("resize",resize);
+
+function renderWebGL(){
+    renderSource();
+
+    uploadScene();
+
+    gl.viewport(0,0,canvas.width,canvas.height);
+    gl.clearColor(0.0196,0.0235,0.0314,1);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+
+    gl.useProgram(program);
+    gl.bindVertexArray(vao);
+
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D,sceneTexture);
+    gl.uniform1i(loc.scene,0);
+
+    gl.uniform2f(
+        loc.resolution,
+        W,
+        H
+    );
+
+    gl.uniform2f(
+        loc.lensCenter,
+        state.lensX,
+        H - state.lensY
+    );
+
+    gl.uniform2f(
+        loc.lensHalfSize,
+        state.lensW/2,
+        state.lensH/2
+    );
+
+    gl.uniform1f(
+        loc.radius,
+        Math.min(state.lensH*.49,42)
+    );
+
+    gl.uniform1f(
+        loc.magnification,
+        getMagnification()
+    );
+
+    gl.uniform1f(
+        loc.refraction,
+        OPTICS.baseRefraction +
+        OPTICS.movementRefraction *
+        Math.min(1,state.speed)
+    );
+
+    gl.uniform1f(
+        loc.edgeSoftness,
+        OPTICS.edgeSoftness
+    );
+
+    gl.uniform1f(
+        loc.refractionEdge,
+        OPTICS.refractionEdge
+    );
+
+    gl.drawArrays(
+        gl.TRIANGLES,
+        0,
+        3
+    );
+}
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+const searchButton = document.getElementById("searchButton");
+const searchOverlay = document.getElementById("searchOverlay");
+const searchInput = document.getElementById("searchInput");
+const closeSearch = document.getElementById("closeSearch");
+
+searchButton.addEventListener("click",()=>{
+    searchOverlay.classList.add("active");
+    setTimeout(()=>searchInput.focus(),100);
+});
+
+closeSearch.addEventListener("click",()=>{
+    searchOverlay.classList.remove("active");
+    searchInput.blur();
+});
+
+searchOverlay.addEventListener("click",e=>{
+    if(e.target===searchOverlay){
+        searchOverlay.classList.remove("active");
+        searchInput.blur();
+    }
+});
+
+window.addEventListener("keydown",e=>{
+    if(e.key==="Escape"){
+        searchOverlay.classList.remove("active");
+        searchInput.blur();
+    }
+
+    if(e.key==="ArrowLeft"){
+        snapToTab(state.activeTab-1);
+    }
+
+    if(e.key==="ArrowRight"){
+        snapToTab(state.activeTab+1);
+    }
+});
+
+/* =========================================================
+   POINTER EVENTS
+   ========================================================= */
+
+canvas.addEventListener("pointerdown",onPointerDown,{passive:false});
+canvas.addEventListener("pointermove",onPointerMove,{passive:false});
+canvas.addEventListener("pointerup",onPointerUp,{passive:false});
+canvas.addEventListener("pointercancel",onPointerUp,{passive:false});
+canvas.addEventListener("wheel",onWheel,{passive:false});
+
+/* =========================================================
+   VUE APP
+   ========================================================= */
+
+createApp({
+    setup(){
+        return { state };
+    }
+}).mount("#app");
+
+/* =========================================================
+   INITIALIZE
+   ========================================================= */
+
+resize();
+
+state.lensX = tabCenter(2);
+state.targetX = state.lensX;
+state.lensY = nav.y + nav.height/2;
+state.targetY = state.lensY;
+state.lensW = OPTICS.minWidth;
+state.lensH = OPTICS.minHeight;
+
+let lastTime = performance.now();
+
+function frame(now){
+    const dt = Math.min(
+        .05,
+        (now-lastTime)/1000
+    );
+    lastTime = now;
+
+    updatePhysics(dt);
+    renderWebGL();
+
+    requestAnimationFrame(frame);
+}
+
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
