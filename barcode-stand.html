@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CandySky — стенд штрих-кода</title>
+<style>
+:root{--pink:#f3bdbb;--pink-dark:#c97878;--mint:#a2dacd;--mint-dark:#438f80;--page-bg:#fffaf8;--text:#20252a;--text-soft:#4e575d;--muted:#68737a;--border-dark:rgba(50,60,65,.14);--sel-bg:linear-gradient(165deg,#f8d6d4,#eeb5b2);--sel-text:#3d2326;--sel-shadow:0 4px 12px rgba(201,120,120,.22)}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100vh;color:var(--text);background:var(--page-bg);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:15px;line-height:1.4;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(circle 300px at 0 60vh,rgba(205,196,240,.42),transparent),radial-gradient(circle 480px at 0 0,rgba(243,189,187,.75),transparent),radial-gradient(circle 520px at 100vw calc(100vh - 170px),rgba(162,218,205,.75),transparent)}
+.wrap{max-width:620px;margin:0 auto;padding:20px 16px 48px;display:flex;flex-direction:column;gap:16px}
+h1{margin:4px 0 0;font-size:30px;font-weight:800;letter-spacing:-.8px}
+h2{margin:0 0 10px;font-size:15px;font-weight:800;letter-spacing:-.2px}
+p{margin:0}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.sub{margin-top:6px;color:var(--muted)}
+.m{color:var(--muted)}
+.sm{font-size:12.5px}
+.card{padding:18px;border-radius:26px;border:1px solid rgba(255,255,255,.98);background:linear-gradient(165deg,rgba(255,255,255,.66),rgba(255,255,255,.42));box-shadow:0 12px 38px rgba(72,79,88,.15)}
+.row{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 19px;border-radius:14px;font:700 15px inherit;font-family:inherit;color:var(--text);cursor:pointer;background:linear-gradient(165deg,rgba(255,255,255,.7),rgba(236,240,244,.5));border:1px solid rgba(60,65,75,.12);box-shadow:0 4px 14px rgba(60,65,75,.1);-webkit-tap-highlight-color:transparent}
+.btn.p{color:var(--sel-text);background:var(--sel-bg);border-color:rgba(255,255,255,.7);box-shadow:var(--sel-shadow)}
+.btn:active{transform:scale(.95)}
+.btn[disabled]{opacity:.45;pointer-events:none}
+.btn.s{min-height:40px;padding:0 14px;font-size:13px;border-radius:12px}
+.btn[hidden]{display:none}
+.i{width:20px;height:20px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.sr{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;pointer-events:none}
+.pill{display:inline-flex;align-items:center;min-height:22px;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}
+.ok{background:rgba(162,218,205,.6);color:#1f5f50}
+.warn{background:rgba(253,218,178,.8);color:#8a4a0c}
+.bad{background:rgba(252,214,212,.85);color:#8f1f1f}
+.gray{background:rgba(50,60,65,.1);color:var(--text-soft)}
+.kv{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid var(--border-dark)}
+.kv:first-child{border-top:0;padding-top:0}
+.kv b{font-weight:700}
+.kv .v{display:flex;align-items:center;gap:8px;text-align:right;min-width:0;justify-content:flex-end;flex-wrap:wrap}
+.fld{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+.fld label{font-size:12px;font-weight:700;color:var(--muted)}
+.in,select,textarea{min-height:48px;width:100%;border:1px solid var(--border-dark);border-radius:14px;padding:0 14px;font:500 16px inherit;font-family:inherit;color:var(--text);background:rgba(255,255,255,.88);min-width:0}
+textarea{padding:12px 14px;min-height:150px;font-size:12.5px;font-family:ui-monospace,Menlo,monospace;resize:vertical}
+.vf{position:relative;margin:0 auto 12px;width:100%;border-radius:22px;overflow:hidden;background:linear-gradient(160deg,#3a4247,#20252a);aspect-ratio:4/3}
+.vf video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#20252a}
+.frame{position:absolute;left:4%;top:28%;width:92%;height:44%;border:3px solid rgba(255,255,255,.92);border-radius:16px;pointer-events:none;transition:border-color .15s,box-shadow .15s}
+.frame.hit{border-color:#7fd6bf;box-shadow:0 0 0 4px rgba(127,214,191,.35)}
+.scanline{position:absolute;left:8%;right:8%;top:50%;height:2px;background:#ff6b66;opacity:.85;pointer-events:none;display:none}
+.vf.live .scanline{display:block;animation:sweep 1.6s ease-in-out infinite alternate}
+@keyframes sweep{from{top:34%}to{top:66%}}
+.vfmsg{position:absolute;left:0;right:0;bottom:10px;text-align:center;color:#fff;font-weight:600;font-size:13px;padding:0 12px;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.log{display:flex;flex-direction:column}
+.li{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-top:1px solid var(--border-dark)}
+.li:first-child{border-top:0}
+.li .code{font-weight:800;font-size:17px;letter-spacing:.02em;word-break:break-all;font-variant-numeric:tabular-nums}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl td{padding:8px 0;border-top:1px solid var(--border-dark);vertical-align:top}
+.tbl td:last-child{text-align:right;white-space:nowrap}
+canvas.sample{display:block;width:100%;height:auto;border-radius:14px;background:#fff;margin-top:10px}
+#stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:12px}
+.stat{padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.7);border:1px solid var(--border-dark)}
+.stat span{display:block;font-size:12px;color:var(--muted);font-weight:600}
+.stat b{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="i-camera" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2zM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8"/></symbol>
+<symbol id="i-scan" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2M7 8v8M12 8v8M17 8v8"/></symbol>
+<symbol id="i-stop" viewBox="0 0 24 24"><path d="M6 6h12v12H6z"/></symbol>
+<symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></symbol>
+<symbol id="i-image" viewBox="0 0 24 24"><path d="M3 3h18v18H3zM8.5 10a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3M21 15l-5-5L5 21"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></symbol>
+<symbol id="i-copy" viewBox="0 0 24 24"><path d="M9 9h11v11H9zM5 15H4V4h11v1"/></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><path d="m7 4 13 8-13 8z"/></symbol>
+</svg>
+<main class="wrap">
+<header>
+<div class="eyebrow">CandySky · учёт материалов</div>
+<h1>Стенд штрих-кода</h1>
+<p class="sub">Проверка камеры, фото, USB-сканера и ручного ввода на реальном устройстве. Версия стенда 2.</p>
+</header>
+
+<section class="card" aria-labelledby="h-env">
+<h2 id="h-env">Среда</h2>
+<div id="env"></div>
+</section>
+
+<section class="card" aria-labelledby="h-cam">
+<h2 id="h-cam">Живая камера</h2>
+<div class="vf" id="vf">
+<video id="video" playsinline muted autoplay></video>
+<div class="frame" id="frame"></div>
+<div class="scanline"></div>
+<div class="vfmsg" id="vfmsg">Камера выключена</div>
+</div>
+<div class="row">
+<button class="btn p" id="camBtn" type="button"><svg class="i"><use href="#i-camera"/></svg><span>Включить камеру</span></button>
+<button class="btn" id="torchBtn" type="button" hidden><svg class="i"><use href="#i-bolt"/></svg><span>Фонарик</span></button>
+</div>
+<div class="fld"><label for="engine">Распознаватель</label>
+<select id="engine"><option value="auto">Авто: встроенный, если есть, иначе свой</option><option value="own">Только свой декодер</option><option value="native">Только встроенный (BarcodeDetector)</option></select></div>
+<div class="fld" id="zoomWrap" hidden><label for="zoom">Зум камеры</label><input id="zoom" type="range" min="1" max="3" step="0.1" value="1"></div>
+<p class="m sm" id="camStat" style="margin-top:12px"></p>
+</section>
+
+<section class="card" aria-labelledby="h-photo">
+<h2 id="h-photo">Фото штрих-кода</h2>
+<p class="m sm" style="margin-bottom:12px">Работает без https и без доступа к камере из страницы: снимок делает сама камера телефона с автофокусом. Запасной путь, если живая камера не читает.</p>
+<div class="row">
+<label class="btn p" for="photoCam"><svg class="i"><use href="#i-camera"/></svg><span>Сфотографировать</span></label>
+<label class="btn" for="photoLib"><svg class="i"><use href="#i-image"/></svg><span>Выбрать фото</span></label>
+</div>
+<input class="sr" id="photoCam" type="file" accept="image/*" capture="environment">
+<input class="sr" id="photoLib" type="file" accept="image/*">
+<p class="m sm" id="photoStat" style="margin-top:12px"></p>
+</section>
+
+<section class="card" aria-labelledby="h-usb">
+<h2 id="h-usb">USB-сканер и ручной ввод</h2>
+<p class="m sm">USB- и Bluetooth-сканеры вводят код как клавиатура и жмут Enter. Нажмите в поле и сканируйте.</p>
+<div class="fld"><label for="manual">Код</label>
+<div class="row" style="flex-wrap:nowrap"><input class="in" id="manual" type="text" inputmode="numeric" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Штрих-код"><button class="btn p" id="manualBtn" type="button" aria-label="Добавить код"><svg class="i"><use href="#i-check"/></svg></button></div></div>
+</section>
+
+<section class="card" aria-labelledby="h-res">
+<h2 id="h-res">Результаты</h2>
+<div id="stats"></div>
+<div class="log" id="log"></div>
+<div class="row" style="margin-top:12px"><button class="btn s" id="clearBtn" type="button">Очистить</button></div>
+</section>
+
+<section class="card" aria-labelledby="h-self">
+<h2 id="h-self">Самопроверка декодера</h2>
+<p class="m sm" style="margin-bottom:12px">Рисует тестовые штрих-коды на этом устройстве (размытие, шум, повороты) и проверяет, что декодер их читает.</p>
+<button class="btn p" id="selfBtn" type="button"><svg class="i"><use href="#i-play"/></svg><span>Запустить</span></button>
+<table class="tbl" id="selfTbl" style="margin-top:12px"></table>
+</section>
+
+<section class="card" aria-labelledby="h-gen">
+<h2 id="h-gen">Тестовый штрих-код на экране</h2>
+<p class="m sm">Откройте стенд на втором экране или другом телефоне и наведите камеру. Так можно проверить живую камеру без упаковок.</p>
+<div class="fld"><label for="genSel">Код</label>
+<select id="genSel"><option value="e13">EAN-13 · 4601234500012</option><option value="e8">EAN-8 · 12345670</option><option value="c128">Code 128 · CANDY-5521</option><option value="c128c">Code 128 (цифры) · 2025110700</option></select></div>
+<canvas class="sample" id="genCv" width="600" height="260"></canvas>
+</section>
+
+<section class="card" aria-labelledby="h-rep">
+<h2 id="h-rep">Отчёт</h2>
+<p class="m sm" style="margin-bottom:10px">Скопируйте и пришлите мне: по нему видно, что именно не сработало на устройстве.</p>
+<textarea id="report" readonly></textarea>
+<div class="row" style="margin-top:12px"><button class="btn p" id="copyBtn" type="button"><svg class="i"><use href="#i-copy"/></svg><span>Скопировать отчёт</span></button></div>
+</section>
+</main>
+
+<script>
+(() => {
+'use strict';
+
+const $ = (id) => document.getElementById(id);
+
+const LB = ['0001101','0011001','0010011','0111101','0100011','0110001','0101111','0111011','0110111','0001011'];
+const RB = LB.map((s) => s.replace(/[01]/g, (c) => (c === '0' ? '1' : '0')));
+const GB = RB.map((s) => s.split('').reverse().join(''));
+const PAR = ['LLLLLL','LLGLGG','LLGGLG','LLGGGL','LGLLGG','LGGLLG','LGGGLL','LGLGLG','LGLGGL','LGGLGL'];
+
+const runsOf = (bits) => {
+  const out = [];
+  let n = 1;
+  for (let i = 1; i < bits.length; i++) {
+    if (bits[i] === bits[i - 1]) n++;
+    else { out.push(n); n = 1; }
+  }
+  out.push(n);
+  return out;
+};
+const TL = LB.map(runsOf);
+const TG = GB.map(runsOf);
+const TR = RB.map(runsOf);
+
+const P128_SRC = '212222 222122 222221 121223 121322 131222 122213 122312 132212 221213 221312 231212 112232 122132 122231 113222 123122 123221 223211 221132 221231 213212 223112 312131 311222 321122 321221 312212 322112 322211 212123 212321 232121 111323 131123 131321 112313 132113 132311 211313 231113 231311 112133 112331 132131 113123 113321 133121 313121 211331 231131 213113 213311 213131 311123 311321 331121 312113 312311 332111 314111 221411 431111 111224 111422 121124 121421 141122 141221 112214 112412 122114 122411 142112 142211 241211 221114 413111 241112 134111 111242 121142 121241 114212 124112 124211 411212 421112 421211 212141 214121 412121 111143 111341 131141 114113 114311 411113 411311 113141 114131 311141 411131 211412 211214 211232 2331112';
+const P128 = P128_SRC.split(' ').map((s) => s.split('').map(Number));
+const P128_OK = P128.length === 107 && P128.every((p, i) => p.reduce((a, b) => a + b, 0) === (i === 106 ? 13 : 11));
+
+const gtinOk = (s) => {
+  if (!/^\d{8}$|^\d{12,14}$/.test(s)) return null;
+  const d = s.split('').map(Number);
+  const chk = d.pop();
+  let sum = 0;
+  for (let i = 0; i < d.length; i++) sum += d[d.length - 1 - i] * (i % 2 === 0 ? 3 : 1);
+  return (10 - (sum % 10)) % 10 === chk;
+};
+
+const variance = (c, off, pat, maxInd) => {
+  let total = 0, pl = 0;
+  for (let i = 0; i < pat.length; i++) { total += c[off + i]; pl += pat[i]; }
+  if (total < pl * 0.6) return Infinity;
+  const unit = total / pl;
+  const maxI = maxInd * unit;
+  let tv = 0;
+  for (let i = 0; i < pat.length; i++) {
+    const v = Math.abs(c[off + i] - pat[i] * unit);
+    if (v > maxI) return Infinity;
+    tv += v;
+  }
+  return tv / total;
+};
+
+const eanDigit = (w, off, tables) => {
+  let best = 0.48, idx = -1, tb = -1;
+  for (let k = 0; k < tables.length; k++) {
+    for (let d = 0; d < 10; d++) {
+      const v = variance(w, off, tables[k][d], 0.7);
+      if (v < best) { best = v; idx = d; tb = k; }
+    }
+  }
+  return idx < 0 ? null : { d: idx, t: tb };
+};
+
+const decodeEAN = (w, i, n) => {
+  const need = 3 + 4 * n + 5 + 4 * n + 3;
+  if (i + need > w.length) return null;
+  if (variance(w, i, [1, 1, 1], 0.7) > 0.5) return null;
+  const unit = (w[i] + w[i + 1] + w[i + 2]) / 3;
+  if (unit < 0.8) return null;
+  let p = i + 3;
+  const digits = [];
+  let par = '';
+  for (let k = 0; k < n; k++) {
+    const r = eanDigit(w, p, n === 6 ? [TL, TG] : [TL]);
+    if (!r) return null;
+    const sum = w[p] + w[p + 1] + w[p + 2] + w[p + 3];
+    if (Math.abs(sum / (7 * unit) - 1) > 0.4) return null;
+    digits.push(r.d);
+    par += r.t === 1 ? 'G' : 'L';
+    p += 4;
+  }
+  if (variance(w, p, [1, 1, 1, 1, 1], 0.7) > 0.5) return null;
+  p += 5;
+  for (let k = 0; k < n; k++) {
+    const r = eanDigit(w, p, [TR]);
+    if (!r) return null;
+    const sum = w[p] + w[p + 1] + w[p + 2] + w[p + 3];
+    if (Math.abs(sum / (7 * unit) - 1) > 0.4) return null;
+    digits.push(r.d);
+    p += 4;
+  }
+  if (variance(w, p, [1, 1, 1], 0.7) > 0.5) return null;
+  let code = digits.join('');
+  if (n === 6) {
+    const f = PAR.indexOf(par);
+    if (f < 0) return null;
+    code = f + code;
+  } else if (par !== 'LLLL') return null;
+  if (!gtinOk(code)) return null;
+  return { code, format: n === 6 ? 'EAN-13' : 'EAN-8' };
+};
+
+const pairDigit = (w, off, tables) => {
+  const tot = w[off] + w[off + 1] + w[off + 2] + w[off + 3];
+  const u = tot / 7;
+  const t = [(w[off] + w[off + 1]) / u, (w[off + 1] + w[off + 2]) / u, (w[off + 2] + w[off + 3]) / u];
+  let best = 0.5, idx = -1, tb = -1;
+  for (let k = 0; k < tables.length; k++) {
+    for (let d = 0; d < 10; d++) {
+      const q = tables[k][d];
+      const e = [q[0] + q[1], q[1] + q[2], q[2] + q[3]];
+      const err = Math.max(Math.abs(t[0] - e[0]), Math.abs(t[1] - e[1]), Math.abs(t[2] - e[2]));
+      if (err < best) { best = err; idx = d; tb = k; }
+    }
+  }
+  return idx < 0 ? null : { d: idx, t: tb, u };
+};
+
+const decodeEAN2 = (w, i, n) => {
+  const need = 3 + 4 * n + 5 + 4 * n + 3;
+  if (i + need > w.length) return null;
+  const u0 = (w[i] + w[i + 1]) / 2;
+  if (u0 < 0.8 || Math.abs((w[i + 1] + w[i + 2]) / 2 / u0 - 1) > 0.45) return null;
+  let p = i + 3;
+  const digits = [];
+  let par = '';
+  for (let k = 0; k < n; k++) {
+    const r = pairDigit(w, p, n === 6 ? [TL, TG] : [TL]);
+    if (!r || Math.abs(r.u / u0 - 1) > 0.5) return null;
+    digits.push(r.d);
+    par += r.t === 1 ? 'G' : 'L';
+    p += 4;
+  }
+  const mid = (w[p] + w[p + 1] + w[p + 2] + w[p + 3] + w[p + 4]) / 5;
+  if (Math.abs(mid / u0 - 1) > 0.5) return null;
+  p += 5;
+  for (let k = 0; k < n; k++) {
+    const r = pairDigit(w, p, [TR]);
+    if (!r || Math.abs(r.u / u0 - 1) > 0.5) return null;
+    digits.push(r.d);
+    p += 4;
+  }
+  let code = digits.join('');
+  if (n === 6) {
+    const f = PAR.indexOf(par);
+    if (f < 0) return null;
+    code = f + code;
+  } else if (par !== 'LLLL') return null;
+  if (!gtinOk(code)) return null;
+  return { code, format: n === 6 ? 'EAN-13' : 'EAN-8' };
+};
+
+const decode128 = (w, c, i) => {
+  if (i + 6 > w.length) return null;
+  let startVal = -1, best = 0.4;
+  for (let s = 103; s <= 105; s++) {
+    const v = variance(w, i, P128[s], 0.7);
+    if (v < best) { best = v; startVal = s; }
+  }
+  if (startVal < 0) return null;
+  const vals = [startVal];
+  let p = i + 6;
+  for (let guard = 0; guard < 80; guard++) {
+    let sym = -1, sv = 0.4;
+    if (p + 6 <= w.length) {
+      for (let s = 0; s < 103; s++) {
+        const v = variance(w, p, P128[s], 0.7);
+        if (v < sv) { sv = v; sym = s; }
+      }
+    }
+    if (p + 7 <= w.length && vals.length >= 3) {
+      const vs = variance(w, p, P128[106], 0.7);
+      if (vs < 0.4 && vs < sv) {
+        const check = vals.pop();
+        let sum = vals[0];
+        for (let k = 1; k < vals.length; k++) sum += k * vals[k];
+        if (sum % 103 !== check) return null;
+        return finish128(vals);
+      }
+    }
+    if (sym < 0) return null;
+    vals.push(sym);
+    p += 6;
+  }
+  return null;
+};
+
+const finish128 = (vals) => {
+  let mode = vals[0] === 103 ? 'A' : vals[0] === 104 ? 'B' : 'C';
+  let shift = false;
+  let out = '';
+  for (let k = 1; k < vals.length; k++) {
+    const v = vals[k];
+    if (mode === 'C') {
+      if (v < 100) out += (v < 10 ? '0' : '') + v;
+      else if (v === 100) mode = 'B';
+      else if (v === 101) mode = 'A';
+      continue;
+    }
+    if (v === 99) { mode = 'C'; continue; }
+    if (v === 100) { if (mode === 'A') mode = 'B'; continue; }
+    if (v === 101) { if (mode === 'B') mode = 'A'; continue; }
+    if (v === 98) { shift = true; continue; }
+    if (v >= 96) continue;
+    const useA = shift ? mode === 'B' : mode === 'A';
+    shift = false;
+    out += useA ? String.fromCharCode(v < 64 ? v + 32 : v - 64) : String.fromCharCode(v + 32);
+  }
+  if (out.length < 2) return null;
+  return { code: out, format: 'Code 128' };
+};
+
+const scanDir = (w, c) => {
+  for (let i = 0; i < w.length - 5; i++) {
+    if (c[i] !== 1) continue;
+    const r = decodeEAN(w, i, 6) || decodeEAN(w, i, 4) || decodeEAN2(w, i, 6) || decodeEAN2(w, i, 4) || decode128(w, c, i);
+    if (r) return r;
+  }
+  return null;
+};
+
+const scanRuns = (w, c) => scanDir(w, c) || scanDir(w.slice().reverse(), c.slice().reverse());
+
+const buildRuns = (g, t, delta) => {
+  const n = g.length;
+  const trans = [];
+  let state = -1, lastCross = -1, lastDir = -1;
+  let d0 = g[0] - t[0];
+  for (let i = 1; i < n; i++) {
+    const d1 = g[i] - t[i];
+    if ((d0 > 0) !== (d1 > 0)) { lastCross = i - 1 + d0 / (d0 - d1); lastDir = d1 < 0 ? 1 : 0; }
+    let ns = state;
+    const dl = typeof delta === 'number' ? delta : delta[i];
+    if (d1 < -dl) ns = 1;
+    else if (d1 > dl) ns = 0;
+    if (ns !== state) {
+      if (state !== -1) trans.push({ p: lastDir === ns && lastCross >= 0 ? lastCross : i, c: ns });
+      state = ns;
+    }
+    d0 = d1;
+  }
+  const w = [], c = [];
+  for (let k = 0; k + 1 < trans.length; k++) {
+    w.push(Math.max(0.01, trans[k + 1].p - trans[k].p));
+    c.push(trans[k].c);
+  }
+  return { w, c };
+};
+
+const prepareLine = (line) => {
+  const n = line.length;
+  const g = new Float32Array(n);
+  g[0] = line[0];
+  g[n - 1] = line[n - 1];
+  for (let i = 1; i < n - 1; i++) g[i] = (line[i - 1] + 2 * line[i] + line[i + 1]) / 4;
+  const hist = new Uint32Array(256);
+  for (let i = 0; i < n; i++) hist[Math.max(0, Math.min(255, Math.round(g[i])))]++;
+  let acc = 0, lo = 0, hi = 255;
+  for (let v = 0; v < 256; v++) { acc += hist[v]; if (acc >= n * 0.03) { lo = v; break; } }
+  acc = 0;
+  for (let v = 255; v >= 0; v--) { acc += hist[v]; if (acc >= n * 0.03) { hi = v; break; } }
+  return { g, lo, hi };
+};
+
+const decodeLine = (line) => {
+  const n = line.length;
+  if (n < 40) return null;
+  const { g, lo, hi } = prepareLine(line);
+  if (hi - lo < 28) return null;
+  const delta = (hi - lo) * 0.08;
+  const tg = new Float32Array(n).fill((hi + lo) / 2);
+  let r = scanRuns(...Object.values(buildRuns(g, tg, delta)));
+  if (r) return r;
+  const win = Math.max(31, Math.round(n / 8)) | 1;
+  const pre = new Float64Array(n + 1);
+  for (let i = 0; i < n; i++) pre[i + 1] = pre[i] + g[i];
+  const tl = new Float32Array(n);
+  const half = win >> 1;
+  for (let i = 0; i < n; i++) {
+    const a = Math.max(0, i - half), b = Math.min(n, i + half + 1);
+    tl[i] = (pre[b] - pre[a]) / (b - a);
+  }
+  r = scanRuns(...Object.values(buildRuns(g, tl, delta)));
+  if (r) return r;
+  const bs = Math.max(8, Math.round(n / 60));
+  const nb = Math.ceil(n / bs);
+  const bmin = new Float32Array(nb).fill(255), bmax = new Float32Array(nb);
+  for (let i = 0; i < n; i++) {
+    const k = (i / bs) | 0;
+    if (g[i] < bmin[k]) bmin[k] = g[i];
+    if (g[i] > bmax[k]) bmax[k] = g[i];
+  }
+  for (const span of [5, 9]) {
+    const tm = new Float32Array(n), dm = new Float32Array(n);
+    for (let i = 0; i < n; i++) {
+      const k = (i / bs) | 0;
+      let mn = 255, mx = 0;
+      for (let j = Math.max(0, k - span); j <= Math.min(nb - 1, k + span); j++) {
+        if (bmin[j] < mn) mn = bmin[j];
+        if (bmax[j] > mx) mx = bmax[j];
+      }
+      tm[i] = (mn + mx) / 2;
+      dm[i] = Math.max(4, (mx - mn) * 0.1);
+    }
+    r = scanRuns(...Object.values(buildRuns(g, tm, dm)));
+    if (r) return r;
+  }
+  return null;
+};
+
+const stats = { frames: 0, lines: 0, reads: { camera: 0, photo: 0, usb: 0, manual: 0 }, firstReadMs: null, startedAt: 0, times: [] };
+const addHit = (hits, r) => {
+  const h = hits.get(r.code);
+  if (h) h.count++;
+  else hits.set(r.code, { code: r.code, format: r.format, count: 1 });
+};
+const bestHit = (hits, min) => {
+  let best = null;
+  hits.forEach((h) => { if (h.count >= min && (!best || h.count > best.count)) best = h; });
+  return best;
+};
+
+const grayFrom = (cv) => {
+  const d = cv.getContext('2d', { willReadFrequently: true }).getImageData(0, 0, cv.width, cv.height).data;
+  const g = new Uint8Array(cv.width * cv.height);
+  for (let i = 0, j = 0; i < g.length; i++, j += 4) g[i] = (d[j] * 77 + d[j + 1] * 151 + d[j + 2] * 28) >> 8;
+  return g;
+};
+
+const WINDOWS = [[0, 0.9], [0.1, 1], [0, 0.7], [0.15, 0.85], [0.3, 1], [0, 0.45], [0.2, 0.65], [0.4, 0.85], [0.55, 1]];
+const decodeSeg = (arr, seg) => {
+  let r = decodeLine(arr);
+  if (r || !seg) return r;
+  const n = arr.length;
+  for (const [a, b] of WINDOWS) {
+    r = decodeLine(arr.subarray(Math.round(n * a), Math.round(n * b)));
+    if (r) return r;
+  }
+  return null;
+};
+
+const scanPlane = (g, w, h, nLines, hits, seg) => {
+  const row = new Float32Array(w);
+  for (let k = 0; k < nLines; k++) {
+    const y = Math.floor((k + 0.5) * h / nLines);
+    const y0 = Math.max(0, y - 1), y1 = Math.min(h - 1, y + 1);
+    for (let x = 0; x < w; x++) {
+      let s = 0;
+      for (let yy = y0; yy <= y1; yy++) s += g[yy * w + x];
+      row[x] = s / (y1 - y0 + 1);
+    }
+    stats.lines++;
+    const r = decodeSeg(row, seg);
+    if (r) addHit(hits, r);
+  }
+  const col = new Float32Array(h);
+  for (let k = 0; k < nLines; k++) {
+    const x = Math.floor((k + 0.5) * w / nLines);
+    const x0 = Math.max(0, x - 1), x1 = Math.min(w - 1, x + 1);
+    for (let y = 0; y < h; y++) {
+      let s = 0;
+      for (let xx = x0; xx <= x1; xx++) s += g[y * w + xx];
+      col[y] = s / (x1 - x0 + 1);
+    }
+    stats.lines++;
+    const r = decodeSeg(col, seg);
+    if (r) addHit(hits, r);
+  }
+};
+
+const tick = () => new Promise((res) => setTimeout(res, 0));
+
+const rotated = (cv, deg) => {
+  const o = document.createElement('canvas');
+  o.width = cv.width;
+  o.height = cv.height;
+  const x = o.getContext('2d');
+  x.fillStyle = '#fff';
+  x.fillRect(0, 0, o.width, o.height);
+  x.translate(o.width / 2, o.height / 2);
+  x.rotate(deg * Math.PI / 180);
+  x.drawImage(cv, -cv.width / 2, -cv.height / 2);
+  return o;
+};
+
+const decodeStill = async (cv, angles) => {
+  const hits = new Map();
+  for (const a of angles) {
+    const src = a === 0 ? cv : rotated(cv, a);
+    scanPlane(grayFrom(src), src.width, src.height, 72, hits, true);
+    const b = bestHit(hits, 2);
+    if (b) return b;
+    await tick();
+  }
+  return bestHit(hits, 1);
+};
+
+const ANGLES = [0, -8, 8, -16, 16, -24, 24];
+
+const eanBits = (code) => {
+  const par = PAR[+code[0]];
+  let bits = '101';
+  for (let i = 1; i <= 6; i++) bits += par[i - 1] === 'L' ? LB[+code[i]] : GB[+code[i]];
+  bits += '01010';
+  for (let i = 7; i <= 12; i++) bits += RB[+code[i]];
+  return bits + '101';
+};
+const ean8Bits = (code) => {
+  let bits = '101';
+  for (let i = 0; i < 4; i++) bits += LB[+code[i]];
+  bits += '01010';
+  for (let i = 4; i < 8; i++) bits += RB[+code[i]];
+  return bits + '101';
+};
+const patBits = (p) => {
+  let bits = '', bar = true;
+  for (const n of p) { bits += (bar ? '1' : '0').repeat(n); bar = !bar; }
+  return bits;
+};
+const code128Bits = (text, numeric) => {
+  const vals = [];
+  if (numeric) {
+    vals.push(105);
+    for (let i = 0; i < text.length; i += 2) vals.push(+text.slice(i, i + 2));
+  } else {
+    vals.push(104);
+    for (const ch of text) vals.push(ch.charCodeAt(0) - 32);
+  }
+  let sum = vals[0];
+  for (let k = 1; k < vals.length; k++) sum += k * vals[k];
+  vals.push(sum % 103);
+  vals.push(106);
+  return vals.map((v) => patBits(P128[v])).join('');
+};
+
+const SAMPLES = {
+  e13: { bits: () => eanBits('4601234500012'), code: '4601234500012', label: 'EAN-13', text: '4 601234 500012' },
+  e8: { bits: () => ean8Bits('12345670'), code: '12345670', label: 'EAN-8', text: '1234 5670' },
+  c128: { bits: () => code128Bits('CANDY-5521', false), code: 'CANDY-5521', label: 'Code 128', text: 'CANDY-5521' },
+  c128c: { bits: () => code128Bits('2025110700', true), code: '2025110700', label: 'Code 128', text: '2025110700' }
+};
+
+const drawBarcode = (cv, bits, text, opt) => {
+  const x = cv.getContext('2d');
+  const quiet = 12;
+  const mw = Math.max(1, Math.floor((cv.width * 0.8) / (bits.length + quiet * 2)));
+  const total = (bits.length + quiet * 2) * mw;
+  const left = Math.round((cv.width - total) / 2) + quiet * mw;
+  x.fillStyle = '#fff';
+  x.fillRect(0, 0, cv.width, cv.height);
+  x.fillStyle = opt && opt.ink ? opt.ink : '#000';
+  const top = Math.round(cv.height * 0.2), hgt = Math.round(cv.height * 0.5);
+  for (let i = 0; i < bits.length; i++) if (bits[i] === '1') x.fillRect(left + i * mw, top, mw, hgt);
+  x.fillStyle = '#20252a';
+  x.font = '600 ' + Math.round(cv.height * 0.09) + 'px sans-serif';
+  x.textAlign = 'center';
+  x.fillText(text, cv.width / 2, top + hgt + Math.round(cv.height * 0.12));
+  return mw;
+};
+
+const degrade = (src, o) => {
+  const cv = document.createElement('canvas');
+  cv.width = src.width;
+  cv.height = src.height;
+  const x = cv.getContext('2d', { willReadFrequently: true });
+  x.fillStyle = '#e9e6e3';
+  x.fillRect(0, 0, cv.width, cv.height);
+  x.save();
+  x.translate(cv.width / 2, cv.height / 2);
+  x.rotate((o.rot || 0) * Math.PI / 180);
+  if (Math.abs(o.rot || 0) === 90) x.scale(0.62, 0.62);
+  if (o.blur) x.filter = 'blur(' + o.blur + 'px)';
+  x.drawImage(src, -src.width / 2, -src.height / 2);
+  x.restore();
+  x.filter = 'none';
+  if (o.noise || o.contrast) {
+    const im = x.getImageData(0, 0, cv.width, cv.height);
+    const d = im.data;
+    const k = o.contrast || 1;
+    let seed = 12345;
+    const rnd = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
+    for (let i = 0; i < d.length; i += 4) {
+      const nz = o.noise ? (rnd() - 0.5) * o.noise : 0;
+      for (let j = 0; j < 3; j++) d[i + j] = Math.max(0, Math.min(255, 128 + (d[i + j] - 128) * k + nz));
+    }
+    x.putImageData(im, 0, 0);
+  }
+  return cv;
+};
+
+const SELF_CASES = [
+  ['EAN-13, чисто', 'e13', {}],
+  ['EAN-13, мелкий модуль, размытие 0.8', 'e13', { blur: 0.8, small: true }],
+  ['EAN-13, размытие 1.6', 'e13', { blur: 1.6 }],
+  ['EAN-13, шум', 'e13', { noise: 70 }],
+  ['EAN-13, низкий контраст + шум', 'e13', { contrast: 0.35, noise: 40 }],
+  ['EAN-13, поворот 7°', 'e13', { rot: 7 }],
+  ['EAN-13, поворот 90°', 'e13', { rot: 90 }],
+  ['EAN-13, вверх ногами', 'e13', { rot: 180 }],
+  ['EAN-8, чисто', 'e8', {}],
+  ['Code 128, буквы', 'c128', {}],
+  ['Code 128, цифры (набор C)', 'c128c', { blur: 0.8 }]
+];
+
+const runSelfTest = async () => {
+  const tbl = $('selfTbl');
+  tbl.textContent = '';
+  $('selfBtn').disabled = true;
+  const result = [];
+  for (const [name, key, o] of SELF_CASES) {
+    const s = SAMPLES[key];
+    const src = document.createElement('canvas');
+    src.width = 1000;
+    src.height = 520;
+    const bits = s.bits();
+    drawBarcode(src, bits, s.text);
+    let cv = degrade(src, o);
+    if (o.small) {
+      const sm = document.createElement('canvas');
+      sm.width = 560;
+      sm.height = 290;
+      sm.getContext('2d').drawImage(cv, 0, 0, sm.width, sm.height);
+      cv = sm;
+    }
+    const t0 = performance.now();
+    const r = await decodeStill(cv, [0, -8, 8]);
+    const ms = Math.round(performance.now() - t0);
+    const ok = !!r && r.code === s.code;
+    result.push({ name, ok, ms, got: r ? r.code : '' });
+    const tr = document.createElement('tr');
+    const a = document.createElement('td');
+    a.textContent = name;
+    const b = document.createElement('td');
+    const pill = document.createElement('span');
+    pill.className = 'pill ' + (ok ? 'ok' : 'bad');
+    pill.textContent = ok ? 'читает · ' + ms + ' мс' : r ? 'ошибка: ' + r.code : 'не читает';
+    b.appendChild(pill);
+    tr.append(a, b);
+    tbl.appendChild(tr);
+    await tick();
+  }
+  state.self = result;
+  $('selfBtn').disabled = false;
+  const pass = result.filter((r) => r.ok).length;
+  const tr = document.createElement('tr');
+  const a = document.createElement('td');
+  a.innerHTML = '<b>Итого</b>';
+  const b = document.createElement('td');
+  b.innerHTML = '<b>' + pass + ' из ' + result.length + '</b>';
+  tr.append(a, b);
+  tbl.appendChild(tr);
+  updateReport();
+};
+
+const state = { stream: null, track: null, running: false, detector: null, nativeFormats: [], pending: null, last: {}, log: [], self: null, camInfo: '', fps: 0, torch: false, envText: '', busy: false };
+
+const pillRow = (label, cls, text) => {
+  const row = document.createElement('div');
+  row.className = 'kv';
+  const b = document.createElement('b');
+  b.textContent = label;
+  const v = document.createElement('div');
+  v.className = 'v';
+  const p = document.createElement('span');
+  p.className = 'pill ' + cls;
+  p.textContent = text;
+  v.appendChild(p);
+  row.append(b, v);
+  return row;
+};
+
+const checkEnv = async () => {
+  const env = $('env');
+  env.textContent = '';
+  const lines = [];
+  const add = (label, cls, text) => { env.appendChild(pillRow(label, cls, text)); lines.push(label + ': ' + text); };
+  add('Безопасный контекст (https)', window.isSecureContext ? 'ok' : 'bad', window.isSecureContext ? 'да' : 'нет, живая камера не заработает');
+  const media = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+  add('Доступ к камере из страницы', media ? 'ok' : 'bad', media ? 'есть' : 'нет');
+  const standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true;
+  add('Режим', standalone ? 'ok' : 'gray', standalone ? 'приложение на домашнем экране' : 'вкладка браузера');
+  const tg = /Telegram/i.test(navigator.userAgent) || !!(window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.platform && window.Telegram.WebApp.platform !== 'unknown');
+  add('Окно Telegram', 'gray', tg ? 'да' : 'нет');
+  let native = 'BarcodeDetector' in window;
+  state.nativeFormats = [];
+  if (native) {
+    try {
+      const all = await window.BarcodeDetector.getSupportedFormats();
+      state.nativeFormats = ['ean_13', 'ean_8', 'upc_a', 'upc_e', 'code_128', 'code_39', 'itf'].filter((f) => all.indexOf(f) >= 0);
+      if (state.nativeFormats.length) state.detector = new window.BarcodeDetector({ formats: state.nativeFormats });
+      else native = false;
+    } catch (e) { native = false; }
+  }
+  add('Встроенный распознаватель', native ? 'ok' : 'warn', native ? state.nativeFormats.length + ' форматов' : 'нет, работает свой декодер');
+  add('Свой декодер', P128_OK ? 'ok' : 'bad', P128_OK ? 'EAN-13, EAN-8, UPC-A, Code 128' : 'таблица Code 128 повреждена');
+  add('Экран', 'gray', screen.width + '×' + screen.height + ' ×' + (window.devicePixelRatio || 1));
+  add('Процессор', 'gray', (navigator.hardwareConcurrency || '?') + ' ядер');
+  state.envText = lines.join('\n') + '\nUA: ' + navigator.userAgent;
+  const eng = $('engine');
+  eng.querySelector('[value="native"]').disabled = !native;
+  updateReport();
+};
+
+const beepCtx = { ctx: null };
+const beep = () => {
+  try {
+    if (!beepCtx.ctx) beepCtx.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const c = beepCtx.ctx;
+    if (c.state === 'suspended') c.resume();
+    const o = c.createOscillator(), g = c.createGain();
+    o.type = 'sine';
+    o.frequency.value = 880;
+    g.gain.value = 0.15;
+    o.connect(g);
+    g.connect(c.destination);
+    o.start();
+    o.stop(c.currentTime + 0.12);
+  } catch (e) {}
+  if (navigator.vibrate) navigator.vibrate(60);
+};
+
+const guessFormat = (v) => (/^\d{13}$/.test(v) ? 'EAN-13' : /^\d{8}$/.test(v) ? 'EAN-8' : /^\d{12}$/.test(v) ? 'UPC-A' : /^\d{14}$/.test(v) ? 'ITF-14' : 'Другой');
+
+const SRC_NAME = { camera: 'камера', photo: 'фото', usb: 'USB-сканер', manual: 'вручную' };
+
+const renderLog = () => {
+  const st = $('stats');
+  st.textContent = '';
+  const total = stats.reads.camera + stats.reads.photo + stats.reads.usb + stats.reads.manual;
+  const items = [['Всего считано', total], ['Камера', stats.reads.camera], ['Фото', stats.reads.photo], ['USB и вручную', stats.reads.usb + stats.reads.manual]];
+  items.forEach(([l, v]) => {
+    const d = document.createElement('div');
+    d.className = 'stat';
+    const s = document.createElement('span');
+    s.textContent = l;
+    const b = document.createElement('b');
+    b.textContent = v;
+    d.append(s, b);
+    st.appendChild(d);
+  });
+  const log = $('log');
+  log.textContent = '';
+  if (!state.log.length) {
+    const p = document.createElement('p');
+    p.className = 'm';
+    p.textContent = 'Пока пусто. Считайте код любым способом.';
+    log.appendChild(p);
+    return;
+  }
+  state.log.slice(0, 40).forEach((e) => {
+    const li = document.createElement('div');
+    li.className = 'li';
+    const left = document.createElement('div');
+    const code = document.createElement('div');
+    code.className = 'code';
+    code.textContent = e.code;
+    const meta = document.createElement('div');
+    meta.className = 'm sm';
+    meta.textContent = e.time + ' · ' + SRC_NAME[e.source] + ' · ' + e.format + ' · ' + e.engine;
+    left.append(code, meta);
+    const right = document.createElement('div');
+    const p = document.createElement('span');
+    const valid = e.valid;
+    p.className = 'pill ' + (valid === false ? 'bad' : valid === true ? 'ok' : 'gray');
+    p.textContent = valid === false ? 'контрольная цифра неверна' : valid === true ? 'контрольная цифра верна' : 'без проверки';
+    right.appendChild(p);
+    li.append(left, right);
+    log.appendChild(li);
+  });
+};
+
+const accept = (code, format, source, engine) => {
+  const now = performance.now();
+  if (source === 'camera' && state.last[code] && now - state.last[code] < 1500) return false;
+  state.last[code] = now;
+  const d = new Date();
+  const time = [d.getHours(), d.getMinutes(), d.getSeconds()].map((n) => String(n).padStart(2, '0')).join(':');
+  state.log.unshift({ code, format, source, engine, time, valid: gtinOk(code) });
+  stats.reads[source]++;
+  if (source === 'camera' && stats.firstReadMs === null && stats.startedAt) stats.firstReadMs = Math.round(now - stats.startedAt);
+  beep();
+  if (source === 'camera') {
+    const f = $('frame');
+    f.classList.add('hit');
+    setTimeout(() => f.classList.remove('hit'), 500);
+    $('vfmsg').textContent = code + ' · ' + format;
+  }
+  renderLog();
+  updateReport();
+  return true;
+};
+
+const engineMode = () => {
+  const m = $('engine').value;
+  if (m === 'native') return state.detector ? 'native' : 'own';
+  if (m === 'own') return 'own';
+  return state.detector ? 'native' : 'own';
+};
+
+const liveCv = document.createElement('canvas');
+const frameOwn = (video) => {
+  const vw = video.videoWidth, vh = video.videoHeight;
+  const cw = Math.min(vw, 1280), ch = Math.round(vh * cw / vw);
+  if (liveCv.width !== cw || liveCv.height !== ch) { liveCv.width = cw; liveCv.height = ch; }
+  liveCv.getContext('2d', { willReadFrequently: true }).drawImage(video, 0, 0, cw, ch);
+  const hits = new Map();
+  scanPlane(grayFrom(liveCv), cw, ch, 18, hits, stats.frames % 4 === 0);
+  return hits;
+};
+
+const processFrame = async () => {
+  const video = $('video');
+  if (video.readyState < 2 || !video.videoWidth) return;
+  stats.frames++;
+  const now = performance.now();
+  stats.times.push(now);
+  while (stats.times.length && now - stats.times[0] > 2000) stats.times.shift();
+  state.fps = Math.round(stats.times.length / 2 * 10) / 10;
+  const mode = engineMode();
+  if (mode === 'native') {
+    let found = [];
+    try { found = await state.detector.detect(video); } catch (e) { found = []; }
+    if (found.length) accept(found[0].rawValue, found[0].format.toUpperCase().replace('_', '-'), 'camera', 'встроенный');
+    return;
+  }
+  const hits = frameOwn(video);
+  const sure = bestHit(hits, 2);
+  if (sure) { state.pending = null; accept(sure.code, sure.format, 'camera', 'свой'); return; }
+  const one = bestHit(hits, 1);
+  if (one) {
+    if (state.pending && state.pending.code === one.code && now - state.pending.t < 1200) {
+      state.pending = null;
+      accept(one.code, one.format, 'camera', 'свой');
+    } else state.pending = { code: one.code, t: now };
+  }
+};
+
+const loop = () => {
+  if (!state.running) return;
+  const t0 = performance.now();
+  processFrame().catch(() => {}).then(() => {
+    if (state.running) setTimeout(loop, Math.max(0, 90 - (performance.now() - t0)));
+  });
+};
+
+const camError = (e) => {
+  const n = e && e.name;
+  if (!window.isSecureContext) return 'Нужен https. Откройте стенд по https-адресу.';
+  if (n === 'NotAllowedError' || n === 'SecurityError') return 'Доступ к камере запрещён. Разрешите камеру для этого сайта в настройках телефона.';
+  if (n === 'NotFoundError' || n === 'OverconstrainedError') return 'Камера не найдена.';
+  if (n === 'NotReadableError' || n === 'AbortError') return 'Камеру занимает другое приложение. Закройте его и повторите.';
+  return 'Не удалось включить камеру: ' + (n || 'ошибка') + '.';
+};
+
+const stopCamera = () => {
+  state.running = false;
+  if (state.stream) state.stream.getTracks().forEach((t) => t.stop());
+  state.stream = null;
+  state.track = null;
+  $('video').srcObject = null;
+  $('vf').classList.remove('live');
+  $('torchBtn').hidden = true;
+  $('zoomWrap').hidden = true;
+  $('camBtn').querySelector('span').textContent = 'Включить камеру';
+  $('vfmsg').textContent = 'Камера выключена';
+};
+
+const startCamera = async () => {
+  if (!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia)) { $('camStat').textContent = camError(null); return; }
+  beep();
+  $('vfmsg').textContent = 'Запрашиваю камеру…';
+  let stream = null;
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: { ideal: 'environment' }, width: { ideal: 1920 }, height: { ideal: 1080 } } });
+  } catch (e) {
+    if (e && e.name === 'OverconstrainedError') {
+      try { stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: true }); } catch (e2) { $('camStat').textContent = camError(e2); $('vfmsg').textContent = 'Камера выключена'; return; }
+    } else { $('camStat').textContent = camError(e); $('vfmsg').textContent = 'Камера выключена'; return; }
+  }
+  state.stream = stream;
+  state.track = stream.getVideoTracks()[0];
+  const video = $('video');
+  video.srcObject = stream;
+  try { await video.play(); } catch (e) {}
+  await new Promise((res) => { if (video.videoWidth) res(); else video.onloadedmetadata = () => res(); });
+  const vf = $('vf');
+  const ratio = video.videoWidth / video.videoHeight;
+  vf.style.aspectRatio = String(ratio);
+  vf.style.width = ratio < 1 ? 'min(100%, ' + Math.round(62 * ratio) + 'vh)' : '100%';
+  vf.classList.add('live');
+  const s = state.track.getSettings ? state.track.getSettings() : {};
+  const caps = state.track.getCapabilities ? state.track.getCapabilities() : {};
+  state.camInfo = (video.videoWidth + '×' + video.videoHeight) + (s.frameRate ? ' · ' + Math.round(s.frameRate) + ' к/с' : '') + (caps.torch ? ' · фонарик есть' : ' · фонарика нет') + (caps.zoom ? ' · зум есть' : ' · зума нет') + (caps.focusMode ? ' · фокус: ' + caps.focusMode.join('/') : '');
+  $('torchBtn').hidden = !caps.torch;
+  if (caps.zoom) {
+    const z = $('zoom');
+    z.min = caps.zoom.min;
+    z.max = caps.zoom.max;
+    z.step = caps.zoom.step || 0.1;
+    z.value = s.zoom || caps.zoom.min;
+    $('zoomWrap').hidden = false;
+  }
+  $('camBtn').querySelector('span').textContent = 'Выключить камеру';
+  $('vfmsg').textContent = 'Наведите на штрих-код, держите 10–20 см';
+  stats.startedAt = performance.now();
+  stats.firstReadMs = null;
+  state.running = true;
+  state.torch = false;
+  loop();
+  updateReport();
+};
+
+const setStat = () => {
+  if (!state.running) { $('camStat').textContent = ''; return; }
+  $('camStat').textContent = state.camInfo + ' · ' + state.fps + ' кадров/с обработки · ' + (engineMode() === 'native' ? 'встроенный' : 'свой') + ' распознаватель';
+};
+
+const loadBitmap = async (file) => {
+  if (window.createImageBitmap) {
+    try { return await createImageBitmap(file, { imageOrientation: 'from-image' }); } catch (e) {}
+  }
+  const url = URL.createObjectURL(file);
+  try {
+    const img = new Image();
+    img.src = url;
+    await img.decode();
+    return img;
+  } finally { setTimeout(() => URL.revokeObjectURL(url), 5000); }
+};
+
+const handlePhoto = async (file) => {
+  if (!file) return;
+  const st = $('photoStat');
+  st.textContent = 'Распознаю…';
+  await tick();
+  try {
+    const bmp = await loadBitmap(file);
+    const sw = bmp.width, sh = bmp.height;
+    const k = Math.min(1, 2200 / Math.max(sw, sh));
+    const cv = document.createElement('canvas');
+    cv.width = Math.round(sw * k);
+    cv.height = Math.round(sh * k);
+    cv.getContext('2d').drawImage(bmp, 0, 0, cv.width, cv.height);
+    const t0 = performance.now();
+    let r = null, engine = 'свой';
+    if (state.detector && $('engine').value !== 'own') {
+      try {
+        const f = await state.detector.detect(cv);
+        if (f.length) { r = { code: f[0].rawValue, format: f[0].format.toUpperCase().replace('_', '-') }; engine = 'встроенный'; }
+      } catch (e) {}
+    }
+    if (!r && $('engine').value !== 'native') r = await decodeStill(cv, ANGLES);
+    const ms = Math.round(performance.now() - t0);
+    if (r) {
+      accept(r.code, r.format, 'photo', engine);
+      st.textContent = 'Считано за ' + ms + ' мс · снимок ' + sw + '×' + sh;
+    } else {
+      st.textContent = 'Не распознал (' + ms + ' мс, снимок ' + sw + '×' + sh + '). Снимите ближе и ровнее, чтобы штрих-код занимал половину кадра и был в фокусе.';
+    }
+  } catch (e) {
+    st.textContent = 'Не удалось открыть снимок: ' + (e && e.name ? e.name : 'ошибка');
+  }
+};
+
+const usb = { n: 0, t0: 0, last: 0 };
+const submitManual = () => {
+  const input = $('manual');
+  const v = input.value.trim();
+  if (!v) return;
+  const avg = usb.n > 1 ? (usb.last - usb.t0) / (usb.n - 1) : 999;
+  const fast = usb.n >= 6 && avg < 45;
+  usb.n = 0;
+  input.value = '';
+  accept(v, guessFormat(v), fast ? 'usb' : 'manual', 'клавиатура');
+};
+
+const buildReport = () => {
+  const total = stats.reads.camera + stats.reads.photo + stats.reads.usb + stats.reads.manual;
+  const lines = [
+    'Стенд штрих-кода v2 · ' + new Date().toISOString(),
+    state.envText,
+    'Камера: ' + (state.camInfo || 'не включалась'),
+    'Обработано кадров: ' + stats.frames + ' · строк проверено: ' + stats.lines + ' · ' + state.fps + ' к/с',
+    'Первое чтение камерой: ' + (stats.firstReadMs === null ? 'нет' : stats.firstReadMs + ' мс'),
+    'Считано всего: ' + total + ' (камера ' + stats.reads.camera + ', фото ' + stats.reads.photo + ', USB ' + stats.reads.usb + ', вручную ' + stats.reads.manual + ')',
+    'Самопроверка: ' + (state.self ? state.self.filter((r) => r.ok).length + ' из ' + state.self.length + (state.self.some((r) => !r.ok) ? ' · провалы: ' + state.self.filter((r) => !r.ok).map((r) => r.name).join('; ') : '') : 'не запускалась')
+  ];
+  if (state.log.length) lines.push('Последние чтения:', ...state.log.slice(0, 10).map((e) => e.time + ' ' + e.code + ' ' + e.format + ' ' + SRC_NAME[e.source] + ' ' + e.engine + (e.valid === false ? ' ВЕРНОСТЬ_НЕТ' : '')));
+  return lines.join('\n');
+};
+const updateReport = () => { $('report').value = buildReport(); };
+
+const drawSample = () => {
+  const s = SAMPLES[$('genSel').value];
+  const cv = $('genCv');
+  drawBarcode(cv, s.bits(), s.text);
+};
+
+$('camBtn').addEventListener('click', () => { if (state.running) { stopCamera(); updateReport(); } else startCamera(); });
+$('torchBtn').addEventListener('click', async () => {
+  if (!state.track) return;
+  state.torch = !state.torch;
+  try { await state.track.applyConstraints({ advanced: [{ torch: state.torch }] }); } catch (e) { state.torch = false; }
+});
+$('zoom').addEventListener('input', async (e) => {
+  if (!state.track) return;
+  try { await state.track.applyConstraints({ advanced: [{ zoom: +e.target.value }] }); } catch (err) {}
+});
+$('photoCam').addEventListener('change', (e) => { handlePhoto(e.target.files[0]); e.target.value = ''; });
+$('photoLib').addEventListener('change', (e) => { handlePhoto(e.target.files[0]); e.target.value = ''; });
+$('manualBtn').addEventListener('click', submitManual);
+$('manual').addEventListener('keydown', (e) => {
+  const now = performance.now();
+  if (e.key === 'Enter') { e.preventDefault(); submitManual(); return; }
+  if (e.key.length === 1) {
+    if (!usb.n || now - usb.last > 400) { usb.n = 0; usb.t0 = now; }
+    usb.n++;
+    usb.last = now;
+  }
+});
+document.addEventListener('keydown', (e) => {
+  if (document.activeElement === document.body && e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) $('manual').focus();
+});
+$('clearBtn').addEventListener('click', () => { state.log = []; state.last = {}; stats.reads = { camera: 0, photo: 0, usb: 0, manual: 0 }; stats.firstReadMs = null; renderLog(); updateReport(); });
+$('selfBtn').addEventListener('click', runSelfTest);
+$('genSel').addEventListener('change', drawSample);
+$('engine').addEventListener('change', () => { state.pending = null; updateReport(); });
+$('copyBtn').addEventListener('click', async () => {
+  updateReport();
+  const t = $('report').value;
+  const label = $('copyBtn').querySelector('span');
+  try { await navigator.clipboard.writeText(t); label.textContent = 'Скопировано'; }
+  catch (e) { $('report').select(); try { document.execCommand('copy'); label.textContent = 'Скопировано'; } catch (e2) { label.textContent = 'Выделите текст и скопируйте'; } }
+  setTimeout(() => { label.textContent = 'Скопировать отчёт'; }, 2000);
+});
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden && state.running) { stopCamera(); $('camStat').textContent = 'Камера остановлена: вы свернули страницу. Включите её снова.'; }
+});
+
+setInterval(setStat, 500);
+renderLog();
+drawSample();
+checkEnv();
+if (window.matchMedia && window.matchMedia('(pointer: fine)').matches) $('manual').focus();
+
+window.__stand = { buildRuns, prepareLine, decodeEAN, decodeEAN2, scanDir, grayFrom, pairDigit, TL, TG, TR, decodeStill, decodeLine, SAMPLES, drawBarcode, degrade, eanBits, code128Bits, ANGLES };
+})();
+</script>
+</body>
+</html>
