@@ -1,0 +1,114 @@
+{
+  "status": "user-approved-visual-reference",
+  "date": "2026-11-13",
+  "approvalQuote": "Отлично. Утверждаем",
+  "referenceId": "agura-slim-digits-approved-2026-11-13",
+  "nominalLabel": "Agura SLIM 40″ / 102 см",
+  "scope": [
+    "формы и пропорции 0–9",
+    "надутый объём до 17 см глубиной",
+    "мелкие складки и шов по краям/отверстиям",
+    "плоские клапаны",
+    "отсутствие искусственных линий сопряжения во всём наборе"
+  ],
+  "dimensionsAreEstimates": true,
+  "dimensions": [
+    {
+      "digit": 0,
+      "bodyHeightCm": 90,
+      "approximateWidthCm": 69.92,
+      "maximumDepthCm": 17,
+      "normalizedGeometryScaleM": 0.9
+    },
+    {
+      "digit": 1,
+      "bodyHeightCm": 89,
+      "approximateWidthCm": 38.38,
+      "maximumDepthCm": 17,
+      "normalizedGeometryScaleM": 0.89
+    },
+    {
+      "digit": 2,
+      "bodyHeightCm": 89,
+      "approximateWidthCm": 56.25,
+      "maximumDepthCm": 17,
+      "normalizedGeometryScaleM": 0.89
+    },
+    {
+      "digit": 3,
+      "bodyHeightCm": 94,
+      "approximateWidthCm": 58.83,
+      "maximumDepthCm": 17,
+      "normalizedGeometryScaleM": 0.94
+    },
+    {
+      "digit": 4,
+      "bodyHeightCm": 92,
+      "approximateWidthCm": 68.48,
+      "maximumDepthCm": 17,
+      "normalizedGeometryScaleM": 0.92
+    },
+    {
+      "digit": 5,
+      "bodyHeightCm": 90,
+      "approximateWidthCm": 57.44,
+      "maximumDepthCm": 17,
+      "normalizedGeometryScaleM": 0.9
+    },
+    {
+      "digit": 6,
+      "bodyHeightCm": 93,
+      "approximateWidthCm": 59.96,
+      "maximumDepthCm": 17,
+      "normalizedGeometryScaleM": 0.93
+    },
+    {
+      "digit": 7,
+      "bodyHeightCm": 91,
+      "approximateWidthCm": 60.29,
+      "maximumDepthCm": 17,
+      "normalizedGeometryScaleM": 0.91
+    },
+    {
+      "digit": 8,
+      "bodyHeightCm": 94,
+      "approximateWidthCm": 57.62,
+      "maximumDepthCm": 17,
+      "normalizedGeometryScaleM": 0.94
+    },
+    {
+      "digit": 9,
+      "bodyHeightCm": 93,
+      "approximateWidthCm": 59.78,
+      "maximumDepthCm": 17,
+      "normalizedGeometryScaleM": 0.93
+    }
+  ],
+  "integrationStatus": "planned; current Test still uses v26",
+  "sha256": {
+    "all.png": "c8097ba2bbb54596f91603ff4cef98ebb9cfdb4eef2eec5f26ad559cbc35a720",
+    "checks.json": "421b65bde4a6eb3bfd9512fa559bb190c21a3cb3c37492cc5b6d1267fce3afe8",
+    "details/digit-0.png": "5970d45c66465a1c8527d84f3d6037203fc3d6df175143f6c9e7679528ce0e12",
+    "details/digit-4.png": "fd2df8dfde8abcb23cbe1e395e7209670c985f573a0be9971618a658ba54fede",
+    "details/digit-5.png": "f72381f3a291fa5460c352a0055ce812f3e935f05893f053049c8e34b4b5ac67",
+    "details/digit-6.png": "0cd1f31f04247101c5826b5438773ea31f4ad950a6cf27b481e3172bfabba335",
+    "details/digit-7.png": "c8ca840ca7ed0804bc85081cb292f8f1844f38974d063702511613a3c1520768",
+    "details/digit-8.png": "95c8ef3ec64089e36bd364fe5db02a6ddd68c6dd9b23b25f5b5b4c226bdc5dcc",
+    "details/digit-9.png": "bffbda91ccae3aee0af8427d4edec943f337a96df4e709f3fd6532d45ddbec73",
+    "details/dimensions.json": "9132560b2eea5fd95c9db44c47597555c500cc72131ce0fa337e97b672a1cba1",
+    "models.json": "3173deec32782e691ea52f458912a816167efd7c7856e87df018bcce8eb6aebf",
+    "preview-only.html": "91654ad85f024d972cd67dac7b5b8b5a75b8bb12c361c5807f32a5b7ab0f7e17",
+    "textures.json": "d2c0db459dd2a96874faa6b928f9cad8fa602bb641ec81dbfee3fd6df6dbebe4",
+    "views/digit-0.png": "d57173aaed620f4a25c5849466ca9ab6a23e2c47ab6e863f7c58f1915834d666",
+    "views/digit-1.png": "6b55274e7580cd0a9e32aecacff8ad39f5c5f20eab0f6e817f53c97536b22f27",
+    "views/digit-2.png": "0bcf843ed9ad9f4cb7ff169e02f6b6663f896bff8ecb4f9028a1c6f358112696",
+    "views/digit-3.png": "7a9c33e5a5cd4773020939a05b6c15b60c117788a41d7ad8348007d6f6a19f04",
+    "views/digit-4.png": "a130b18ba2aff036c8ae02cb8f9bf5aae2c4d529922a86b22d2290027aea89f9",
+    "views/digit-5.png": "58577791e15847d870af410b07238302ed4b65ea2033af54b1a86b46f424fc54",
+    "views/digit-6.png": "027db448122fec9f5640a47427f10b452f7026052a769a2bb17ec4351e780bac",
+    "views/digit-7.png": "1f3e11c84b0176157acaae7f34babcbc22a8b5a78211454a814efe55ab1625d9",
+    "views/digit-8.png": "e512ad5424582611b5e56dd5e1d3b31094dbe0f3f21f74d22c5846770d8ec5a2",
+    "views/digit-9.png": "c4853f106b6994d8f9fe8f92bbd4d06bcd7ec39ded20fd5add1997e77b15bff4",
+    "views/dimensions.json": "9132560b2eea5fd95c9db44c47597555c500cc72131ce0fa337e97b672a1cba1"
+  }
+}

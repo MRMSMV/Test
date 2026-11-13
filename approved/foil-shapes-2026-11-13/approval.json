@@ -1,0 +1,50 @@
+{
+  "referenceId": "foil-shapes-approved-2026-11-13",
+  "status": "user-approved-visual-reference",
+  "approvalQuote": "Утверждаем.",
+  "date": "2026-11-13",
+  "shapes": {
+    "foilStar": {
+      "dimensionsCm": [
+        42,
+        40,
+        21
+      ]
+    },
+    "foilHeart": {
+      "dimensionsCm": [
+        37,
+        36,
+        20
+      ]
+    }
+  },
+  "scope": [
+    "прежние утверждённые формы и размеры",
+    "мелкие складки фольги",
+    "сварной край",
+    "материалы и нейтральные карты фактуры"
+  ],
+  "integrationStatus": "planned; Test remains v26",
+  "sha256": {
+    "README.md": "d2f23b3b20381cae144a23212b2b6dc8282809bc07499b42cd9aef93c3667152",
+    "foilHeart-bump.png": "350335c46f02bb13939dfa5c1eac270f043a2d965aeb1742d31133d7961db67c",
+    "foilHeart-color.png": "ba22caf7fb60bf2e44cfdf6a9ec23d23bf86c2a40f7f06ddc160c562a82a8555",
+    "foilHeart-compare.png": "122e8d22219a6483bd8852adb93e5505867c57cbf31d2bcaedbc9c911bde1dff",
+    "foilHeart-details.png": "fce14491fdb961fdcdaa0117032fb83920cbbba8da78d9c82183bf7abbdb38ae",
+    "foilHeart-roughness.png": "370705eab6e1ec587aaa2a4cbd70c8d43c35af8622451d58c0d68116dea2b3b4",
+    "foilHeart-views.png": "e849c2a9edecf95dc342937ef117b3296c18ff7b4441e4ad103cec72f56f57f1",
+    "foilStar-bump.png": "e53d50d161e59dbfaeebefeb08b05e5a45df256fa88d26dd9aac7148283ecbde",
+    "foilStar-color.png": "1df2a686cd657ac8f713267fd6b6654585c30cff1998ddb553f98b65af4c3b3c",
+    "foilStar-compare.png": "db55e7248df8c0ba361fb669d5ba4c7415e857b33296c9726d6a005f50b7a693",
+    "foilStar-details.png": "4bdb988830339c34d68431fcb0a64232640a2bced685d0259728e9ebbde4bee3",
+    "foilStar-roughness.png": "d5bdcd327e002f561400269a4f22787498a95f61e31f115dc328da7ff848f4d0",
+    "foilStar-views.png": "fac05cacd835bb34203f7729ffc1c800e450efd4f265b6d561378c72ef914238",
+    "geometry-baseline.json": "7d80b48f99ff12d74a94b431dde1556f7587ec9c48671efad4b0ff1817b35c27",
+    "geometry-construction.js": "e2c682eb0198df3feebf4d2bf8e207e25568f430ebdf4b111ab25d3e6c2913a6",
+    "overview.png": "c85284d413f136ee30d019adb2a9f12e2c7ba95e6a5e0b5df6d4efb09f9143ac",
+    "preview-only.html": "13b18e6a8db2d5553b359f8e023f6b51be2ab9e36b7f14acdc30556b19182b2d",
+    "report.json": "e7f60b4bd6ddd92511d875ffa7f598f3c32f2f369fe5edf0ec69be118acf70be",
+    "textures.json": "be07a79e4ec278a4d10dc3fa13c3d2f66f5c091563cb149b201c2e5421545d4d"
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "referenceId": "sempertex-latex-approved-2026-11-13",
+  "status": "user-approved-new-latex-standard",
+  "approvalQuote": "Идеально.  Утверждаем как новый стандарт!",
+  "date": "2026-11-13",
+  "baseSeries": "R-12",
+  "baseDiameterCm": 30,
+  "sizes": [
+    {
+      "series": "R-5",
+      "maxDiameterCm": 13
+    },
+    {
+      "series": "R-9",
+      "maxDiameterCm": 23
+    },
+    {
+      "series": "R-10",
+      "maxDiameterCm": 25
+    },
+    {
+      "series": "R-12",
+      "maxDiameterCm": 30
+    },
+    {
+      "series": "R-18",
+      "maxDiameterCm": 45
+    },
+    {
+      "series": "R-24",
+      "maxDiameterCm": 60
+    },
+    {
+      "series": "R-36",
+      "maxDiameterCm": 91.5
+    }
+  ],
+  "finishes": [
+    "Fashion",
+    "Pastel Mate",
+    "Reflex",
+    "Cristal"
+  ],
+  "scope": [
+    "новый стандарт латексных моделей для последующих рабочих сборок",
+    "формы и размерный ряд",
+    "небольшие горловины, узлы и хвостики",
+    "предложенные материалы"
+  ],
+  "dimensionsBeyondDiameterAreEstimates": true,
+  "legacyTemplatesRemainImmutable": true,
+  "integrationStatus": "planned; Test still v26",
+  "sha256": {
+    "R-12-front.png": "b52219a7ad5ed0a0b25c1a18d3f061404bebb758a82284cee48dc3d32fc14534",
+    "R-12-views.png": "64a401e779e616cfe0dfe971e44ba2b825df28339e5760b3008b2cac18f6c767",
+    "R-18-front.png": "1c0ee3aada3aa0d37e0d98b2a5cfcd88119f7b209cca3adbdf15b334de295afe",
+    "R-24-front.png": "01bd2744c7bb74d6ca06e7b621b42aeed0dbd700acd3c1bafbcbffaec11edae0",
+    "R-24-views.png": "32640d8068739bb618b4d5aeae5ef9159d597fcba3548c35eeceb91a4b215253",
+    "R-36-views.png": "38ff8955c05402a33337df5a425201ad468339d52c34b2a2341d1882e764ad0e",
+    "README.md": "10b49dd616115116b02ba5a2c28830dc3ff37db61b7ed25c3c4a135a41d6f266",
+    "all-sizes.png": "c6081be5bd400a5049bd526fca2d417dc49d1ac5a6ca510b6b216e0e43c987ca",
+    "finishes.png": "6c5dbf3b6567fa1862853a175697dce77af8893b6a0570c802aedb9393a8ea79",
+    "models.json": "2384708045ad334f02a1b47cee9f4eb7a0fa58b4e9a79d2dde370001ee9ff27b",
+    "photo-comparison.png": "a10a328ac437db4eae147834f4be08b5054dcf4e0dbd03f003f146fe94216e24",
+    "preview-only.html": "0da3b2d5d3f9d03377655b9a1ff16acfdba394b39cbc40d23a70e2f4e83ba9c2",
+    "reference-dimensions.json": "853dd412226403134827b691fc7dddfdd35c4074e4b5fed37e40fe9f51877749",
+    "reference-profiles.json": "3654107950c42f60886c2591026f0701500cac10d3f556c187ee205c981c07c3",
+    "render.py": "f40d507937078c758433567f1a88924f44901bb0aed41b668f2715d61b846098",
+    "report.json": "94202839e2ac6e8ef3366f087ccec99ba7fc27d15badc49d7fa6e8df71fe0e93",
+    "scale.png": "04f94730b89f42c8a9e293766ab286b424b56a5f9bd19db4a833d83fde6ade64",
+    "sempertex-visual.js": "f7b97878cf2507a5029b949443c4616f1de7a4aa533c3d177abc54825fe60594"
+  }
+}
