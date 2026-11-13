@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#fffaf8">
-<title>CandySky — Rapier Lab 1.9 · fountain 1+3+3+4+4 experiment v19</title>
+<title>CandySky — Rapier Lab 1.9 · несколько фонтанов · v22</title>
 <style>
 :root{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#26313a;background:#fffaf8;color-scheme:light}
 *{box-sizing:border-box}
@@ -142,64 +142,52 @@ button:hover{background:#faf4f3}button.primary{background:#f4d4d2;border-color:#
  .panel-toggle{bottom:calc(env(safe-area-inset-bottom,0px) + 12px);right:calc(env(safe-area-inset-right,0px) + 12px)}
 }
 @media(prefers-reduced-motion:reduce){.panel,.panel-toggle,.panel-backdrop{transition:none!important}}
+
+</style>
+<style>
+.library-grid{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:stretch}
+.library-grid select{min-width:0;width:100%;min-height:43px;border:1px solid #e8dee0;border-radius:13px;background:#fff;padding:8px;color:#39424b;font-weight:700;font-size:13px}
+.fountain-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.fountain-chip{display:flex;flex-direction:column;gap:2px;text-align:left;justify-content:center;min-height:52px;line-height:1.15;padding:8px 10px}
+.fountain-chip[aria-pressed="true"]{background:#fbe9ed;border-color:#ca838e;box-shadow:0 0 0 2px rgba(213,132,147,.15)}
+.fountain-chip small{font-size:10px;color:#63717b;font-weight:500}
+.diagnostics{display:grid;grid-template-columns:1fr auto;gap:6px 10px;border-radius:14px;background:#f5f8f8;padding:11px;font-size:12px}
+.diagnostics strong{text-align:right;font-variant-numeric:tabular-nums}
+.blurb{font-size:11px;line-height:1.45;color:#64727b}
+.panel #fountainHeight{touch-action:pan-x}
+@media(max-width:750px){.library-grid select{min-height:44px}.fountain-chip{min-height:45px}.fountain-list{gap:6px}}
 </style>
 </head>
 <body>
 <div class="app" id="app">
- <canvas id="view" aria-label="3D-сцена испытания физики воздушного шара"></canvas>
- <header class="topbar">
-  <div class="brand"><strong>CandySky · Rapier Lab 1.9 · Фонтан 15 · v19</strong><small>Новая композиция 1 + 3 + 3 + 4 + 4 · физический тест</small></div>
-  <div class="state" id="status"><i></i><span id="statusText">Загрузка движка</span></div>
- </header>
+ <canvas id="view" aria-label="Единая 3D-сцена нескольких фонтанов CandySky"></canvas>
+ <header class="topbar"><div class="brand"><strong>CandySky · Фонтаны · v22</strong><small>Несколько композиций в одном физическом мире</small></div><div class="state" id="status"><i></i><span id="statusText">Загрузка движка</span></div></header>
  <div class="panel-backdrop" id="panelBackdrop" aria-hidden="true"></div>
- <button type="button" class="panel-toggle" id="panelToggle" aria-controls="labPanel" aria-expanded="false" aria-label="Открыть управление фонтаном"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16M9 4v6M15 14v6"/></svg><span>Управление</span><span class="panel-toggle-count" id="panelToggleCount">15</span></button>
- <section class="panel" id="labPanel" aria-label="Управление фонтаном" aria-hidden="true" inert>
+ <button type="button" class="panel-toggle" id="panelToggle" aria-controls="labPanel" aria-expanded="false" aria-label="Открыть управление фонтанами"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16M9 4v6M15 14v6"/></svg><span>Управление</span><span class="panel-toggle-count" id="panelToggleCount">0</span></button>
+ <section class="panel" id="labPanel" aria-label="Управление фонтанами" aria-hidden="true" inert>
   <div class="panel-grabber" id="panelGrabber" aria-hidden="true"></div>
-  <div class="panel-head"><div><h2>Композиции из шаров</h2><p id="compositionInfo">15 шаров · 4 узла · 19 лент</p></div><div class="panel-head-actions"><button class="detail-toggle" type="button" id="toggleDetails" aria-controls="labDetails" aria-expanded="false"><span id="toggleDetailsText">Показатели</span><span class="arrow" aria-hidden="true">⌄</span></button><button class="panel-close" type="button" id="closePanel" aria-label="Скрыть управление"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div></div>
-  <div class="actions"><button type="button" id="startFountain" class="primary">Фонтан 1 + 3 + 3 + 4 + 4</button><button type="button" id="startClassic">Обычные шары</button></div>
-  <div id="classicControls" class="classic-controls" hidden>
-  <div class="action-heading">Грузики — выберите активный (или коснитесь его в сцене)</div>
-  <div class="balloon-list" id="weightList" role="group" aria-label="Грузики"></div>
-  <div class="actions"><button type="button" id="addWeight">+ Грузик</button><button type="button" id="removeWeight">− Пустой грузик</button></div>
-  <div class="count-row"><span>Количество шаров</span><div class="count-control"><button type="button" id="removeBalloon" aria-label="Удалить выбранный шар">−</button><output id="countValue" aria-live="polite">3</output><button type="button" id="addBalloon" aria-label="Добавить шар">+</button></div></div>
-  <div><div class="action-heading">Выберите шар</div><div class="balloon-list" id="balloonList" role="group" aria-label="Шары фонтана"></div></div>
-  <div class="actions"><button type="button" id="moveDown">Ниже</button><button type="button" id="moveUp">Выше</button></div>
-  <div class="actions"><button type="button" id="attachBalloon">К грузу</button><button type="button" id="detachBalloon">Отвязать</button></div>
-  <p class="hint">«К грузу» привязывает выбранный шар к активному грузику. После отвязки лента остаётся на шаре.</p>
-  <div><div class="labelrow"><label for="ropeLen" id="ropeLenLabel">Лента выбранного шара</label><output id="ropeLenOut">118 см</output></div><input id="ropeLen" type="range" min="10" max="180" step="1" value="118" aria-label="Длина ленты выбранного шара в сантиметрах"><p class="hint">Лента индивидуальна. «Выше» и «Ниже» переставляют шары выбранного грузика.</p></div>
-  </div>
-  <div id="fountainControl" class="fountain-controls">
-   <div class="fountain-summary"><strong>Физический фонтан 15:</strong> 1 верхний шар, 3 шара на узле N4, 3 на N3, 4 на N2 и 4 на N1. Четырнадцать боковых и четыре центральных участка заранее рассчитаны; меняется только нижний G–N1. Меняется только нижняя лента от грузика до нижнего узла.</div>
-   <div><div class="labelrow"><label for="fountainHeight">Высота фонтана · нижняя лента</label><output id="fountainHeightOut">55 см</output></div><input id="fountainHeight" type="range" min="20" max="60" step="1" value="55" aria-label="Длина нижней ленты между грузиком и нижним узлом в сантиметрах"><p>Диапазон 20–60 см: ограничен высотой комнаты 2,5 м. Внутренние ленты не регулируются.</p>
-    <p id="fountainActual" class="hint" aria-live="off">Фактическое расстояние до нижнего узла: —</p></div>
-  </div>
-  <div class="actions"><button class="primary" id="reset">Перезапуск</button><button id="gust">Порыв воздуха</button><button id="pause">Пауза</button><button id="selftest">Тест 10 секунд</button></div>
-  <div class="actions"><button id="saveDraft" type="button">Сохранить черновик</button><button id="restoreDraft" type="button">Восстановить</button></div>
-  <div class="quickline" id="draftStatus" aria-live="polite">Черновики: проверка хранилища…</div>
-  <div class="quickline" id="offlineStatus" aria-live="polite">Эксперимент: Three.js и Rapier загружаются из сети; офлайн не реализован.</div>
-  <div id="quickline" class="quickline" aria-live="polite">Выберите шар или нажмите «Тест 10 секунд».</div>
-  <div id="labDetails" class="panel-details">
-   <div class="metric" aria-live="off">
-    <span>Шаров всего / грузиков</span><b id="balloonCountMetric">—</b>
-    <span>Выбранная лента: длина</span><b id="distance">—</b>
-    <span>Превышение длины</span><b id="stretch">—</b>
-    <span>Натяжение ленты</span><b id="tension">—</b>
-    <span>Боковой изгиб ленты</span><b id="bend">—</b>
-    <span>Минимальная дистанция шаров</span><b id="minDistance">—</b>
-    <span>Скорость выбранного шара</span><b id="speed">—</b>
-    <span>Подъёмная сила / вес</span><b id="lift">—</b>
-    <span>Высота выбранного шара</span><b id="height">—</b>
-    <span>Время симуляции</span><b id="simtime">—</b>
-   </div>
-   <div class="log" role="status" id="log">Готовлю Rapier и Three.js…</div>
-  </div>
+  <div class="panel-head"><div><h2>Конструктор фонтанов</h2><p id="compositionInfo">Выбери шаблон и добавь в сцену</p></div><div class="panel-head-actions"><button class="detail-toggle" type="button" id="toggleDetails" aria-controls="labDetails" aria-expanded="false"><span id="toggleDetailsText">Показатели</span><span class="arrow" aria-hidden="true">⌄</span></button><button class="panel-close" type="button" id="closePanel" aria-label="Скрыть управление"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div></div>
+  <div class="action-heading">Новый фонтан</div>
+  <div class="library-grid"><select id="presetSelect" aria-label="Выбрать шаблон для добавления"><option value="7">7 шаров · 1+3+3</option><option value="11">11 шаров · 1+3+3+4</option><option value="13">13 шаров · 1+3+4+5</option><option value="15">15 шаров · 1+3+3+4+4</option></select><button class="primary" id="addFountain" type="button">+ Добавить</button></div>
+  <div class="action-heading">Фонтаны в комнате (коснись для выбора)</div>
+  <div class="fountain-list" id="fountainList" role="group" aria-label="Добавленные фонтаны"></div>
+  <div class="actions"><button id="deleteFountain" type="button">Удалить выбранный</button><button id="resetFountain" type="button">Сбросить выбранный</button></div>
+  <div class="fountain-summary" id="fountainSummary">Выбери фонтан для редактирования. Каждый имеет независимый грузик и свой граф лент.</div>
+  <div><div class="labelrow"><label for="fountainHeight">Нижняя лента выбранного</label><output id="fountainHeightOut">—</output></div><input id="fountainHeight" type="range" min="20" max="85" step="1" value="55" aria-label="Высота выбранного фонтана в сантиметрах"><p class="blurb" id="heightHint">Остальные ленты не изменяются.</p><p class="blurb" id="fountainActual">Фактическое расстояние —</p></div>
+  <div class="actions"><button class="primary" id="gust" type="button">Порыв воздуха</button><button id="pause" type="button">Пауза</button></div>
+  <div class="actions"><button id="saveDraft" type="button">Сохранить сцену</button><button id="restoreDraft" type="button">Восстановить сцену</button></div>
+  <div id="draftStatus" class="quickline" aria-live="polite">Черновики: проверка...</div>
+  <div id="offlineStatus" class="quickline">Сетевые библиотеки: офлайн пока не реализован.</div>
+  <div id="quickline" class="quickline" aria-live="polite">Перетаскивай грузики и шары внутри общей комнаты.</div>
+  <div id="labDetails" class="panel-details"><div class="diagnostics"><span>Фонтанов</span><strong id="metricFountains">0</strong><span>Шаров всего</span><strong id="metricBalloons">0</strong><span>Узлов / лент</span><strong id="metricNodes">0 / 0</strong><span>Минимум между шарами</span><strong id="metricDistance">—</strong><span>Время</span><strong id="metricTime">0 с</strong></div><div class="log" id="log" role="status">Загрузка…</div></div>
  </section>
-  <div class="tip">Тест нового фонтана 1+3+3+4+4: четырнадцать боковых лент крепятся к четырём настоящим узлам Rapier. Только нижняя лента регулирует высоту. Перетаскивайте шары и грузик, пробуйте порыв. Отдельная кнопка переключает в обычный режим 1.9.</div>
- <div class="load" id="loading"><h2>Загрузка физической лаборатории</h2><p id="loadText">Подключаю Three.js и Rapier WebAssembly…</p><button id="retry" hidden>Повторить загрузку</button><button id="copyError" hidden>Скопировать диагностику</button></div>
+ <div class="tip">Выбери 7, 11, 13 или 15 шаров и добавляй несколько фонтанов. Касание грузика выбирает фонтан. Все шары и грузы существуют в одной физической сцене Rapier.</div>
+ <div class="load" id="loading"><h2>Загрузка CandySky 3D</h2><p id="loadText">Подключаю Three.js и Rapier…</p><button id="retry" hidden>Повторить</button><button id="copyError" hidden>Скопировать ошибку</button></div>
 </div>
 <script type="module">
-// ONLINE TEST 1.9 / v19: эксперимент G-N1-N2-N3-N4-B0, 15 шаров; эталоны v16/v17/v18 не изменяются.
-// НЕ production, НЕ сертифицированный офлайн, FR-1.9-06 и AT-06–AT-10 открыты.
+// CandySky v22: единый экспериментальный мир для нескольких независимых фонтанов.
+// Оригинальные v16 / v17 / v18 / v19 остаются неизменными файлами.
+// Реальная физика Rapier + XPBD локально, библиотеки тестово загружаются с CDN (не production/offline).
 const THREE_SOURCES=[['jsDelivr · Three.js 0.164.1','https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js']];
 const RAPIER_SOURCES=[['jsDelivr · Rapier 0.21.0 (WASM внутри)','https://cdn.jsdelivr.net/npm/@dimforge/rapier3d-compat@0.21.0/dist/rapier.mjs']];
 let lastLoadReport='',loadAttempt=0;
@@ -217,50 +205,40 @@ const loadRapier=()=>loadLibrary('Rapier',RAPIER_SOURCES,async m=>{
  const lib=typeof m.World==='function'?m:m.default;if(typeof lib?.init==='function')await lib.init();
  if(typeof lib?.World!=='function'||typeof lib?.JointData?.rope!=='function')throw Error('Некорректный API Rapier / JointData.rope');return lib;
 });
+
 const LENGTH_MIN=.10,LENGTH_MAX=1.80,DT=1/60,ROOM_HALF=2.5,ROOM_HEIGHT=2.5;
 const AIR_DENSITY=1.225,GRAVITY=9.81,RIBBON_AIR_DAMPING=8.5,RIBBON_BEND_COMPLIANCE=.00012,RIBBON_WIND_DECAY=2.8;
-// Пробный режим 15 шаров: используем согласованные параметры шаров LOCK-7 только в отдельном эксперименте.
-// Обычный режим 1.9 не меняется. Исходный эталон LOCK-7/v16 не изменялся.
-// Демпфирование физических узлов, силы и алгоритм XPBD остаются прежними.
 const FOUNTAIN_BALLOON_FRICTION=0,FOUNTAIN_LINEAR_DAMPING=1.0,FOUNTAIN_ANGULAR_DAMPING=1.8;
-const MAX_BALLOONS=8,FOUNTAIN_BALLOONS=15,MAX_WEIGHTS=4,BALLOON_FRICTION=.08,COLORS=[0xf0bbc8,0xa5daca,0xf3cf84,0xb9b1e9,0xa8d1ed,0xf0b7a4,0xd6a8d6,0xb9d2ac];
+const BALLOON_FRICTION=.08,MAX_FOUNTAINS=4,COLORS=[0xf0bbc8,0xa5daca,0xf3cf84,0xb9b1e9,0xa8d1ed,0xf0b7a4,0xd6a8d6,0xb9d2ac];
 const LATEX_PROFILE=[[0,0],[.025,.153],[.083,.291],[.183,.418],[.327,.488],[.435,.500],[.548,.484],[.657,.423],[.774,.328],[.870,.215],[.957,.100],[1,.044]];
+const PRESETS=Object.freeze({
+ 7:{name:'1+3+3',lowerMin:.20,lowerMax:.85,lowerDefault:.55,tiers:[{key:'upper',count:3,radius:.18,phase:0},{key:'lower',count:3,radius:.18,phase:Math.PI/3}]},
+ 11:{name:'1+3+3+4',lowerMin:.20,lowerMax:.85,lowerDefault:.55,tiers:[{key:'upper',count:3,radius:.18,phase:0},{key:'middle',count:3,radius:.18,phase:Math.PI/3},{key:'lower',count:4,radius:.22,phase:Math.PI/4}]},
+ 13:{name:'1+3+4+5',lowerMin:.20,lowerMax:.85,lowerDefault:.55,tiers:[{key:'upper',count:3,radius:.18,phase:0},{key:'middle',count:4,radius:.22,phase:Math.PI/4},{key:'lower',count:5,radius:.265,phase:Math.PI/5}]},
+ 15:{name:'1+3+3+4+4',lowerMin:.20,lowerMax:.60,lowerDefault:.55,tiers:[{key:'crown',count:3,radius:.18,phase:0},{key:'upper',count:3,radius:.18,phase:Math.PI/3},{key:'middle',count:4,radius:.22,phase:Math.PI/4},{key:'lower',count:4,radius:.22,phase:0}]}
+});
+const TOP_LENGTH=.51,MIDDLE_LENGTH=.27,SIDE_LENGTH=.27;
 const el=id=>document.getElementById(id),fmtCm=m=>(m*100).toFixed(1)+' см';
 let THREE,RAPIER,world,balloonGeometry,weightGeometry,weightMaterial,ringGeometry,ringMaterial,scene,camera,renderer,raycaster,ndc,dragPlane,dragOffset;
-let orbit={yaw:.65,pitch:.20,distance:3.6},volume=0,tieY=-.19,topY=.19,buoyantForceN=0;
-let balloons=[],weights=[],selectedId=1,activeWeightId=1,nextId=16,nextWeightId=2,elapsed=0,accumulator=0,lastFrame=0;
-let paused=false,testing=false,ready=false,drag=null,orbitDrag=null,frameReq=0,lastMetrics=0;
-let booting=false,controlsBound=false,pointersBound=false;
-// Пробная геометрия 15 шаров: 1+3+3+4+4 на четырёх физических узлах.
-// Три межъярусных отрезка по 27 см, четырнадцать боковых по 27 см, верхний 51 см.
-// Радиусы двух троек .18 м, двух четвёрок .22 м; соседние одинаковые ярусы развернуты.
-// Минимальный геометрический зазор ~1.11 см для тел диаметром 30 см (не физический тест).
-// В комнате 2.5 м ограничиваем регулируемый нижний G-N1 диапазоном 20-60 см:
-// при 60 см высота верхней точки исходной геометрии приблизительно 2.445 м.
-// Только G-N1 регулируется, остальные 18 проектных длин неизменны.
-const FOUNTAIN_PRESET=Object.freeze({lowerDefault:.55,lowerMin:.20,lowerMax:.60,middle:.27,top:.51,side:.27,radial:.18,radialFour:.22,radialLower:.22});
-let fountainMode=false,fountainHeight=FOUNTAIN_PRESET.lowerDefault,fountainTargetHeight=FOUNTAIN_PRESET.lowerDefault;
-let fountainJunctions={},fountainSegments=[];
+let orbit={yaw:.65,pitch:.28,distance:6.0},volume=0,tieY=-.19,topY=.19,buoyantForceN=0;
+let fountains=[],weights=[],balloons=[],segments=[],selectedFountainId=null,selectedId=null,nextFountainId=1,nextWeightId=1,nextBalloonId=1;
+let elapsed=0,accumulator=0,lastFrame=0,paused=false,testing=false,ready=false,drag=null,orbitDrag=null,frameReq=0,lastMetrics=0,booting=false;
+let controlsBound=false,pointersBound=false;
 const vec=v=>new THREE.Vector3(v.x,v.y,v.z);
-const chosen=()=>balloons.find(b=>b.id===selectedId)||balloons[0]||null;
+const getFountain=id=>fountains.find(f=>f.id===id)||null;
+const selectedFountain=()=>getFountain(selectedFountainId)||fountains[0]||null;
+const chosen=()=>balloons.find(b=>b.id===selectedId)||selectedFountain()?.balloons[0]||null;
 const getWeight=id=>weights.find(w=>w.id===id)||null;
-const activeWeight=()=>getWeight(activeWeightId)||weights[0]||null;
-const byHeight=()=>balloons.slice().sort((a,b)=>a.length-b.length||a.id-b.id);
-const sameFountain=b=>balloons.filter(x=>b&&x.weightId===b.weightId&&b.weightId!==null).sort((a,c)=>a.length-c.length||a.id-c.id);
-const msg=(s,problem=false)=>{el('log').textContent=s;const quick=el('quickline');quick.textContent=s.replace(/\s*\n\s*/g,' · ');quick.classList.toggle('error',problem);el('statusText').textContent=problem?'Ошибка лаборатории':ready?(paused?'Пауза':'Rapier активен'):'Загрузка';el('status').className='state'+(problem?' bad':ready?' ok':'')};
-const junctionPoint=key=>fountainJunctions[key]?.body?vec(fountainJunctions[key].body.translation()):null;
-const getRing=b=>{
- if(b?.role==='connector'){
-  if(b.fromKey!=='weight')return junctionPoint(b.fromKey);
-  const w=getWeight(b.weightId);if(!w?.body)return null;const p=w.body.translation();return new THREE.Vector3(p.x,p.y+.081,p.z);
- }
- if(b?.junctionKey)return junctionPoint(b.junctionKey);
- const w=getWeight(b?.weightId);if(!w?.body)return null;const p=w.body.translation();return new THREE.Vector3(p.x,p.y+.081,p.z)
-};
-const getTie=b=>{
- if(b?.role==='connector')return junctionPoint(b.toKey);
- const p=b.body.translation(),q=b.body.rotation();return new THREE.Vector3(0,tieY,0).applyQuaternion(new THREE.Quaternion(q.x,q.y,q.z,q.w)).add(vec(p))
-};
+const activeWeight=()=>selectedFountain()?.weight||null;
+function msg(s,problem=false){el('log').textContent=s;el('quickline').textContent=s.replace(/\s*\n\s*/g,' · ');el('quickline').classList.toggle('error',problem);el('statusText').textContent=problem?'Ошибка':ready?(paused?'Пауза':'Rapier активен'):'Загрузка';el('status').className='state'+(problem?' bad':ready?' ok':'')}
+const junctionPoint=(f,key)=>f?.junctions[key]?.body?vec(f.junctions[key].body.translation()):null;
+function getRing(b){const f=getFountain(b.fountainId);if(!f)return null;
+ if(b.role==='connector'){if(b.fromKey!=='weight')return junctionPoint(f,b.fromKey);const p=f.weight.body.translation();return new THREE.Vector3(p.x,p.y+.081,p.z)}
+ return junctionPoint(f,b.junctionKey);
+}
+function getTie(b){if(b.role==='connector')return junctionPoint(getFountain(b.fountainId),b.toKey);
+ const p=b.body.translation(),q=b.body.rotation();return new THREE.Vector3(0,tieY,0).applyQuaternion(new THREE.Quaternion(q.x,q.y,q.z,q.w)).add(vec(p))}
+
 function profileRadius(s){if(s<=LATEX_PROFILE[0][0])return 0;for(let i=1;i<LATEX_PROFILE.length;i++){const a=LATEX_PROFILE[i-1],b=LATEX_PROFILE[i];if(s<=b[0])return a[1]+(b[1]-a[1])*(s-a[0])/(b[0]-a[0])}return LATEX_PROFILE[LATEX_PROFILE.length-1][1]}
 const LATEX_TANGENTS=LATEX_PROFILE.map((point,i)=>{
  const n=LATEX_PROFILE.length;
@@ -307,7 +285,7 @@ function addRoom(){
 function createScene(){
  scene=new THREE.Scene();scene.background=new THREE.Color(0xfffaf8);camera=new THREE.PerspectiveCamera(44,1,.03,35);
  renderer=new THREE.WebGLRenderer({canvas:el('view'),antialias:true,alpha:false,powerPreference:'high-performance'});
- renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.35;
+ renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.7));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.35;
  scene.add(new THREE.HemisphereLight(0xffffff,0xc5b4b1,2));const key=new THREE.DirectionalLight(0xffffff,2.25);key.position.set(-2,4,3);scene.add(key);
  const fill=new THREE.DirectionalLight(0xbde8e0,.7);fill.position.set(2,2,-3);scene.add(fill);
  raycaster=new THREE.Raycaster();ndc=new THREE.Vector2();dragPlane=new THREE.Plane();dragOffset=new THREE.Vector3();
@@ -316,120 +294,105 @@ function createScene(){
  ringGeometry=new THREE.TorusGeometry(.022,.007,8,24);ringMaterial=new THREE.MeshStandardMaterial({color:0x978581,metalness:.5,roughness:.32});
  updateCamera();updateSceneViewport();
 }
-function seedBalloons(){
- fountainMode=false;
- weights=[{id:1,x:-.70,z:0},{id:2,x:.85,z:.10}];activeWeightId=1;nextWeightId=3;
- balloons=[{id:1,length:.70,color:COLORS[0],weightId:1},{id:2,length:.94,color:COLORS[1],weightId:1},{id:3,length:1.18,color:COLORS[2],weightId:1}];selectedId=3;nextId=4;
-}
-function fountainMetadata(index){
- // B0 верхний, B1-B3 к N4, B4-B6 к N3, B7-B10 к N2, B11-B14 к N1.
- if(index===0)return {length:FOUNTAIN_PRESET.top,junctionKey:'crown',fountainRole:'top',fountainSlot:-1,fountainTierCount:1};
- if(index<=3)return {length:FOUNTAIN_PRESET.side,junctionKey:'crown',fountainRole:'crown',fountainSlot:index-1,fountainTierCount:3};
- if(index<=6)return {length:FOUNTAIN_PRESET.side,junctionKey:'upper',fountainRole:'upper',fountainSlot:index-4,fountainTierCount:3};
- if(index<=10)return {length:FOUNTAIN_PRESET.side,junctionKey:'middle',fountainRole:'middle',fountainSlot:index-7,fountainTierCount:4};
- return {length:FOUNTAIN_PRESET.side,junctionKey:'lower',fountainRole:'lower',fountainSlot:index-11,fountainTierCount:4};
-}
-function seedFountain(){
- fountainMode=true;fountainHeight=FOUNTAIN_PRESET.lowerDefault;fountainTargetHeight=fountainHeight;
- weights=[{id:1,x:0,z:0}];activeWeightId=1;nextWeightId=2;
- balloons=Array.from({length:FOUNTAIN_BALLOONS},(_,index)=>({id:index+1,weightId:1,color:COLORS[index%COLORS.length],...fountainMetadata(index)}));
- selectedId=1;nextId=FOUNTAIN_BALLOONS+1;
-}
-function destroyCurrentObjects(){
- for(const b of balloons)if(b.body)disposeBalloon(b);
- disposeFountainPhysics();
- for(const w of weights)if(w.body)disposeWeight(w);
-}
-function switchScene(which){
- if(!ready||testing)return;
- destroyCurrentObjects();
- if(which==='fountain')seedFountain();else seedBalloons();
- resetPhysics();requestDraftSave();
- msg(fountainMode?'Фонтан 1+3+3+4+4: четыре физических узла, девятнадцать гибких участков. Двигается только нижняя длина.':'Обычный режим 1.9: индивидуальные грузики и длины лент.');
-}
-function createJunction(key,y,x,z){
- // У этой группы сложная цепь из 19 rope-joints; доп. итерации повышают точность
- // именно связанной группы, без глобальной перенастройки физики обычного режима.
+
+
+function newRibbonData(mesh){return {nodes:[],previous:[],wind:{x:0,z:0},baseSide:null,segmentLength:0,maxError:0,maxOffset:0,tension:0,mesh,weights:null,stretch:null,bend:null}}
+function createJunction(f,key,y,x,z){
  const desc=RAPIER.RigidBodyDesc.dynamic().setTranslation(x,y,z).setLinearDamping(1.45).setAngularDamping(2.7).setCcdEnabled(true);
  if(typeof desc.setAdditionalSolverIterations==='function')desc.setAdditionalSolverIterations(12);
  const body=world.createRigidBody(desc);
  world.createCollider(RAPIER.ColliderDesc.ball(.008).setMass(.0015).setSensor(true),body);
  const mesh=new THREE.Mesh(new THREE.SphereGeometry(.012,12,9),new THREE.MeshStandardMaterial({color:0x9e798e,roughness:.55}));
- mesh.position.set(x,y,z);scene.add(mesh);fountainJunctions[key]={key,body,mesh};
+ mesh.position.set(x,y,z);scene.add(mesh);f.junctions[key]={key,body,mesh};
 }
-function disposeFountainPhysics(){
- for(const segment of fountainSegments){if(segment.joint){world.removeImpulseJoint(segment.joint,true);segment.joint=null}
-  if(segment.ribbon?.mesh){scene.remove(segment.ribbon.mesh);segment.ribbon.mesh.geometry.dispose();segment.ribbon.mesh.material.dispose()}}
- fountainSegments=[];
- for(const j of Object.values(fountainJunctions)){if(j.body)world.removeRigidBody(j.body);if(j.mesh){scene.remove(j.mesh);j.mesh.geometry.dispose();j.mesh.material.dispose()}}
- fountainJunctions={};
-}
-function newRibbonData(mesh){return {nodes:[],previous:[],wind:{x:0,z:0},baseSide:null,segmentLength:0,maxError:0,maxOffset:0,tension:0,mesh,weights:null,stretch:null,bend:null}}
-function createFountainJunctions(){
- const w=activeWeight(),p=w.body.translation(),baseY=p.y+.081;
- createJunction('lower',baseY+fountainHeight,w.x,w.z);
- createJunction('middle',baseY+fountainHeight+FOUNTAIN_PRESET.middle,w.x,w.z);
- createJunction('upper',baseY+fountainHeight+2*FOUNTAIN_PRESET.middle,w.x,w.z);
- createJunction('crown',baseY+fountainHeight+3*FOUNTAIN_PRESET.middle,w.x,w.z);
-}
-function createConnector(fromKey,toKey,length){
- const child=fountainJunctions[toKey].body,parent=fromKey==='weight'?activeWeight().body:fountainJunctions[fromKey].body;
+function createConnector(f,fromKey,toKey,length){
+ const child=f.junctions[toKey].body,parent=fromKey==='weight'?f.weight.body:f.junctions[fromKey].body;
  const parentAnchor=fromKey==='weight'?{x:0,y:.081,z:0}:{x:0,y:0,z:0};
  const mesh=new THREE.Mesh(new THREE.BufferGeometry(),new THREE.MeshStandardMaterial({color:0xc89aaa,roughness:.72,metalness:0,side:THREE.DoubleSide}));mesh.frustumCulled=false;scene.add(mesh);
- const segment={role:'connector',fromKey,toKey,weightId:activeWeightId,length,ribbon:newRibbonData(mesh)};
+ const segment={role:'connector',fromKey,toKey,fountainId:f.id,weightId:f.weight.id,length,ribbon:newRibbonData(mesh)};
  segment.joint=world.createImpulseJoint(RAPIER.JointData.rope(length,{x:0,y:0,z:0},parentAnchor),child,parent,true);
- fountainSegments.push(segment);initializeRibbon(segment);return segment;
+ f.segments.push(segment);segments.push(segment);initializeRibbon(segment);return segment;
 }
-function createFountainConnectors(){createConnector('weight','lower',fountainHeight);createConnector('lower','middle',FOUNTAIN_PRESET.middle);createConnector('middle','upper',FOUNTAIN_PRESET.middle);createConnector('upper','crown',FOUNTAIN_PRESET.middle)}
-function changeFountainHeight(target){
- if(!fountainMode||!ready||testing)return;
- fountainTargetHeight=THREE.MathUtils.clamp(target,FOUNTAIN_PRESET.lowerMin,FOUNTAIN_PRESET.lowerMax);
- el('fountainHeightOut').textContent=Math.round(fountainTargetHeight*100)+' см';requestDraftSave();
+function createFountainJunctions(f){const p=f.weight.body.translation(),baseY=p.y+.081;
+ const keys=f.preset.tiers.map(t=>t.key).reverse(); // снизу вверх; порядок/длины эталонов сохранены
+ keys.forEach((key,i)=>createJunction(f,key,baseY+f.height+i*MIDDLE_LENGTH,f.weight.x,f.weight.z));
+ createConnector(f,'weight',keys[0],f.height);
+ for(let i=1;i<keys.length;i++)createConnector(f,keys[i-1],keys[i],MIDDLE_LENGTH);
 }
-function reelFountain(){
- if(!fountainMode||Math.abs(fountainTargetHeight-fountainHeight)<.000001)return;
- const segment=fountainSegments.find(s=>s.toKey==='lower'&&s.fromKey==='weight');if(!segment)return;
- const diff=fountainTargetHeight-fountainHeight;
- // 1.5cm за физический шаг; без телепорта и без пересчёта остальных 18 длин.
- fountainHeight+=Math.sign(diff)*Math.min(.015,Math.abs(diff));
- // Критично: НЕ пересоздавать joint каждую физическую итерацию.
- // Rapier хранит накопленные импульсы для устойчивого решения rope-ограничения.
- // UnitImpulseJoint.setLimits() меняет максимальную длину прямо в физическом joint.
- if(segment.joint&&typeof segment.joint.setLimits==='function'){
-  segment.joint.setLimits(0,fountainHeight);
- }else{
-  // Резервный путь только для несовместимого движка/старого тестового stub.
-  const lower=fountainJunctions.lower.body,parent=activeWeight().body;
+function reelFountain(f){if(Math.abs(f.targetHeight-f.height)<.000001)return;
+ const segment=f.segments[0],diff=f.targetHeight-f.height;
+ f.height+=Math.sign(diff)*Math.min(.015,Math.abs(diff));
+ if(typeof segment.joint?.setLimits==='function')segment.joint.setLimits(0,f.height);
+ else{
   if(segment.joint)world.removeImpulseJoint(segment.joint,true);
-  segment.joint=world.createImpulseJoint(RAPIER.JointData.rope(fountainHeight,{x:0,y:0,z:0},{x:0,y:.081,z:0}),lower,parent,true);
+  const lower=f.junctions[segment.toKey].body,parent=f.weight.body;
+  segment.joint=world.createImpulseJoint(RAPIER.JointData.rope(f.height,{x:0,y:0,z:0},{x:0,y:.081,z:0}),lower,parent,true);
  }
- segment.length=fountainHeight;segment.ribbon.segmentLength=fountainHeight/(segment.ribbon.nodes.length-1);
- for(const junction of Object.values(fountainJunctions))junction.body.wakeUp();
+ segment.length=f.height;segment.ribbon.segmentLength=f.height/(segment.ribbon.nodes.length-1);
+ for(const j of Object.values(f.junctions))j.body.wakeUp();
+}
+function fountainMetadata(f,index){const tiers=f.preset.tiers;
+ if(index===0)return {length:TOP_LENGTH,junctionKey:tiers[0].key,fountainRole:'top',fountainSlot:-1,fountainTierCount:1};
+ let cursor=1;for(const tier of tiers){if(index<cursor+tier.count)return {length:SIDE_LENGTH,junctionKey:tier.key,fountainRole:tier.key,fountainSlot:index-cursor,fountainTierCount:tier.count};cursor+=tier.count}
+ throw Error('Ошибка топологии фонтана '+f.presetKey+' при шаре '+index);
+}
+function spawnPosition(b){const f=getFountain(b.fountainId),j=junctionPoint(f,b.junctionKey),top=b.fountainRole==='top';
+ if(b.spawn&&[b.spawn.x,b.spawn.y,b.spawn.z].every(Number.isFinite))return b.spawn;
+ if(top)return {x:j.x,y:Math.min(ROOM_HEIGHT-topY-.015,j.y+b.length-.009-tieY),z:j.z};
+ const tier=f.preset.tiers.find(t=>t.key===b.junctionKey);
+ const angle=2*Math.PI*b.fountainSlot/tier.count+tier.phase,rad=tier.radius,up=Math.sqrt(Math.max(0,b.length*b.length-rad*rad));
+ return {x:j.x+rad*Math.cos(angle),y:Math.min(ROOM_HEIGHT-topY-.015,j.y+up-tieY),z:j.z+rad*Math.sin(angle)};
+}
+function placeForNextFountain(){const candidates=[{x:-1.15,z:0},{x:1.15,z:0},{x:0,z:-1.15},{x:0,z:1.15},{x:-1.15,z:-1.15},{x:1.15,z:1.15},{x:1.15,z:-1.15},{x:-1.15,z:1.15},{x:0,z:0}];
+ const score=p=>fountains.length?Math.min(...fountains.map(f=>Math.hypot(f.weight.x-p.x,f.weight.z-p.z))):99;
+ const ordered=candidates.map(p=>({...p,score:score(p)})).sort((a,b)=>b.score-a.score);
+ return ordered[0];
+}
+function addFountain(type,coords=null,{height=null,colors=null,positions=null,id=null,restorePlacement=false}={}){
+ if(!PRESETS[type])throw Error('Неизвестный фонтан: '+type);
+ if(fountains.length>=MAX_FOUNTAINS)throw Error('Пока максимум '+MAX_FOUNTAINS+' фонтана в общей сцене.');
+ const pos=coords||placeForNextFountain(),preset=PRESETS[type];
+ if(![pos.x,pos.z].every(Number.isFinite)||Math.abs(pos.x)>2.3||Math.abs(pos.z)>2.3)throw Error('Грузик вне комнаты');
+ if(!restorePlacement&&fountains.some(f=>Math.hypot(f.weight.x-pos.x,f.weight.z-pos.z)<.60))throw Error('Между грузиками недостаточно места');
+ const fid=id===null?nextFountainId++:id;nextFountainId=Math.max(nextFountainId,fid+1);
+ const weight={id:nextWeightId++,fountainId:fid,x:pos.x,z:pos.z};
+ const f={id:fid,presetKey:Number(type),preset,weight,junctions:{},segments:[],balloons:[],height:height===null?preset.lowerDefault:THREE.MathUtils.clamp(height,preset.lowerMin,preset.lowerMax),targetHeight:0};f.targetHeight=f.height;
+ fountains.push(f);weights.push(weight);
+ try{
+  createWeightPhysics(weight);createFountainJunctions(f);
+  for(let i=0;i<Number(type);i++){
+   const b={id:nextBalloonId++,fountainId:fid,weightId:weight.id,color:Array.isArray(colors)?Number(colors[i])>>>0:COLORS[(i+fid-1)%COLORS.length],...fountainMetadata(f,i)};
+   if(positions?.[i]&&[positions[i].x,positions[i].y,positions[i].z].every(Number.isFinite))b.spawn=positions[i];
+   f.balloons.push(b);balloons.push(b);createBalloonPhysics(b);
+  }
+ }catch(error){removeFountain(f,false);throw error}
+ selectedFountainId=fid;selectedId=f.balloons[0]?.id||null;
+ renderControls();metrics();requestDraftSave();return f;
+}
+function removeFountain(f,announce=true){if(!f||!fountains.includes(f))return;
+ for(const seg of f.segments){if(seg.joint){world.removeImpulseJoint(seg.joint,true);seg.joint=null}
+  if(seg.ribbon?.mesh){scene.remove(seg.ribbon.mesh);seg.ribbon.mesh.geometry.dispose();seg.ribbon.mesh.material.dispose()}}
+ segments=segments.filter(seg=>seg.fountainId!==f.id);
+ for(const b of f.balloons)disposeBalloon(b);
+ balloons=balloons.filter(b=>b.fountainId!==f.id);
+ for(const j of Object.values(f.junctions)){if(j.body)world.removeRigidBody(j.body);if(j.mesh){scene.remove(j.mesh);j.mesh.geometry.dispose();j.mesh.material.dispose()}}
+ disposeWeight(f.weight);weights=weights.filter(w=>w.fountainId!==f.id);fountains=fountains.filter(item=>item!==f);
+ if(selectedFountainId===f.id){selectedFountainId=fountains[0]?.id||null;selectedId=selectedFountain()?.balloons[0]?.id||null}
+ if(announce){renderControls();metrics();requestDraftSave();msg('Фонтан №'+f.id+' удалён. Остальные продолжают движение.')}
+}
+function resetSelectedFountain(){if(!ready||testing)return;const f=selectedFountain();if(!f)return;
+ const {x,z}=f.weight,kind=f.presetKey,id=f.id,colors=f.balloons.map(b=>b.color),height=f.targetHeight;
+ removeFountain(f,false);addFountain(kind,{x,z},{id,height,colors,restorePlacement:true});renderControls();requestDraftSave();msg('Сброшен только фонтан №'+id+'. Остальные не пересоздавались.')
+}
+function changeFountainHeight(target){const f=selectedFountain();if(!ready||testing||!f)return;
+ f.targetHeight=THREE.MathUtils.clamp(target,f.preset.lowerMin,f.preset.lowerMax);
+ el('fountainHeightOut').textContent=Math.round(f.targetHeight*100)+' см';renderControls();requestDraftSave();
 }
 
-function spawnPosition(b){
- if(b.spawn&&[b.spawn.x,b.spawn.y,b.spawn.z].every(Number.isFinite))return b.spawn;
- if(b.junctionKey){
-  const j=junctionPoint(b.junctionKey),top=b.fountainRole==='top';
-  if(top)return {x:j.x,y:Math.min(ROOM_HEIGHT-topY-.015,j.y+b.length-.009-tieY),z:j.z};
-  // Две тройки развернуты на 60°, две четвёрки — на 45°.
-  // Без этого одинаковые соседние ярусы на 27 см пересекаются при диаметре 30 см.
-  const phase=b.junctionKey==='upper'?Math.PI/3:b.junctionKey==='middle'?Math.PI/4:0;
-  const angle=2*Math.PI*b.fountainSlot/b.fountainTierCount+phase;
-  const radius=b.junctionKey==='lower'?FOUNTAIN_PRESET.radialLower:b.junctionKey==='middle'?FOUNTAIN_PRESET.radialFour:FOUNTAIN_PRESET.radial;
-  const up=Math.sqrt(Math.max(0,b.length*b.length-radius*radius));
-  return {x:j.x+radius*Math.cos(angle),y:Math.min(ROOM_HEIGHT-topY-.015,j.y+up-tieY),z:j.z+radius*Math.sin(angle)};
- }
- const angle=b.id*2.399963229728653,radius=Math.min(.38,b.length*.48);
- const w=getWeight(b.weightId);
- if(!w)return {x:Math.sin(angle)*.45,y:ROOM_HEIGHT-topY-.005,z:Math.cos(angle)*.45};
- const anchor=getRing(b),dy=Math.sqrt(Math.max(.02,b.length*b.length-radius*radius));
- return {x:anchor.x+Math.cos(angle)*radius,y:Math.min(ROOM_HEIGHT-topY-.02,anchor.y+dy-tieY),z:anchor.z+Math.sin(angle)*radius};
-}
 function createBalloonPhysics(b){
- const contactFriction=b.junctionKey?FOUNTAIN_BALLOON_FRICTION:BALLOON_FRICTION;
- const linearDamping=b.junctionKey?FOUNTAIN_LINEAR_DAMPING:1.45;
- const angularDamping=b.junctionKey?FOUNTAIN_ANGULAR_DAMPING:2.7;
+ const contactFriction=FOUNTAIN_BALLOON_FRICTION;
+ const linearDamping=FOUNTAIN_LINEAR_DAMPING;
+ const angularDamping=FOUNTAIN_ANGULAR_DAMPING;
  const start=spawnPosition(b);b.body=world.createRigidBody(RAPIER.RigidBodyDesc.dynamic().setTranslation(start.x,start.y,start.z).setLinearDamping(linearDamping).setAngularDamping(angularDamping).setCcdEnabled(true));
  world.createCollider(RAPIER.ColliderDesc.ball(.150).setTranslation(0,.015,0).setMass(.009).setRestitution(.04).setFriction(contactFriction),b.body);
  world.createCollider(RAPIER.ColliderDesc.ball(.070).setTranslation(0,.124,0).setMass(.0008).setRestitution(.04).setFriction(contactFriction),b.body);
@@ -438,7 +401,7 @@ function createBalloonPhysics(b){
  const shell=new THREE.Mesh(balloonGeometry,material);shell.userData={picker:'balloon',balloonId:b.id};b.visual.add(shell);scene.add(b.visual);
  b.ribbon=newRibbonData(new THREE.Mesh(new THREE.BufferGeometry(),new THREE.MeshStandardMaterial({color:b.color,roughness:.72,metalness:0,side:THREE.DoubleSide})));
  b.ribbon.mesh.frustumCulled=false;scene.add(b.ribbon.mesh);
- b.joint=null;if(b.junctionKey){const j=fountainJunctions[b.junctionKey];if(j?.body)b.joint=world.createImpulseJoint(RAPIER.JointData.rope(b.length,{x:0,y:tieY,z:0},{x:0,y:0,z:0}),b.body,j.body,true)}else if(b.weightId!==null){const w=getWeight(b.weightId);if(w?.body)b.joint=world.createImpulseJoint(RAPIER.JointData.rope(b.length,{x:0,y:tieY,z:0},{x:0,y:.081,z:0}),b.body,w.body,true)}
+ b.joint=null;if(b.junctionKey){const j=getFountain(b.fountainId)?.junctions[b.junctionKey];if(j?.body)b.joint=world.createImpulseJoint(RAPIER.JointData.rope(b.length,{x:0,y:tieY,z:0},{x:0,y:0,z:0}),b.body,j.body,true)}else if(b.weightId!==null){const w=getWeight(b.weightId);if(w?.body)b.joint=world.createImpulseJoint(RAPIER.JointData.rope(b.length,{x:0,y:tieY,z:0},{x:0,y:.081,z:0}),b.body,w.body,true)}
  initializeRibbon(b);syncBalloon(b);delete b.spawn;
 }
 function disposeBalloon(b){
@@ -458,55 +421,7 @@ function disposeWeight(w){
  if(w.body){world.removeRigidBody(w.body);w.body=null}
  if(w.visual){scene.remove(w.visual);w.visual=null}
 }
-function selectWeight(id){if(!getWeight(id))return;activeWeightId=id;renderControls();metrics()}
-function addWeight(){
- if(!ready||testing||fountainMode||weights.length>=MAX_WEIGHTS)return;
- const slots=[{x:-.7,z:0},{x:.85,z:.1},{x:0,z:-1.05},{x:0,z:1.05}];
- const slot=slots.filter(p=>weights.every(w=>Math.hypot(w.x-p.x,w.z-p.z)>.35))[0]||{x:1.5,z:1.5};
- const id=nextWeightId++,w={id,x:slot.x,z:slot.z};
- weights.push(w);createWeightPhysics(w);selectWeight(id);requestDraftSave();msg('Добавлен независимый грузик №'+id+'. Перетащите его на новое место.')
-}
-function removeWeight(){
- if(!ready||testing||fountainMode||weights.length<=1)return;const w=activeWeight();if(!w)return;
- if(balloons.some(b=>b.weightId===w.id)){msg('Нельзя удалить грузик с шарами. Сначала перенесите или отвяжите шары.',true);return}
- disposeWeight(w);weights=weights.filter(item=>item!==w);activeWeightId=weights[0].id;renderControls();requestDraftSave();msg('Пустой грузик №'+w.id+' удалён.')
-}
-function bindBalloonToWeight(b,weightId){
- const w=getWeight(weightId);if(fountainMode||!b||!w?.body||testing)return;
- if(b.weightId===weightId){msg('Шар №'+b.id+' уже закреплён на этом грузике.');return}
- if(b.joint){world.removeImpulseJoint(b.joint,true);b.joint=null}
- b.weightId=weightId;
- const anchor=getRing(b),tie=getTie(b),difference=tie.clone().sub(anchor),distance=difference.length();
- if(distance>b.length-.012){
-  const goal=anchor.clone().add(difference.multiplyScalar(Math.max(.015,b.length-.025)/Math.max(distance,1e-6)));
-  const translation=b.body.translation(),delta=goal.sub(tie);
-  b.body.setTranslation({x:THREE.MathUtils.clamp(translation.x+delta.x,-2.24,2.24),y:THREE.MathUtils.clamp(translation.y+delta.y,.24,2.26),z:THREE.MathUtils.clamp(translation.z+delta.z,-2.24,2.24)},true);
-  b.body.setLinvel({x:0,y:0,z:0},true);b.body.setAngvel({x:0,y:0,z:0},true);
- }
- b.joint=world.createImpulseJoint(RAPIER.JointData.rope(b.length,{x:0,y:tieY,z:0},{x:0,y:.081,z:0}),b.body,w.body,true);
- initializeRibbon(b);b.body.wakeUp();syncBalloon(b);renderControls();requestDraftSave();msg('Шар №'+b.id+' привязан к грузику №'+weightId+'. Остальная композиция не сброшена.');
-}
-function detachBalloon(b){
- if(fountainMode||!b||b.weightId===null||testing)return;
- if(b.joint){world.removeImpulseJoint(b.joint,true);b.joint=null}
- b.weightId=null;
- const r=b.ribbon,last=r.nodes.length-1;
- if(last>0){r.weights[0]=1;r.weights[last]=0;r.tension=0;r.previous[last].copy(getTie(b))}
- b.body.wakeUp();renderControls();requestDraftSave();msg('Шар №'+b.id+' отвязан. Он поднимается к потолку, его лента свободно свисает.');
-}
-function resetPhysics(){
- for(const b of balloons)if(b.body)disposeBalloon(b);
- disposeFountainPhysics();
- for(const w of weights)if(w.body)disposeWeight(w);
- for(const w of weights)createWeightPhysics(w);
- if(fountainMode)createFountainJunctions();
- for(const b of balloons)createBalloonPhysics(b);
- if(fountainMode)createFountainConnectors();
- elapsed=0;accumulator=0;lastMetrics=0;drag=null;orbitDrag=null;
- syncBody();for(const b of balloons)drawRibbon(b);for(const seg of fountainSegments)drawRibbon(seg);renderControls();metrics();msg('Готово: '+balloons.length+' шар(ов), '+weights.length+' грузик(ов)'+(fountainMode?', 4 узла, 19 сегментов':'')+', локальная физика Rapier + XPBD.');
-}
-function syncBalloon(b){if(!b.body||!b.visual)return;const p=b.body.translation(),q=b.body.rotation();b.visual.position.set(p.x,p.y,p.z);b.visual.quaternion.set(q.x,q.y,q.z,q.w)}
-function syncBody(){for(const w of weights)if(w.body&&w.visual){const p=w.body.translation();w.visual.position.set(p.x,p.y,p.z)}for(const j of Object.values(fountainJunctions))if(j.body&&j.mesh)j.mesh.position.copy(vec(j.body.translation()));for(const b of balloons)syncBalloon(b)}
+
 function initializeRibbon(b){
  const r=b.ribbon,attach=getTie(b),anchor=getRing(b),free=!anchor;
  const segments=THREE.MathUtils.clamp(Math.ceil(b.length/.03),12,64);
@@ -582,115 +497,51 @@ function drawRibbon(b){
  }
  positions.needsUpdate=true;r.mesh.geometry.computeVertexNormals();r.mesh.geometry.computeBoundingSphere();
 }
-function replaceLength(b,newLength){
- if(!b||fountainMode)return;const length=THREE.MathUtils.clamp(newLength,LENGTH_MIN,LENGTH_MAX);if(Math.abs(b.length-length)<.000001)return;
- b.length=length;if(!b.body)return;
- if(b.joint){world.removeImpulseJoint(b.joint,true);b.joint=null}
- const anchor=getRing(b),attach=getTie(b);
- if(anchor){const d=attach.clone().sub(anchor),span=d.length();if(span>length+.035){
-  d.multiplyScalar(Math.max(.02,length-.008)/span);const dest=anchor.clone().add(d),offset=dest.sub(attach),p=b.body.translation();
-  b.body.setTranslation({x:THREE.MathUtils.clamp(p.x+offset.x,-2.28,2.28),y:THREE.MathUtils.clamp(p.y+offset.y,.24,2.27),z:THREE.MathUtils.clamp(p.z+offset.z,-2.28,2.28)},true);
-  b.body.setLinvel({x:0,y:0,z:0},true);b.body.setAngvel({x:0,y:0,z:0},true);
- }
- const w=getWeight(b.weightId);b.joint=world.createImpulseJoint(RAPIER.JointData.rope(length,{x:0,y:tieY,z:0},{x:0,y:.081,z:0}),b.body,w.body,true)}
- initializeRibbon(b);syncBalloon(b);requestDraftSave();
+
+
+function syncBalloon(b){if(!b.body||!b.visual)return;const p=b.body.translation(),q=b.body.rotation();b.visual.position.set(p.x,p.y,p.z);b.visual.quaternion.set(q.x,q.y,q.z,q.w)}
+function syncBody(){for(const w of weights)if(w.body&&w.visual){const p=w.body.translation();w.visual.position.set(p.x,p.y,p.z)}
+ for(const f of fountains)for(const j of Object.values(f.junctions))if(j.body&&j.mesh)j.mesh.position.copy(vec(j.body.translation()));
+ for(const b of balloons)syncBalloon(b)
 }
-function renderControls(){
- const b=chosen(),ordered=byHeight(),group=sameFountain(b),i=b?group.indexOf(b):-1;
- el('classicControls').hidden=fountainMode;el('fountainControl').hidden=!fountainMode;
- el('startFountain').disabled=!ready||testing||fountainMode;
- el('startClassic').disabled=!ready||testing||!fountainMode;
- el('fountainHeight').disabled=!ready||testing||!fountainMode;
- el('fountainHeight').value=String(Math.round(fountainTargetHeight*100));
- el('fountainHeightOut').textContent=Math.round(fountainTargetHeight*100)+' см';
- el('countValue').textContent=String(balloons.length);el('panelToggleCount').textContent=String(balloons.length);
- el('compositionInfo').textContent=fountainMode?'15 шаров · 4 физических узла · 19 лент':' '+balloons.length+' шар(ов) · '+weights.length+' грузик(ов) · XPBD-ленты';
- el('addBalloon').disabled=!ready||testing||balloons.length>=MAX_BALLOONS;
- el('removeBalloon').disabled=!ready||testing||balloons.length<=1;
- el('addWeight').disabled=!ready||testing||weights.length>=MAX_WEIGHTS;
- const w=activeWeight();el('removeWeight').disabled=!ready||testing||weights.length<=1||!w||balloons.some(b=>b.weightId===w.id);
- el('attachBalloon').disabled=!ready||testing||!b||!w||b.weightId===w.id;
- el('detachBalloon').disabled=!ready||testing||!b||b.weightId===null;
- el('moveUp').disabled=!ready||testing||i<0||i>=group.length-1;
- el('moveDown').disabled=!ready||testing||i<=0;
- const weightList=el('weightList');weightList.replaceChildren();
- for(const item of weights){const btn=document.createElement('button');btn.type='button';btn.className='balloon-choice';btn.dataset.weightId=String(item.id);btn.setAttribute('aria-pressed',String(item.id===activeWeightId));btn.textContent='Груз №'+item.id+' · '+balloons.filter(b=>b.weightId===item.id).length;btn.disabled=testing;weightList.append(btn)}
- const list=el('balloonList');list.replaceChildren();
- for(const item of ordered){const button=document.createElement('button');button.type='button';button.className='balloon-choice';button.dataset.balloonId=String(item.id);button.setAttribute('aria-pressed',String(item.id===selectedId));button.style.setProperty('--balloon-color','#'+item.color.toString(16).padStart(6,'0'));
-  const dot=document.createElement('span');dot.className='dot';dot.setAttribute('aria-hidden','true');const label=document.createElement('span');label.textContent=fountainMode?('№'+item.id+' · '+(item.fountainRole==='top'?'верх':item.fountainRole==='crown'?'узел N4':item.fountainRole==='upper'?'узел N3':item.fountainRole==='middle'?'узел N2':'узел N1')):('№'+item.id+' · '+(item.weightId===null?'своб.':'Г'+item.weightId)+' · '+Math.round(item.length*100)+'см');
-  button.append(dot,label);button.disabled=testing;list.append(button)
- }
- if(b){el('ropeLen').value=String(Math.round(b.length*100));el('ropeLenOut').textContent=Math.round(b.length*100)+' см';el('ropeLenLabel').textContent='Лента шара №'+b.id+(b.weightId===null?' (свободен)':' (груз №'+b.weightId+')')}
- el('ropeLen').disabled=!ready||testing||!b;
+function selectWeight(id){const f=fountains.find(f=>f.weight.id===id);if(!f)return;selectedFountainId=f.id;selectedId=f.balloons[0]?.id||null;renderControls();metrics()}
+function selectBalloon(id){const b=balloons.find(x=>x.id===id);if(!b)return;selectedId=id;selectedFountainId=b.fountainId;renderControls();metrics()}
+function renderControls(){const f=selectedFountain(),p=f?.preset;
+ el('compositionInfo').textContent=fountains.length+' фонтан(ов) · '+balloons.length+' шар(ов) · '+segments.length+' лент';
+ el('panelToggleCount').textContent=String(fountains.length);
+ el('addFountain').disabled=!ready||testing||fountains.length>=MAX_FOUNTAINS;
+ el('deleteFountain').disabled=!ready||testing||!f;
+ el('resetFountain').disabled=!ready||testing||!f;
+ const input=el('fountainHeight');input.disabled=!ready||testing||!f;
+ if(f){input.min=String(Math.round(p.lowerMin*100));input.max=String(Math.round(p.lowerMax*100));input.value=String(Math.round(f.targetHeight*100));el('fountainHeightOut').textContent=Math.round(f.targetHeight*100)+' см';
+  el('fountainSummary').textContent='Фонтан №'+f.id+' · '+f.presetKey+' шаров ('+p.name+') · '+p.tiers.length+' узла · '+(f.balloons.length+p.tiers.length)+' лент. Перемещается отдельным грузиком. Меняется только нижняя лента.';
+  el('heightHint').textContent='Допустимый диапазон '+Math.round(p.lowerMin*100)+'–'+Math.round(p.lowerMax*100)+' см. Все внутренние ленты остаются исходными.';
+ }else{el('fountainSummary').textContent='Добавь фонтан из каталога. Все добавленные композиции будут видны одновременно.';el('fountainHeightOut').textContent='—';el('heightHint').textContent='Сначала выбери фонтан.'}
+ const list=el('fountainList');list.replaceChildren();for(const item of fountains){const btn=document.createElement('button');btn.type='button';btn.className='fountain-chip';btn.dataset.fountainId=String(item.id);btn.setAttribute('aria-pressed',String(item.id===selectedFountainId));btn.disabled=testing;const title=document.createElement('strong');title.textContent='№'+item.id+' · '+item.presetKey+' шаров';const detail=document.createElement('small');detail.textContent=item.preset.name+' · '+Math.round(item.targetHeight*100)+' см';btn.append(title,detail);list.append(btn)}
 }
-function selectBalloon(id){const b=balloons.find(balloon=>balloon.id===id);if(!b)return;selectedId=id;renderControls();metrics()}
-function nextLength(){
- const group=balloons.filter(b=>b.weightId===activeWeightId),values=group.map(b=>b.length).sort((a,b)=>a-b),max=values.at(-1)??.53;
- if(max+.17<=LENGTH_MAX)return Math.round((max+.17)*100)/100;
- const boundaries=[.55,...values,1.80];let gap=-1,index=0;
- for(let i=0;i<boundaries.length-1;i++){const size=boundaries[i+1]-boundaries[i];if(size>gap){gap=size;index=i}}
- return THREE.MathUtils.clamp(Math.round((boundaries[index]+gap*.5)*100)/100,LENGTH_MIN,LENGTH_MAX);
-}
-function addBalloon(){
- if(!ready||testing||fountainMode||balloons.length>=MAX_BALLOONS)return;
- const b={id:nextId++,length:nextLength(),color:COLORS[(nextId-2)%COLORS.length],weightId:activeWeightId};
- balloons.push(b);createBalloonPhysics(b);selectBalloon(b.id);requestDraftSave();msg('Добавлен шар №'+b.id+' на грузик №'+activeWeightId+'.');
-}
-function removeBalloon(){
- if(!ready||testing||fountainMode||balloons.length<=1)return;const b=chosen();if(!b)return;
- const index=byHeight().indexOf(b);disposeBalloon(b);balloons=balloons.filter(item=>item!==b);
- selectBalloon(byHeight()[Math.min(index,balloons.length-1)].id);requestDraftSave();msg('Шар №'+b.id+' удалён, остальные объекты сохранены.');
-}
-function moveSelected(dir){
- if(!ready||testing||fountainMode)return;const b=chosen(),ordered=sameFountain(b),index=ordered.indexOf(b),next=ordered[index+dir];if(!b||!next)return;
- const aLen=b.length,bLen=next.length;replaceLength(b,bLen);replaceLength(next,aLen);
- selectBalloon(b.id);requestDraftSave();msg('Шар №'+b.id+' переставлен '+(dir>0?'выше':'ниже')+' внутри грузика №'+b.weightId+'.');
-}
-function applyForces(){
- for(const b of balloons){
-  b.body.resetForces(false);let f={x:0,y:buoyantForceN,z:0};
-  if(drag?.kind==='balloon'&&drag.id===b.id&&drag.goal){const p=b.body.translation(),v=b.body.linvel(),goal=drag.goal,mass=b.body.mass(),kp=38,kd=13;
-   f={x:mass*(kp*(goal.x-p.x)-kd*v.x),y:buoyantForceN+mass*(kp*(goal.y-p.y)-kd*v.y),z:mass*(kp*(goal.z-p.z)-kd*v.z)};
-   const max=.85,m=Math.hypot(f.x,f.y,f.z);if(m>max)f={x:f.x*max/m,y:f.y*max/m,z:f.z*max/m};
-  }
-  b.body.addForce(f,false);
- }
-}
-function step(){
- reelFountain();
+function applyForces(){for(const b of balloons){
+ b.body.resetForces(false);let f={x:0,y:buoyantForceN,z:0};
+ if(drag?.kind==='balloon'&&drag.id===b.id&&drag.goal){const p=b.body.translation(),v=b.body.linvel(),goal=drag.goal,mass=b.body.mass(),kp=38,kd=13;
+  f={x:mass*(kp*(goal.x-p.x)-kd*v.x),y:buoyantForceN+mass*(kp*(goal.y-p.y)-kd*v.y),z:mass*(kp*(goal.z-p.z)-kd*v.z)};
+  const max=.85,m=Math.hypot(f.x,f.y,f.z);if(m>max)f={x:f.x*max/m,y:f.y*max/m,z:f.z*max/m}
+ }b.body.addForce(f,false);
+}}
+function step(){for(const f of fountains)reelFountain(f);
  if(drag?.kind==='weight'&&drag.goal){const w=getWeight(drag.id);if(w?.body){w.body.setNextKinematicTranslation({x:drag.goal.x,y:.072,z:drag.goal.z});w.x=drag.goal.x;w.z=drag.goal.z}}
- applyForces();world.step();elapsed+=DT;for(const b of balloons)simulateRibbon(b);for(const seg of fountainSegments)simulateRibbon(seg);
+ applyForces();world.step();elapsed+=DT;
+ for(const b of balloons)simulateRibbon(b);for(const seg of segments)simulateRibbon(seg);
 }
-function overlapMetric(){
- let min=Infinity,maxOverlap=0;
- for(let i=0;i<balloons.length;i++)for(let j=i+1;j<balloons.length;j++){
-  const a=balloons[i].body.translation(),b=balloons[j].body.translation(),d=Math.hypot(a.x-b.x,a.y-b.y,a.z-b.z);
-  min=Math.min(min,d);maxOverlap=Math.max(maxOverlap,Math.max(0,.30-d));
- }
- return {min,maxOverlap};
+function overlapMetric(){let min=Infinity,maxOverlap=0;for(let i=0;i<balloons.length;i++)for(let j=i+1;j<balloons.length;j++){
+ const a=balloons[i].body.translation(),b=balloons[j].body.translation(),d=Math.hypot(a.x-b.x,a.y-b.y,a.z-b.z);
+ min=Math.min(min,d);maxOverlap=Math.max(maxOverlap,Math.max(0,.30-d));}return {min,maxOverlap}}
+function metrics(){if(!ready)return;const f=selectedFountain();
+ const nodes=fountains.reduce((sum,f)=>sum+Object.keys(f.junctions).length,0);
+ el('metricFountains').textContent=String(fountains.length);el('metricBalloons').textContent=String(balloons.length);el('metricNodes').textContent=nodes+' / '+(segments.length+balloons.length);
+ const overlap=overlapMetric();el('metricDistance').textContent=Number.isFinite(overlap.min)?fmtCm(overlap.min):'—';el('metricDistance').style.color=overlap.maxOverlap>.025?'#bd6d56':'';
+ el('metricTime').textContent=elapsed.toFixed(1)+' с';
+ if(f?.segments.length){const seg=f.segments[0],a=getRing(seg),b=getTie(seg),d=a&&b?a.distanceTo(b):0;el('fountainActual').textContent='Фактически '+fmtCm(d)+' · задано '+fmtCm(f.height)}else el('fountainActual').textContent='—';
 }
-function metrics(){
- if(!ready||!balloons.length)return;const b=chosen();if(!b)return;
- if(fountainMode){
-  const lowerSegment=fountainSegments.find(s=>s.fromKey==='weight'&&s.toKey==='lower');
-  if(lowerSegment){
-   const measured=getRing(lowerSegment).distanceTo(getTie(lowerSegment));
-   const error=Math.max(0,measured-fountainHeight);
-   const line=el('fountainActual');
-   line.textContent='Фактическое расстояние: '+fmtCm(measured)+' · задано '+fmtCm(fountainHeight)+(error>.025?' · ПРОВИСАНИЕ ОГРАНИЧЕНИЯ +'+fmtCm(error):'');
-   line.style.color=error>.025?'#ae3434':'';
-  }
- }
- const r=b.ribbon,ring=getRing(b),d=ring?getTie(b).distanceTo(ring):null,err=d===null?0:Math.max(0,d-b.length),speed=vec(b.body.linvel()).length(),mass=b.body.mass(),overlap=overlapMetric();
- el('balloonCountMetric').textContent=balloons.length+' / '+weights.length+(fountainMode?' (4 узла)':'');
- el('distance').textContent=d===null?'Свободная / '+fmtCm(b.length):fmtCm(d)+' / '+fmtCm(b.length);
- el('stretch').textContent=d===null?'—':fmtCm(err);el('stretch').className=err>.01?'warn':'good';
- el('tension').textContent=d===null?'Свободная':r.tension>=.98?'Натянута':r.tension>.12?'Натягивается':'Провисает';el('tension').className=r.tension>=.98?'good':'warn';
- el('bend').textContent=fmtCm(r.maxOffset);
- el('minDistance').textContent=Number.isFinite(overlap.min)?fmtCm(overlap.min):'Один шар';el('minDistance').className=overlap.maxOverlap>.025?'warn':'good';
- el('speed').textContent=speed.toFixed(3)+' м/с';el('lift').textContent=buoyantForceN.toFixed(3)+' / '+(mass*GRAVITY).toFixed(3)+' Н';
- el('height').textContent=fmtCm(b.body.translation().y);el('simtime').textContent=elapsed.toFixed(1)+' с';
-}
+
 function updateCamera(){const target=new THREE.Vector3(0,1.2,0),a=orbit.yaw,p=orbit.pitch,dist=orbit.distance;
  camera.position.set(target.x+dist*Math.sin(a)*Math.cos(p),target.y+dist*Math.sin(p),target.z+dist*Math.cos(a)*Math.cos(p));camera.lookAt(target)}
 function resize(){if(!renderer)return;const r=el('view').getBoundingClientRect(),w=Math.max(1,Math.round(r.width)),h=Math.max(1,Math.round(r.height));renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
@@ -716,6 +567,7 @@ for(const region of [el('panelGrabber'),el('labPanel').querySelector('.panel-hea
 }
 el('toggleDetails').addEventListener('click',()=>{const p=el('labPanel'),expanded=p.classList.toggle('expanded');el('toggleDetails').setAttribute('aria-expanded',String(expanded));el('toggleDetailsText').textContent=expanded?'Скрыть':'Показатели'});
 updateSceneViewport();
+
 function pointerNdc(e){const r=el('view').getBoundingClientRect();ndc.set((e.clientX-r.left)/r.width*2-1,-((e.clientY-r.top)/r.height*2-1));raycaster.setFromCamera(ndc,camera)}
 function hitTest(e){
  pointerNdc(e);const objects=[...weights.map(w=>w.visual),...balloons.map(b=>b.visual)].filter(Boolean),hits=raycaster.intersectObjects(objects,true);
@@ -745,171 +597,92 @@ function setupPointer(){const canvas=el('view');
  });
  canvas.addEventListener('pointermove',e=>{
   if(touchPoints.has(e.pointerId))touchPoints.set(e.pointerId,{x:e.clientX,y:e.clientY});
-  if(pinch&&touchPoints.size>=2){const pts=[...touchPoints.values()],gap=Math.max(5,Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y));orbit.distance=THREE.MathUtils.clamp(pinch.distance*pinch.gap/gap,1.8,7);updateCamera();return}
+  if(pinch&&touchPoints.size>=2){const pts=[...touchPoints.values()],gap=Math.max(5,Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y));orbit.distance=THREE.MathUtils.clamp(pinch.distance*pinch.gap/gap,2.0,9.5);updateCamera();return}
   if(drag?.pointerId===e.pointerId){pointerNdc(e);const point=new THREE.Vector3();if(raycaster.ray.intersectPlane(dragPlane,point)){point.add(dragOffset);if(drag.kind==='weight'){point.y=.072;point.x=THREE.MathUtils.clamp(point.x,-2.3,2.3);point.z=THREE.MathUtils.clamp(point.z,-2.3,2.3)}else clampTarget(point);drag.goal=point}}
   else if(orbitDrag?.id===e.pointerId){orbit.yaw=orbitDrag.yaw-(e.clientX-orbitDrag.x)*.007;orbit.pitch=THREE.MathUtils.clamp(orbitDrag.pitch+(e.clientY-orbitDrag.y)*.005,-.36,1.22);updateCamera()}
  });
  const release=e=>{touchPoints.delete(e.pointerId);if(touchPoints.size<2)pinch=null;if(drag?.pointerId===e.pointerId){const b=drag.kind==='balloon'?balloons.find(item=>item.id===drag.id):null;drag=null;if(b)b.body.wakeUp();requestDraftSave()}if(orbitDrag?.id===e.pointerId)orbitDrag=null};
  canvas.addEventListener('pointerup',release);canvas.addEventListener('pointercancel',release);
- canvas.addEventListener('wheel',e=>{e.preventDefault();orbit.distance=THREE.MathUtils.clamp(orbit.distance+e.deltaY*.002,1.8,7);updateCamera()},{passive:false});
+ canvas.addEventListener('wheel',e=>{e.preventDefault();orbit.distance=THREE.MathUtils.clamp(orbit.distance+e.deltaY*.002,2.0,9.5);updateCamera()},{passive:false});
 }
+
+
 function animate(now){frameReq=requestAnimationFrame(animate);if(!ready)return;
  const delta=lastFrame?Math.min((now-lastFrame)/1000,.07):DT;lastFrame=now;
  if(!paused&&!testing){accumulator+=delta;let count=0;while(accumulator>=DT&&count<5){step();accumulator-=DT;count++}if(count===5)accumulator=0}
- syncBody();for(const b of balloons)drawRibbon(b);for(const seg of fountainSegments)drawRibbon(seg);if(now-lastMetrics>120){lastMetrics=now;metrics()}renderer.render(scene,camera);
-}
-async function runTest(){
- if(!ready||testing)return;testing=true;const wasPaused=paused;paused=true;renderControls();
- for(const id of ['reset','gust','pause','selftest'])el(id).disabled=true;
- let maxStretch=0,maxCeiling=0,maxRibbonError=0,maxTautBend=0,maxOverlap=0,invalid=false,steps=0;
- msg('Тест: '+balloons.length+' шаров, '+weights.length+' грузов, 600 шагов Rapier + XPBD…');
- const iterate=async()=>{
-  try{for(let n=0;n<600;n++){
-   step();steps++;for(const b of balloons){const tie=getTie(b),ring=getRing(b),d=ring?tie.distanceTo(ring):null,p=b.body.translation(),r=b.ribbon;
-    if(d!==null)maxStretch=Math.max(maxStretch,d-b.length);
-    maxCeiling=Math.max(maxCeiling,p.y+topY-ROOM_HEIGHT);maxRibbonError=Math.max(maxRibbonError,r.maxError);
-    if(r.tension>=.98)maxTautBend=Math.max(maxTautBend,r.maxOffset);
-    if(![p.x,p.y,p.z].every(Number.isFinite)||r.nodes.some(point=>![point.x,point.y,point.z].every(Number.isFinite)))invalid=true;
-    if((ring&&r.nodes[0].distanceTo(ring)>1e-6)||r.nodes.at(-1).distanceTo(tie)>1e-6)invalid=true;
-   }
-   for(const seg of fountainSegments){const a=getRing(seg),c=getTie(seg),r=seg.ribbon;maxStretch=Math.max(maxStretch,c.distanceTo(a)-seg.length);maxRibbonError=Math.max(maxRibbonError,r.maxError);if(r.nodes[0].distanceTo(a)>1e-6||r.nodes.at(-1).distanceTo(c)>1e-6)invalid=true;if(r.nodes.some(p=>![p.x,p.y,p.z].every(Number.isFinite)))invalid=true}
-   if(n>60)maxOverlap=Math.max(maxOverlap,overlapMetric().maxOverlap);
-   if(n%60===0){syncBody();for(const b of balloons)drawRibbon(b);for(const seg of fountainSegments)drawRibbon(seg);metrics();await new Promise(resolve=>requestAnimationFrame(resolve))}
-  }
-  const ok=!invalid&&maxStretch<=.035&&maxCeiling<=.02&&maxRibbonError<=.06&&maxTautBend<=.016&&maxOverlap<=.06;
-  msg((ok?'ПРОЙДЕНО':'НЕ ПРОЙДЕНО')+' · '+steps+' шагов\nРастяжение: '+fmtCm(Math.max(0,maxStretch))+' · пересечение: '+fmtCm(maxOverlap)+' · потолок: '+fmtCm(Math.max(0,maxCeiling))+' · изгиб: '+fmtCm(maxTautBend)+(invalid?' · некорректная геометрия/крепления':''),!ok);
-  }catch(err){msg('Ошибка теста: '+describeError(err),true)}finally{
-   testing=false;paused=wasPaused;for(const id of ['reset','gust','pause','selftest'])el(id).disabled=false;lastFrame=0;renderControls();metrics();requestDraftSave()
-  }
- };iterate();
+ syncBody();for(const b of balloons)drawRibbon(b);for(const seg of segments)drawRibbon(seg);if(now-lastMetrics>180){lastMetrics=now;metrics()}renderer.render(scene,camera);
 }
 function setupButtons(){
- el('startFountain').addEventListener('click',()=>switchScene('fountain'));
- el('startClassic').addEventListener('click',()=>switchScene('classic'));
- el('fountainHeight').addEventListener('input',e=>{if(fountainMode)changeFountainHeight(Number(e.target.value)/100)});
- el('balloonList').addEventListener('click',e=>{const button=e.target.closest('[data-balloon-id]');if(button&&!testing)selectBalloon(Number(button.dataset.balloonId))});
- el('weightList').addEventListener('click',e=>{const button=e.target.closest('[data-weight-id]');if(button&&!testing)selectWeight(Number(button.dataset.weightId))});
- el('addWeight').addEventListener('click',addWeight);el('removeWeight').addEventListener('click',removeWeight);
- el('attachBalloon').addEventListener('click',()=>bindBalloonToWeight(chosen(),activeWeightId));
- el('detachBalloon').addEventListener('click',()=>detachBalloon(chosen()));
- el('addBalloon').addEventListener('click',addBalloon);el('removeBalloon').addEventListener('click',removeBalloon);
- el('moveUp').addEventListener('click',()=>moveSelected(1));el('moveDown').addEventListener('click',()=>moveSelected(-1));
- el('ropeLen').addEventListener('input',e=>{el('ropeLenOut').textContent=e.target.value+' см'});
- el('ropeLen').addEventListener('change',e=>{if(!ready||testing||fountainMode)return;replaceLength(chosen(),Number(e.target.value)/100);renderControls();msg('Длина ленты изменена; другие шары сохранены.')});
- el('reset').addEventListener('click',()=>{if(!ready||testing)return;paused=false;el('pause').textContent='Пауза';resetPhysics();requestDraftSave()});
- el('pause').addEventListener('click',()=>{if(!ready||testing)return;paused=!paused;el('pause').textContent=paused?'Продолжить':'Пауза';msg(paused?'Симуляция остановлена.':'Симуляция продолжается.')});
- el('gust').addEventListener('click',()=>{if(!ready||testing)return;for(const b of balloons){const angle=b.id*2.399963;b.body.applyImpulse({x:.008*Math.cos(angle),y:0,z:.008*Math.sin(angle)},true);b.ribbon.wind={x:3*Math.cos(angle),z:3*Math.sin(angle)}}msg(fountainMode?'Порыв: шары тянут четыре связанных физических узла.':'Порыв: шары и ленты реагируют независимо.')});
- el('selftest').addEventListener('click',runTest);
- el('saveDraft').addEventListener('click',()=>saveDraftNow());el('restoreDraft').addEventListener('click',()=>restoreDraft());
-}
-// IndexedDB: данные композиции не зависят от сервера и не удаляются при обновлении SW.
-const DRAFT_DB='candysky-3d-fountain-15-v19-drafts',DRAFT_STORE='scenes',DRAFT_SCHEMA=1;
-let draftSaveTimer=null,dbPromise=null;
-function openDraftDb(){
- if(!('indexedDB' in window))return Promise.reject(Error('IndexedDB недоступен'));
- if(!dbPromise)dbPromise=new Promise((resolve,reject)=>{
-  const req=indexedDB.open(DRAFT_DB,1);
-  req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains(DRAFT_STORE))req.result.createObjectStore(DRAFT_STORE)};
-  req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error||Error('IndexedDB: ошибка открытия'));
- }).catch(err=>{dbPromise=null;throw err});return dbPromise;
-}
-async function draftRecord(mode,value){
- const db=await openDraftDb();return new Promise((resolve,reject)=>{
-  const tx=db.transaction(DRAFT_STORE,mode==='get'?'readonly':'readwrite'),store=tx.objectStore(DRAFT_STORE);
-  const req=mode==='get'?store.get('current'):store.put(value,'current');
-  req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error||Error('IndexedDB: ошибка записи'));
-  tx.onabort=()=>reject(tx.error||Error('IndexedDB: транзакция отменена'));
- });
-}
-function snapshotScene(){
- return {schema:DRAFT_SCHEMA,createdAt:new Date().toISOString(),nextId,nextWeightId,selectedId,activeWeightId,orbit:{...orbit},
-  fountainPreset:fountainMode?{version:4,balloonCount:FOUNTAIN_BALLOONS,lowerHeight:fountainTargetHeight}:null,
-  weights:weights.map(w=>({id:w.id,x:w.body?.translation().x??w.x,z:w.body?.translation().z??w.z})),
-  balloons:balloons.map(b=>({id:b.id,length:b.length,color:b.color,weightId:b.weightId,
-   position:b.body?{x:b.body.translation().x,y:b.body.translation().y,z:b.body.translation().z}:null}))};
-}
-async function saveDraftNow(){
- if(!ready||testing)return;
- if(draftSaveTimer){clearTimeout(draftSaveTimer);draftSaveTimer=null}
- try{await draftRecord('put',snapshotScene());el('draftStatus').textContent='Черновик сохранён на устройстве · '+new Date().toLocaleTimeString('ru-RU')}
- catch(err){el('draftStatus').textContent='Ошибка черновика: '+describeError(err);console.warn(err)}
-}
-function requestDraftSave(){if(!ready||testing)return;clearTimeout(draftSaveTimer);draftSaveTimer=setTimeout(()=>saveDraftNow(),1000)}
-function applyDraft(data){
- if(!data||data.schema!==1||!Array.isArray(data.weights)||!Array.isArray(data.balloons))throw Error('Неподдерживаемый формат черновика');
- const isNum=n=>typeof n==='number'&&Number.isFinite(n);
- const cleanWeights=data.weights.slice(0,MAX_WEIGHTS).filter(w=>Number.isSafeInteger(w.id)&&w.id>0&&isNum(w.x)&&isNum(w.z)).map(w=>({id:w.id,x:THREE.MathUtils.clamp(w.x,-2.3,2.3),z:THREE.MathUtils.clamp(w.z,-2.3,2.3)}));
- if(!cleanWeights.length)throw Error('В черновике нет грузиков');
- const ids=new Set(cleanWeights.map(w=>w.id));if(ids.size!==cleanWeights.length)throw Error('Дубли ID грузиков');
- const preset=data.fountainPreset;
- const cleanBalloons=data.balloons.slice(0,preset?FOUNTAIN_BALLOONS:MAX_BALLOONS).filter(b=>Number.isSafeInteger(b.id)&&b.id>0&&isNum(b.length)&&isNum(b.color)&&[null,...ids].includes(b.weightId)).map(b=>({
-  id:b.id,length:THREE.MathUtils.clamp(b.length,LENGTH_MIN,LENGTH_MAX),color:b.color>>>0,weightId:b.weightId,
-  spawn:b.position&&[b.position.x,b.position.y,b.position.z].every(isNum)?{
-   x:THREE.MathUtils.clamp(b.position.x,-2.25,2.25),y:THREE.MathUtils.clamp(b.position.y,.24,2.25),z:THREE.MathUtils.clamp(b.position.z,-2.25,2.25)}:null
- }));
- if(!cleanBalloons.length||new Set(cleanBalloons.map(b=>b.id)).size!==cleanBalloons.length)throw Error('Некорректные ID шаров');
- if(preset){
-  if(preset.version!==4||preset.balloonCount!==FOUNTAIN_BALLOONS||!isNum(preset.lowerHeight)||
-     cleanBalloons.length!==FOUNTAIN_BALLOONS||data.balloons.length!==FOUNTAIN_BALLOONS||cleanWeights.length!==1||
-     cleanBalloons.some((b,i)=>b.id!==i+1||b.weightId!==cleanWeights[0].id))throw Error('Повреждённый черновик фонтана 15');
-  fountainMode=true;fountainHeight=THREE.MathUtils.clamp(preset.lowerHeight,FOUNTAIN_PRESET.lowerMin,FOUNTAIN_PRESET.lowerMax);fountainTargetHeight=fountainHeight;
-  for(let i=0;i<cleanBalloons.length;i++)Object.assign(cleanBalloons[i],fountainMetadata(i));
- }else{fountainMode=false;fountainHeight=FOUNTAIN_PRESET.lowerDefault;fountainTargetHeight=fountainHeight}
- weights=cleanWeights;balloons=cleanBalloons;selectedId=balloons.some(b=>b.id===data.selectedId)?data.selectedId:balloons[0].id;
- activeWeightId=ids.has(data.activeWeightId)?data.activeWeightId:weights[0].id;
- nextId=Math.max(...balloons.map(b=>b.id))+1;nextWeightId=Math.max(...weights.map(w=>w.id))+1;
- if(data.orbit&&[data.orbit.yaw,data.orbit.pitch,data.orbit.distance].every(isNum)){
-  orbit={yaw:data.orbit.yaw,pitch:THREE.MathUtils.clamp(data.orbit.pitch,-.36,1.22),distance:THREE.MathUtils.clamp(data.orbit.distance,1.8,7)};updateCamera()
- }
-}
-async function restoreDraft(){
- if(!ready||testing)return;
- try{const draft=await draftRecord('get');if(!draft){el('draftStatus').textContent='Черновик ещё не сохранён';return}
-  const oldBalloons=balloons.slice(),oldWeights=weights.slice();
-  applyDraft(draft);
-  for(const b of oldBalloons)if(b.body)disposeBalloon(b);
-  disposeFountainPhysics();
-  for(const w of oldWeights)if(w.body)disposeWeight(w);
-  resetPhysics();el('draftStatus').textContent='Черновик восстановлен · '+(draft.createdAt||'дата неизвестна');msg('Черновик восстановлен с этого устройства.')
- }catch(err){el('draftStatus').textContent='Ошибка восстановления: '+describeError(err);console.warn(err)}
-}
-async function initOffline(){
- const status=el('offlineStatus');
- status.textContent='v19 эксперимент: 15 шаров / четыре физических узла. CDN Three.js/Rapier, офлайн пока НЕ готов.';
- // SW отключён: этот одиночный HTML не содержит собственного worker-файла.
- // Прежние SW-кеши тестового домена могут мешать — см. ревизию следующей сборки.
+ el('addFountain').addEventListener('click',()=>{if(!ready||testing)return;try{const kind=Number(el('presetSelect').value),f=addFountain(kind);msg('Добавлен фонтан №'+f.id+': '+kind+' шаров. Общая сцена: '+fountains.length+' фонтана, '+balloons.length+' шаров.')}catch(e){msg(String(e.message||e),true)}});
+ el('fountainList').addEventListener('click',e=>{const btn=e.target.closest('[data-fountain-id]');if(!btn)return;const id=Number(btn.dataset.fountainId),f=getFountain(id);if(!f)return;selectedFountainId=id;selectedId=f.balloons[0]?.id;renderControls();metrics()});
+ el('deleteFountain').addEventListener('click',()=>{const f=selectedFountain();if(!ready||testing||!f)return;if(!confirm('Удалить фонтан №'+f.id+' ('+f.presetKey+' шаров)? Остальные сохранятся.'))return;removeFountain(f)});
+ el('resetFountain').addEventListener('click',()=>{const f=selectedFountain();if(!ready||testing||!f)return;if(!confirm('Вернуть фонтан №'+f.id+' в начальное положение? Остальные не изменятся.'))return;resetSelectedFountain()});
+ el('fountainHeight').addEventListener('input',e=>changeFountainHeight(Number(e.target.value)/100));
+ el('gust').addEventListener('click',()=>{if(!ready||testing)return;for(const b of balloons){const angle=b.id*2.399963;b.body.applyImpulse({x:.008*Math.cos(angle),y:0,z:.008*Math.sin(angle)},true);b.ribbon.wind={x:3*Math.cos(angle),z:3*Math.sin(angle)}}msg('Порыв действует на все '+fountains.length+' фонтанов.')});
+ el('pause').addEventListener('click',()=>{if(!ready||testing)return;paused=!paused;el('pause').textContent=paused?'Продолжить':'Пауза';msg(paused?'Сцена остановлена.':'Физика продолжается.')});
+ el('saveDraft').addEventListener('click',()=>saveDraftNow(true));el('restoreDraft').addEventListener('click',()=>restoreDraft());
 }
 
-async function initialize(){
- if(booting||ready)return;booting=true;loadAttempt++;lastLoadReport='Rapier Lab 1.9 fountain 15 v19 · '+new Date().toISOString()+'\nСтраница: '+location.href+'\nОнлайн: '+navigator.onLine+'\n';
+
+const DRAFT_DB='candysky-3d-multifountain-v21-drafts',DRAFT_STORE='scenes',DRAFT_SCHEMA=1;
+let draftSaveTimer=null,dbPromise=null,restoringDraft=false,draftWritesBlocked=false;
+function openDraftDb(){if(!('indexedDB' in window))return Promise.reject(Error('IndexedDB недоступен'));
+ if(!dbPromise)dbPromise=new Promise((resolve,reject)=>{const req=indexedDB.open(DRAFT_DB,1);
+  req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains(DRAFT_STORE))req.result.createObjectStore(DRAFT_STORE)};
+  req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error||Error('Ошибка IndexedDB'));
+ }).catch(err=>{dbPromise=null;throw err});return dbPromise;
+}
+async function draftRecord(mode,value){const db=await openDraftDb();return new Promise((resolve,reject)=>{
+ const tx=db.transaction(DRAFT_STORE,mode==='get'?'readonly':'readwrite'),store=tx.objectStore(DRAFT_STORE);
+ const req=mode==='get'?store.get('current'):store.put(value,'current');
+ let result;req.onsuccess=()=>{result=req.result};
+ req.onerror=()=>reject(req.error||Error('Ошибка сохранения'));
+ tx.oncomplete=()=>resolve(result);
+ tx.onerror=()=>reject(tx.error||Error('Ошибка транзакции'));
+ tx.onabort=()=>reject(tx.error||Error('Транзакция отменена'));
+})}
+function snapshotScene(){return {schema:DRAFT_SCHEMA,createdAt:new Date().toISOString(),nextFountainId,selectedFountainId,orbit:{...orbit},
+ fountains:fountains.map(f=>({id:f.id,type:f.presetKey,height:f.targetHeight,weight:{x:f.weight.body?.translation().x??f.weight.x,z:f.weight.body?.translation().z??f.weight.z},
+  colors:f.balloons.map(b=>b.color),positions:f.balloons.map(b=>{const p=b.body.translation();return {x:p.x,y:p.y,z:p.z}})}))}}
+async function saveDraftNow(explicit=false){if(!ready||testing||restoringDraft||(draftWritesBlocked&&!explicit))return;if(draftSaveTimer){clearTimeout(draftSaveTimer);draftSaveTimer=null}
+ try{await draftRecord('put',snapshotScene());draftWritesBlocked=false;el('draftStatus').textContent='Сцена сохранена на устройстве · '+new Date().toLocaleTimeString('ru-RU')}
+ catch(err){el('draftStatus').textContent='Не удалось сохранить: '+String(err.message||err);console.warn(err)}
+}
+function requestDraftSave(){if(!ready||testing||restoringDraft||draftWritesBlocked)return;clearTimeout(draftSaveTimer);draftSaveTimer=setTimeout(saveDraftNow,1300)}
+function validateSnapshot(s){if(!s||s.schema!==1||!Array.isArray(s.fountains)||s.fountains.length>MAX_FOUNTAINS)throw Error('Неверный формат черновика');
+ const isNum=n=>typeof n==='number'&&Number.isFinite(n);
+ const ids=new Set();for(const f of s.fountains){if(!Number.isSafeInteger(f.id)||f.id<1||ids.has(f.id)||!PRESETS[f.type]||!isNum(f.height)||!f.weight||![f.weight.x,f.weight.z].every(isNum)||
+ Math.abs(f.weight.x)>2.3||Math.abs(f.weight.z)>2.3||!Array.isArray(f.colors)||f.colors.length!==Number(f.type)||!f.colors.every(isNum)||!Array.isArray(f.positions)||f.positions.length!==Number(f.type)||!f.positions.every(p=>p&&[p.x,p.y,p.z].every(isNum)&&Math.abs(p.x)<=2.5&&Math.abs(p.z)<=2.5&&p.y>=0&&p.y<=2.5))throw Error('Повреждённые данные фонтана');ids.add(f.id)}
+ return s;
+}
+async function restoreDraft(preloaded=null){if(!ready||testing||restoringDraft)return false;clearTimeout(draftSaveTimer);draftSaveTimer=null;restoringDraft=true;try{const raw=preloaded??await draftRecord('get');if(!raw){el('draftStatus').textContent='Нет сохранённой сцены';return false}const s=validateSnapshot(raw);if(!s){el('draftStatus').textContent='Нет сохранённой сцены';return false}
+ const backup=snapshotScene();try{
+  for(const f of fountains.slice())removeFountain(f,false);
+  for(const saved of s.fountains)addFountain(saved.type,saved.weight,{height:saved.height,colors:saved.colors,positions:saved.positions,id:saved.id,restorePlacement:true});
+  nextFountainId=Math.max(nextFountainId,s.nextFountainId||1);
+  selectedFountainId=getFountain(s.selectedFountainId)?.id||fountains[0]?.id||null;
+  selectedId=selectedFountain()?.balloons[0]?.id||null;
+  if(s.orbit&&[s.orbit.yaw,s.orbit.pitch,s.orbit.distance].every(Number.isFinite)){orbit={yaw:s.orbit.yaw,pitch:THREE.MathUtils.clamp(s.orbit.pitch,-.36,1.22),distance:THREE.MathUtils.clamp(s.orbit.distance,2,9.5)};updateCamera()}
+ }catch(error){for(const f of fountains.slice())removeFountain(f,false);for(const old of backup.fountains)addFountain(old.type,old.weight,{height:old.height,colors:old.colors,positions:old.positions,id:old.id,restorePlacement:true});throw error}
+ draftWritesBlocked=false;renderControls();metrics();el('draftStatus').textContent='Сцена восстановлена · '+s.createdAt;msg('Восстановлено '+fountains.length+' фонтана из локального черновика.');return true;
+ }catch(err){draftWritesBlocked=true;el('draftStatus').textContent='Ошибка восстановления: '+String(err.message||err)+'. Исходный черновик сохранён. Автосохранение выключено до нажатия «Сохранить сцену». ';console.warn(err);return false}finally{restoringDraft=false}
+}
+async function initialize(){if(booting||ready)return;booting=true;lastLoadReport='CandySky v22 / '+new Date().toISOString()+'\n'+location.href+'\n';
  el('loading').hidden=false;el('retry').hidden=true;el('copyError').hidden=true;
- try{
-  el('loadText').textContent='Проверяю загрузку Three.js…';THREE=await loadThree();
-  el('loadText').textContent='Проверяю загрузку Rapier (встроенный WASM)…';RAPIER=await loadRapier();
-  el('loadText').textContent='Подготавливаю сцену фонтана 1+3+3+4+4…';createScene();seedFountain();
-  try{const existing=await draftRecord('get');if(existing){applyDraft(existing);el('draftStatus').textContent='Восстановлен черновик от '+(existing.createdAt||'неизвестной даты')}}
-  catch(err){el('draftStatus').textContent='Черновик не загружен: '+describeError(err);console.warn(err)}
-  if(!pointersBound){setupPointer();pointersBound=true}if(!controlsBound){setupButtons();controlsBound=true}
-  ready=true;resetPhysics();initOffline();el('loading').hidden=true;cancelAnimationFrame(frameReq);lastFrame=0;animate(0);
- }catch(err){
-  ready=false;lastLoadReport+='\nИтог: '+describeError(err);el('loading').hidden=false;
-  el('loadText').textContent='Запуск не удался: '+describeError(err)+'\n\nДля загрузки теста 1.9 необходим интернет. Проверьте HTTPS и доступ к jsDelivr. «Скопировать диагностику» даст подробности.';
-  el('loadText').style.whiteSpace='pre-line';el('retry').hidden=false;el('copyError').hidden=false;
-  msg('Не удалось загрузить движок',true);console.error(err);
- }finally{booting=false}
+ try{el('loadText').textContent='Загружаю Three.js…';THREE=await loadThree();el('loadText').textContent='Загружаю Rapier WASM…';RAPIER=await loadRapier();
+  createScene();if(!pointersBound){setupPointer();pointersBound=true}if(!controlsBound){setupButtons();controlsBound=true}
+  ready=true;try{
+   const saved=await draftRecord('get');
+   if(saved){const restored=await restoreDraft(saved);if(!restored&&!fountains.length)addFountain(7,{x:0,z:0})}
+   else addFountain(7,{x:0,z:0});
+  }catch(err){draftWritesBlocked=true;el('draftStatus').textContent='Черновик недоступен: '+String(err.message||err)+'. Автосохранение выключено до нажатия «Сохранить сцену». ';if(!fountains.length)addFountain(7,{x:0,z:0})}
+  renderControls();el('offlineStatus').textContent='Тестовый v22: Three.js/Rapier с jsDelivr. Офлайн не готов.';
+  el('loading').hidden=true;cancelAnimationFrame(frameReq);lastFrame=0;animate(0);msg('Общая сцена готова: '+fountains.length+' фонтан(ов).');
+ }catch(err){ready=false;lastLoadReport+='\nОшибка: '+String(err.message||err);el('loadText').textContent='Запуск не удался: '+String(err.message||err)+'; нужен интернет для CDN.';el('retry').hidden=false;el('copyError').hidden=false;msg('Не удалось запустить Rapier',true);console.error(err)}finally{booting=false}
 }
 el('retry').addEventListener('click',initialize);
-window.__candyFountainDiagnostics=()=>({ready,mode:fountainMode?'fountain':'classic',balloons:balloons.length,weights:weights.length,
- junctions:Object.fromEntries(Object.entries(fountainJunctions).map(([k,j])=>[k,j.body?.translation()])),
- edges:fountainMode?balloons.map(b=>({from:b.junctionKey,to:b.id,length:b.length})).concat(fountainSegments.map(s=>({from:s.fromKey,to:s.toKey,length:s.length}))):[],
- lowerHeight:fountainHeight,targetHeight:fountainTargetHeight,
- actualLowerDistance:fountainMode&&fountainSegments.length?getRing(fountainSegments[0]).distanceTo(getTie(fountainSegments[0])):null,
- topSegment:FOUNTAIN_PRESET.top,middleSegment:FOUNTAIN_PRESET.middle,sideSegment:FOUNTAIN_PRESET.side,
- radialThree:FOUNTAIN_PRESET.radial,radialFour:FOUNTAIN_PRESET.radialFour,radialLower:FOUNTAIN_PRESET.radialLower,tierCounts:[1,3,3,4,4],
- fountainContactFriction:FOUNTAIN_BALLOON_FRICTION,classicContactFriction:BALLOON_FRICTION,
- fountainLinearDamping:FOUNTAIN_LINEAR_DAMPING,fountainAngularDamping:FOUNTAIN_ANGULAR_DAMPING,
- elapsed,overlap:ready?overlapMetric():null});
-el('copyError').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(lastLoadReport);el('copyError').textContent='Диагностика скопирована'}catch(err){el('loadText').textContent=lastLoadReport;el('loadText').style.whiteSpace='pre-wrap'}});
+el('copyError').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(lastLoadReport)}catch{el('loadText').textContent=lastLoadReport}});
+window.__candyMultiDiagnostics=()=>({ready,fountains:fountains.map(f=>({id:f.id,type:f.presetKey,balloons:f.balloons.length,junctions:Object.keys(f.junctions).length,connections:f.segments.length+f.balloons.length,height:f.height,targetHeight:f.targetHeight,weight:f.weight.body?.translation(),positions:f.balloons.map(b=>b.body.translation()),lengths:f.segments.map(s=>s.length).concat(f.balloons.map(b=>b.length))})),totalBalloons:balloons.length,totalSegments:segments.length,totalJoints:segments.length+balloons.length,oneWorld:!!world,elapsed,overlap:ready?overlapMetric():null,paused});
 initialize();
 
 </script>
