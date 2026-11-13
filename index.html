@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#fffaf8">
-<title>CandySky — Rapier Lab 1.9 · несколько фонтанов · v32</title>
+<title>CandySky — Rapier Lab 1.9 · несколько фонтанов · v33</title>
 <style>
 :root{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#26313a;background:#fffaf8;color-scheme:light}
 *{box-sizing:border-box}
@@ -163,7 +163,7 @@ button:hover{background:#faf4f3}button.primary{background:#f4d4d2;border-color:#
 <body>
 <div class="app" id="app">
  <canvas id="view" aria-label="Единая 3D-сцена нескольких фонтанов CandySky"></canvas>
- <header class="topbar"><div class="brand"><strong>CandySky · Фонтаны · v32</strong><small>Несколько композиций · высота сцены 3,2 м</small></div><div class="state" id="status"><i></i><span id="statusText">Загрузка движка</span></div></header>
+ <header class="topbar"><div class="brand"><strong>CandySky · Фонтаны · v33</strong><small>Несколько композиций · высота сцены 3,2 м</small></div><div class="state" id="status"><i></i><span id="statusText">Загрузка движка</span></div></header>
  <div class="panel-backdrop" id="panelBackdrop" aria-hidden="true"></div>
  <button type="button" class="panel-toggle" id="panelToggle" aria-controls="labPanel" aria-expanded="false" aria-label="Открыть управление фонтанами"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16M9 4v6M15 14v6"/></svg><span>Управление</span><span class="panel-toggle-count" id="panelToggleCount">0</span></button>
  <section class="panel" id="labPanel" aria-label="Управление фонтанами" aria-hidden="true" inert>
@@ -202,7 +202,7 @@ button:hover{background:#faf4f3}button.primary{background:#f4d4d2;border-color:#
  <div class="load" id="loading"><h2>Загрузка CandySky 3D</h2><p id="loadText">Подключаю Three.js и Rapier…</p><button id="retry" hidden>Повторить</button><button id="copyError" hidden>Скопировать ошибку</button></div>
 </div>
 <script type="module">
-// CandySky v32: единый экспериментальный мир для нескольких независимых фонтанов.
+// CandySky v33: единый экспериментальный мир для нескольких независимых фонтанов.
 // Оригинальные v16 / v17 / v18 / v19 остаются неизменными файлами.
 // Реальная физика Rapier + XPBD локально, библиотеки тестово загружаются с CDN (не production/offline).
 const THREE_SOURCES=[['jsDelivr · Three.js 0.164.1','https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js']];
@@ -450,7 +450,78 @@ function renderBalloonEditor(){const f=selectedFountain(),b=chosen(),list=el('ba
  el('selectedBalloonInfo').textContent=b?slotLabel(b)+' · '+productLabel(b)+(b.fountainRole==='top'?' · лента '+(b.length*100).toLocaleString('ru-RU',{maximumFractionDigits:1})+' см':''):'Выбери шар';el('replaceBalloon').disabled=!ready||!b;
  for(const item of balloons){const mat=item.visual?.children[0]?.material;if(mat?.emissive){mat.emissive.setHex(item.id===b?.id?0x24131c:0);mat.emissiveIntensity=.18}}
 }
-function fitReplacement(b,spec,length=b.length){const j=getRing(b),oldTie=getTie(b),candidates=[];
+// Query the approved convex sectors without stepping physics or moving neighbours.
+function fitFoilReplacement(b,spec,length,allowEntry=true){
+ const anchor=getRing(b),oldTie=getTie(b),current=b.body.rotation(),identity=new THREE.Quaternion();
+ const groups=balloons.filter(other=>other!==b).map(other=>{
+  const s=productSpec(other.product),p=other.body.translation(),r=other.body.rotation(),q=new THREE.Quaternion(r.x,r.y,r.z,r.w);
+  if(!s.geometry.boundingSphere)s.geometry.computeBoundingSphere();const sphere=s.geometry.boundingSphere,center=sphere.center.clone(),radius=s.kind==='latex'?Math.max(...s.parts.map(part=>center.distanceTo(new THREE.Vector3(part.x,part.y,part.z))+part.r)):sphere.radius;
+  return {center:center.applyQuaternion(q).add(vec(p)),radius,colliders:Array.from({length:other.body.numColliders()},(_,i)=>other.body.collider(i))};
+ });
+ const balloonBodies=new Set(balloons.map(item=>item.body.handle)),obstacles=[];
+ world.colliders.forEach(c=>{if(!c.isSensor()&&!balloonBodies.has(c.parent()?.handle))obstacles.push(c)});
+ if(!spec.geometry.boundingSphere)spec.geometry.computeBoundingSphere();const localSphere=spec.geometry.boundingSphere,probes=[];
+ try{
+  const shapes=spec.hulls.map(vertices=>{const desc=RAPIER.ColliderDesc.convexHull(vertices);if(!desc)throw Error('Не удалось проверить форму фигуры');return desc.shape});
+  const zero=shapes.map(()=>({x:0,y:0,z:0})),partRotations=shapes.map(()=>({x:0,y:0,z:0,w:1}));
+  probes.push(world.createCollider(new RAPIER.ColliderDesc(new RAPIER.Compound(shapes,zero,partRotations)).setSensor(true)));
+  let bestGap=-Infinity,bestPose=null,candidateGap=0;
+  const margin=.0001,sphereCenter=new THREE.Vector3(),offset=new THREE.Vector3(),root=new THREE.Vector3();
+  const collides=c=>{for(const probe of probes){const contact=c.contactCollider(probe,margin);if(contact){candidateGap=Math.min(candidateGap,contact.distance);if(candidateGap<bestGap)return true}}return false};
+  const tryPose=(tie,q)=>{candidateGap=margin;
+   offset.set(spec.tieX||0,spec.tie,0).applyQuaternion(q);root.copy(tie).sub(offset);
+   sphereCenter.copy(localSphere.center).applyQuaternion(q).add(root);
+   for(const probe of probes){probe.setTranslation(root);probe.setRotation(q)}
+   for(const c of obstacles){const shape=c.shape,p=c.translation();if(shape.type===RAPIER.ShapeType.Cuboid){const h=shape.halfExtents;const d=Math.hypot(Math.max(0,Math.abs(sphereCenter.x-p.x)-h.x),Math.max(0,Math.abs(sphereCenter.y-p.y)-h.y),Math.max(0,Math.abs(sphereCenter.z-p.z)-h.z));if(d>localSphere.radius+margin)continue}if(collides(c))return null}
+   for(const group of groups){if(sphereCenter.distanceTo(group.center)>localSphere.radius+group.radius+margin)continue;for(const c of group.colliders)if(collides(c))return null}
+   const pose={x:root.x,y:root.y,z:root.z,rotation:{x:q.x,y:q.y,z:q.z,w:q.w}};if(candidateGap>bestGap){bestGap=candidateGap;bestPose=pose}return candidateGap>=margin?pose:null;
+  };
+  const direction=oldTie.clone().sub(anchor),radial=Math.atan2(direction.z,direction.x),vertical=new THREE.Vector3(0,1,0);
+  const rotations=[new THREE.Quaternion(current.x,current.y,current.z,current.w),identity];
+  for(const yaw of [Math.PI/6,-Math.PI/6,Math.PI/3,-Math.PI/3,Math.PI/2,-Math.PI/2,Math.PI])rotations.push(new THREE.Quaternion().setFromAxisAngle(vertical,yaw));
+  for(const tilt of [.25,.5,.8,1.1])for(const azimuth of [radial,radial+Math.PI/2,radial-Math.PI/2,radial+Math.PI]){
+   const lean=new THREE.Quaternion().setFromUnitVectors(vertical,new THREE.Vector3(Math.sin(tilt)*Math.cos(azimuth),Math.cos(tilt),Math.sin(tilt)*Math.sin(azimuth)));
+   rotations.push(lean,lean.clone().multiply(new THREE.Quaternion().setFromAxisAngle(vertical,Math.PI/2)));
+  }
+  for(const roll of [Math.PI/10,-Math.PI/10,Math.PI/5,-Math.PI/5,Math.PI/3,-Math.PI/3])for(const yaw of [0,Math.PI/4,Math.PI/2,3*Math.PI/4])rotations.push(new THREE.Quaternion().setFromAxisAngle(vertical,yaw).multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,0,1),roll)));
+  const ties=[];if(direction.length()<=length+.000001)ties.push(oldTie);if(direction.lengthSq()>1e-12)for(const fraction of [1,.8,.6,.4])ties.push(anchor.clone().add(direction.clone().normalize().multiplyScalar(length*fraction)));ties.push(anchor.clone());
+  for(const tie of ties)for(const q of rotations){const pose=tryPose(tie,q);if(pose)return pose}
+  // Refine a near miss continuously instead of requiring it to land on a coarse grid.
+  const refine=()=>{if(!bestPose)return null;const axes=[new THREE.Vector3(1,0,0),vertical,new THREE.Vector3(0,0,1)];
+   for(const step of [.03,.015,.0075,.003])for(let sweep=0;sweep<4;sweep++){
+    const previous=bestGap,base=bestPose,q=new THREE.Quaternion(base.rotation.x,base.rotation.y,base.rotation.z,base.rotation.w),tie=new THREE.Vector3(spec.tieX||0,spec.tie,0).applyQuaternion(q).add(new THREE.Vector3(base.x,base.y,base.z));
+    for(const axis of axes)for(const sign of [-1,1]){
+     const moved=tie.clone().addScaledVector(axis,step*sign),delta=moved.clone().sub(anchor);if(delta.length()>length)moved.copy(anchor).add(delta.normalize().multiplyScalar(length));const translated=tryPose(moved,q);if(translated)return translated;
+     const turn=new THREE.Quaternion().setFromAxisAngle(axis,step*10*sign).multiply(q),rotated=tryPose(tie,turn);if(rotated)return rotated;
+    }if(bestGap-previous<.000001)break;
+   }return null;
+  };
+  const refined=refine();if(refined)return refined;
+  const angle0=Math.atan2(Math.hypot(direction.x,direction.z),Math.max(0,direction.y));
+  const angles=[angle0,0,.25,.5,.8,1.1,1.4,Math.PI/2,1.8,2.1].filter((a,i,list)=>list.findIndex(x=>Math.abs(x-a)<.01)===i);
+  const azimuths=[0,Math.PI/12,-Math.PI/12,Math.PI/6,-Math.PI/6,Math.PI/3,-Math.PI/3,Math.PI/2,-Math.PI/2,2*Math.PI/3,-2*Math.PI/3,Math.PI].map(a=>radial+a);
+  for(const angle of angles)for(const azimuth of azimuths){const tie=new THREE.Vector3(anchor.x+length*Math.sin(angle)*Math.cos(azimuth),anchor.y+length*Math.cos(angle),anchor.z+length*Math.sin(angle)*Math.sin(azimuth));for(const q of rotations){const pose=tryPose(tie,q);if(pose)return pose}}
+  for(let i=0;i<1024;i++){
+   const y=1-2*(i+.5)/1024,azimuth=i*2.399963229728653,rad=Math.sqrt(1-y*y),fraction=[1,.85,.65,.4,.15][i%5],tie=new THREE.Vector3(rad*Math.cos(azimuth),y,rad*Math.sin(azimuth)).multiplyScalar(length*fraction).add(anchor);
+   const u=(i+.5)/1024,v=(i*.6180339887498949)%1,w=(i*.7548776662466927)%1,q=new THREE.Quaternion(Math.sqrt(1-u)*Math.sin(2*Math.PI*v),Math.sqrt(1-u)*Math.cos(2*Math.PI*v),Math.sqrt(u)*Math.sin(2*Math.PI*w),Math.sqrt(u)*Math.cos(2*Math.PI*w));
+   const pose=tryPose(tie,q);if(pose)return pose;
+  }
+  const lastRefined=refine();if(lastRefined)return lastRefined;
+  if(allowEntry){const entryLength=Math.min(.75,Math.max(.45,length+.12)),pose=fitFoilReplacement(b,spec,entryLength,false);return {...pose,placementLength:entryLength}}
+  throw Error('Фигура не помещается в этой позиции. Освободи место рядом или выбери другой шар яруса.');
+ }finally{for(const probe of probes)world.removeCollider(probe,false)}
+}
+
+function reelFoilPlacements(){for(const b of balloons){
+ if(!Number.isFinite(b.placementTarget)||drag?.kind==='balloon'&&drag.id===b.id)continue;
+ b.length=Math.max(b.placementTarget,b.length-.002);
+ if(typeof b.joint?.setLimits==='function')b.joint.setLimits(0,b.length);
+ else{if(b.joint)world.removeImpulseJoint(b.joint,true);const j=getFountain(b.fountainId)?.junctions[b.junctionKey];b.joint=world.createImpulseJoint(RAPIER.JointData.rope(b.length,{x:b.tieX||0,y:b.tieY,z:0},{x:0,y:0,z:0}),b.body,j.body,true)}
+ b.ribbon.segmentLength=b.length/(b.ribbon.nodes.length-1);b.body.wakeUp();
+ if(Math.abs(b.length-b.placementTarget)<.000001){delete b.placementTarget;b.body.setAdditionalSolverIterations(0);if(selectedId===b.id){renderBalloonEditor();el('editorStatus').textContent='Фигура размещена.'}requestDraftSave()}
+}}
+
+function fitReplacement(b,spec,length=b.length){if(FOIL_SHAPES[spec.kind])return fitFoilReplacement(b,spec,length);const j=getRing(b),oldTie=getTie(b),candidates=[];
  const identity=new THREE.Quaternion(),current=b.body.rotation();
  const add=(tie,q)=>{const offset=new THREE.Vector3(spec.tieX||0,spec.tie,0).applyQuaternion(q);candidates.push({x:tie.x-offset.x,y:tie.y-offset.y,z:tie.z-offset.z,rotation:{x:q.x,y:q.y,z:q.z,w:q.w}})};
  const rotation=new THREE.Quaternion(current.x,current.y,current.z,current.w);
@@ -478,14 +549,14 @@ async function replaceBalloonProduct(b,product,color){
  }
  await ensureProductAssets(product);if(!balloons.includes(b)||restoringDraft||testing)return false;
  const nextLength=balloonRibbonLength(b,product);
- if(productSpec(b.product).geometry===spec.geometry&&Math.abs(nextLength-b.length)<.000001){
+ if(productSpec(b.product).geometry===spec.geometry&&Math.abs(nextLength-(b.placementTarget??b.length))<.000001){
   disposeBalloonVisual(b);b.product={...product};b.color=color;createBalloonVisual(b,spec);syncBalloon(b);b.ribbon.mesh.material.color.setHex(color);renderBalloonEditor();requestDraftSave();el('editorStatus').textContent='Обновлён '+slotLabel(b)+': '+productLabel(b)+'.';el('useTopSlot').hidden=true;return true;
  }
  const start=fitReplacement(b,spec,nextLength),p=b.body.translation(),q=b.body.rotation(),v=b.body.linvel(),w=b.body.angvel();
- const backup={length:b.length,product:b.product?{...b.product}:null,color:b.color,position:{x:p.x,y:p.y,z:p.z},q:{x:q.x,y:q.y,z:q.z,w:q.w},v:{...v},w:{...w}};
+ const backup={length:b.length,product:b.product?{...b.product}:null,color:b.color,position:{x:p.x,y:p.y,z:p.z,...(Number.isFinite(b.placementTarget)?{placementLength:b.length}:{})},q:{x:q.x,y:q.y,z:q.z,w:q.w},v:{...v},w:{...w}};
  disposeBalloon(b);b.product={...product};b.color=color;b.length=nextLength;b.spawn=start;
  try{createBalloonPhysics(b)}catch(error){disposeBalloon(b);b.product=backup.product;b.color=backup.color;b.length=backup.length;b.spawn=backup.position;createBalloonPhysics(b);b.body.setRotation(backup.q,true);b.body.setLinvel(backup.v,true);b.body.setAngvel(backup.w,true);throw error}
- b.body.wakeUp();renderBalloonEditor();requestDraftSave();el('editorStatus').textContent='Заменён '+slotLabel(b)+': '+productLabel(b)+'.';el('useTopSlot').hidden=true;return true;
+ b.body.wakeUp();renderBalloonEditor();requestDraftSave();el('editorStatus').textContent=Number.isFinite(b.placementTarget)?'Размещаю фигуру: лента плавно подтягивается к узлу.':'Заменён '+slotLabel(b)+': '+productLabel(b)+'.';el('useTopSlot').hidden=true;return true;
 }
 function setupBalloonEditor(){
  for(const [name,color] of EDITOR_COLORS){const o=document.createElement('option');o.value=String(color);o.textContent=name;el('productColor').append(o)}
@@ -684,13 +755,13 @@ function changeFountainHeight(target){const f=selectedFountain();if(!ready||test
 }
 
 function createBalloonPhysics(b){
- b.length=balloonRibbonLength(b);const spec=productSpec(b.product);b.tieX=spec.tieX||0;b.tieY=spec.tie;b.topY=spec.top;b.buoyancy=AIR_DENSITY*spec.volume*GRAVITY;
+ b.length=balloonRibbonLength(b);const spec=productSpec(b.product);delete b.placementTarget;if(FOIL_SHAPES[spec.kind]&&Number.isFinite(b.spawn?.placementLength)&&b.spawn.placementLength>b.length){b.placementTarget=b.length;b.length=b.spawn.placementLength;}b.tieX=spec.tieX||0;b.tieY=spec.tie;b.topY=spec.top;b.buoyancy=AIR_DENSITY*spec.volume*GRAVITY;
  const contactFriction=FOUNTAIN_BALLOON_FRICTION;
  const linearDamping=FOUNTAIN_LINEAR_DAMPING;
  const angularDamping=FOUNTAIN_ANGULAR_DAMPING;
  const start=spawnPosition(b);b.body=world.createRigidBody(RAPIER.RigidBodyDesc.dynamic().setTranslation(start.x,start.y,start.z).setLinearDamping(linearDamping).setAngularDamping(angularDamping).setCcdEnabled(true));
  if(start.rotation)b.body.setRotation(start.rotation,true);
- if(b.fountainRole==='top'&&spec.kind==='latex'&&[60,91.5].includes(spec.sizeCm))b.body.setAdditionalSolverIterations(32);
+ if(b.fountainRole==='top'&&spec.kind==='latex'&&[60,91.5].includes(spec.sizeCm))b.body.setAdditionalSolverIterations(32);if(Number.isFinite(b.placementTarget))b.body.setAdditionalSolverIterations(16);
  if(spec.kind==='latex'){
   let properties=latexMassProperties.get(spec.series);
   if(!properties){
@@ -853,7 +924,7 @@ function moveWeights(){
   if(scale===1){delete w.moveTarget;if(drag?.id!==w.id||drag?.kind!=='weight')requestDraftSave()}
  }
 }
-function step(){for(const f of fountains)reelFountain(f);
+function step(){for(const f of fountains)reelFountain(f);reelFoilPlacements();
  moveWeights();
  applyForces();world.step();elapsed+=DT;
  for(const b of balloons)simulateRibbon(b);for(const seg of segments)simulateRibbon(seg);
@@ -952,7 +1023,7 @@ function setupButtons(){setupBalloonEditor();
 
 
 async function readPreviousDraft(name='candysky-3d-multifountain-v23-drafts'){return new Promise((resolve,reject)=>{const req=indexedDB.open(name,1);req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains('scenes'))req.result.createObjectStore('scenes')};req.onerror=()=>reject(req.error);req.onsuccess=()=>{const db=req.result,tx=db.transaction('scenes','readonly'),read=tx.objectStore('scenes').get('current');let result;read.onsuccess=()=>{result=read.result};tx.oncomplete=()=>{db.close();resolve(result)};tx.onabort=()=>{db.close();reject(tx.error)}}})}
-const DRAFT_DB='candysky-3d-multifountain-v32-drafts',DRAFT_STORE='scenes',DRAFT_SCHEMA=3;
+const DRAFT_DB='candysky-3d-multifountain-v33-drafts',DRAFT_STORE='scenes',DRAFT_SCHEMA=3;
 let draftSaveTimer=null,dbPromise=null,restoringDraft=false,draftWritesBlocked=false;
 function openDraftDb(){if(!('indexedDB' in window))return Promise.reject(Error('IndexedDB недоступен'));
  if(!dbPromise)dbPromise=new Promise((resolve,reject)=>{const req=indexedDB.open(DRAFT_DB,1);
@@ -971,7 +1042,7 @@ async function draftRecord(mode,value){const db=await openDraftDb();return new P
 })}
 function snapshotScene(){return {schema:DRAFT_SCHEMA,createdAt:new Date().toISOString(),nextFountainId,selectedFountainId,orbit:{...orbit},
  fountains:fountains.map(f=>({id:f.id,type:f.presetKey,height:f.targetHeight,weight:{x:f.weight.body?.translation().x??f.weight.x,z:f.weight.body?.translation().z??f.weight.z},
-  products:f.balloons.map(b=>b.product||null),colors:f.balloons.map(b=>b.color),positions:f.balloons.map(b=>{const p=b.body.translation(),q=b.body.rotation();return {x:p.x,y:p.y,z:p.z,rotation:{x:q.x,y:q.y,z:q.z,w:q.w}}})}))}}
+  products:f.balloons.map(b=>b.product||null),colors:f.balloons.map(b=>b.color),positions:f.balloons.map(b=>{const p=b.body.translation(),q=b.body.rotation();return {x:p.x,y:p.y,z:p.z,rotation:{x:q.x,y:q.y,z:q.z,w:q.w},...(Number.isFinite(b.placementTarget)?{placementLength:b.length}:{})}})}))}}
 async function saveDraftNow(explicit=false){if(!ready||testing||restoringDraft||(draftWritesBlocked&&!explicit))return;if(draftSaveTimer){clearTimeout(draftSaveTimer);draftSaveTimer=null}
  try{await draftRecord('put',snapshotScene());draftWritesBlocked=false;el('draftStatus').textContent='Сцена сохранена на устройстве · '+new Date().toLocaleTimeString('ru-RU')}
  catch(err){el('draftStatus').textContent='Не удалось сохранить: '+String(err.message||err);console.warn(err)}
@@ -996,7 +1067,8 @@ function validateSnapshot(s){if(!s||![1,2,3].includes(s.schema)||!Array.isArray(
  const isNum=n=>typeof n==='number'&&Number.isFinite(n);
  const ids=new Set();for(const f of s.fountains){if(!Number.isSafeInteger(f.id)||f.id<1||ids.has(f.id)||!PRESETS[f.type]||!isNum(f.height)||!f.weight||![f.weight.x,f.weight.z].every(isNum)||
  Math.abs(f.weight.x)>2.3||Math.abs(f.weight.z)>2.3||!Array.isArray(f.colors)||f.colors.length!==Number(f.type)||!f.colors.every(isNum)||!Array.isArray(f.positions)||f.positions.length!==Number(f.type)||!f.positions.every(p=>p&&[p.x,p.y,p.z].every(isNum)&&Math.abs(p.x)<=2.5&&Math.abs(p.z)<=2.5&&p.y>=0&&p.y<=ROOM_HEIGHT))throw Error('Повреждённые данные фонтана');ids.add(f.id)}
- for(const f of s.fountains){for(const p of f.positions){if(p.rotation){const q=p.rotation,values=[q.x,q.y,q.z,q.w];if(!values.every(isNum)||Math.abs(Math.hypot(...values)-1)>.01)throw Error('Повреждённая ориентация шара')}}if(f.products!==undefined){if(!Array.isArray(f.products)||f.products.length!==Number(f.type))throw Error('Повреждённый состав шаров');f.products.forEach((p,i)=>{if(p){const spec=productSpec(p);if(i>0&&(PRODUCT_RULES[spec.kind].topOnly||spec.sizeCm>=61))throw Error('Неверная позиция товара')}})}}
+ for(const f of s.fountains){for(let i=0;i<f.positions.length;i++){const p=f.positions[i];if(p.placementLength!==undefined&&(!isNum(p.placementLength)||p.placementLength<(i===0?TOP_LENGTH:SIDE_LENGTH)||p.placementLength>.75||!FOIL_SHAPES[f.products?.[i]?.kind]))throw Error('Повреждённая длина размещения фигуры');}
+ for(const p of f.positions){if(p.rotation){const q=p.rotation,values=[q.x,q.y,q.z,q.w];if(!values.every(isNum)||Math.abs(Math.hypot(...values)-1)>.01)throw Error('Повреждённая ориентация шара')}}if(f.products!==undefined){if(!Array.isArray(f.products)||f.products.length!==Number(f.type))throw Error('Повреждённый состав шаров');f.products.forEach((p,i)=>{if(p){const spec=productSpec(p);if(i>0&&(PRODUCT_RULES[spec.kind].topOnly||spec.sizeCm>=61))throw Error('Неверная позиция товара')}})}}
  return s;
 }
 async function restoreDraft(preloaded=null){if(!ready||testing||restoringDraft)return false;clearTimeout(draftSaveTimer);draftSaveTimer=null;restoringDraft=true;try{const raw=preloaded??await draftRecord('get');if(!raw){el('draftStatus').textContent='Нет сохранённой сцены';return false}const s=validateSnapshot(migrateSnapshot(raw));if(!s){el('draftStatus').textContent='Нет сохранённой сцены';return false}
@@ -1012,16 +1084,16 @@ async function restoreDraft(preloaded=null){if(!ready||testing||restoringDraft)r
  draftWritesBlocked=false;renderControls();metrics();el('draftStatus').textContent='Сцена восстановлена · '+s.createdAt;msg('Восстановлено '+fountains.length+' фонтана из локального черновика.');return true;
  }catch(err){draftWritesBlocked=true;el('draftStatus').textContent='Ошибка восстановления: '+String(err.message||err)+'. Исходный черновик сохранён. Автосохранение выключено до нажатия «Сохранить сцену». ';console.warn(err);return false}finally{restoringDraft=false}
 }
-async function initialize(){if(booting||ready)return;booting=true;lastLoadReport='CandySky v32 / '+new Date().toISOString()+'\n'+location.href+'\n';
+async function initialize(){if(booting||ready)return;booting=true;lastLoadReport='CandySky v33 / '+new Date().toISOString()+'\n'+location.href+'\n';
  el('loading').hidden=false;el('retry').hidden=true;el('copyError').hidden=true;
  try{el('loadText').textContent='Подготавливаю утверждённые модели…';await loadDigitModels();el('loadText').textContent='Загружаю Three.js…';THREE=await loadThree();el('loadText').textContent='Загружаю Rapier WASM…';RAPIER=await loadRapier();
   createScene();if(!pointersBound){setupPointer();pointersBound=true}if(!controlsBound){setupButtons();controlsBound=true}
   ready=true;try{
-   let saved=await draftRecord('get');if(!saved){try{saved=await readPreviousDraft('candysky-3d-multifountain-v31-drafts')||await readPreviousDraft('candysky-3d-multifountain-v30-drafts')||await readPreviousDraft('candysky-3d-multifountain-v29-drafts')||await readPreviousDraft('candysky-3d-multifountain-v28-drafts')||await readPreviousDraft('candysky-3d-multifountain-v27-drafts')||await readPreviousDraft('candysky-3d-multifountain-v26-drafts')||await readPreviousDraft('candysky-3d-multifountain-v25-drafts')||await readPreviousDraft()||await readPreviousDraft('candysky-3d-multifountain-v21-drafts')}catch(err){console.warn('Предыдущий черновик недоступен',err)}}
+   let saved=await draftRecord('get');if(!saved){try{saved=await readPreviousDraft('candysky-3d-multifountain-v32-drafts')||await readPreviousDraft('candysky-3d-multifountain-v31-drafts')||await readPreviousDraft('candysky-3d-multifountain-v30-drafts')||await readPreviousDraft('candysky-3d-multifountain-v29-drafts')||await readPreviousDraft('candysky-3d-multifountain-v28-drafts')||await readPreviousDraft('candysky-3d-multifountain-v27-drafts')||await readPreviousDraft('candysky-3d-multifountain-v26-drafts')||await readPreviousDraft('candysky-3d-multifountain-v25-drafts')||await readPreviousDraft()||await readPreviousDraft('candysky-3d-multifountain-v21-drafts')}catch(err){console.warn('Предыдущий черновик недоступен',err)}}
    if(saved){const restored=await restoreDraft(saved);if(!restored&&!fountains.length)addFountain(7,{x:0,z:0})}
    else addFountain(7,{x:0,z:0});
   }catch(err){draftWritesBlocked=true;el('draftStatus').textContent='Черновик недоступен: '+String(err.message||err)+'. Автосохранение выключено до нажатия «Сохранить сцену». ';if(!fountains.length)addFountain(7,{x:0,z:0})}
-  renderControls();el('offlineStatus').textContent='Тестовый v32: Three.js/Rapier с jsDelivr. Офлайн не готов.';
+  renderControls();el('offlineStatus').textContent='Тестовый v33: Three.js/Rapier с jsDelivr. Офлайн не готов.';
   el('loading').hidden=true;cancelAnimationFrame(frameReq);lastFrame=0;animate(0);msg('Общая сцена готова: '+fountains.length+' фонтан(ов).');
  }catch(err){ready=false;lastLoadReport+='\nОшибка: '+String(err.message||err);el('loadText').textContent='Запуск не удался: '+String(err.message||err)+'; нужен интернет для CDN.';el('retry').hidden=false;el('copyError').hidden=false;msg('Не удалось запустить Rapier',true);console.error(err)}finally{booting=false}
 }
