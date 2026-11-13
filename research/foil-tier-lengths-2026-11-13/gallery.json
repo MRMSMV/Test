@@ -1,0 +1,731 @@
+{
+  "stars": [
+    {
+      "preset": 7,
+      "products": [
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        }
+      ],
+      "lengths": [
+        0.51,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27
+      ]
+    },
+    {
+      "preset": 11,
+      "products": [
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        }
+      ],
+      "lengths": [
+        0.51,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27
+      ]
+    },
+    {
+      "preset": 13,
+      "products": [
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        }
+      ],
+      "lengths": [
+        0.51,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27
+      ]
+    },
+    {
+      "preset": 15,
+      "products": [
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        }
+      ],
+      "lengths": [
+        0.51,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27
+      ]
+    }
+  ],
+  "hearts": [
+    {
+      "preset": 7,
+      "products": [
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        }
+      ],
+      "lengths": [
+        0.51,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27
+      ]
+    },
+    {
+      "preset": 11,
+      "products": [
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        }
+      ],
+      "lengths": [
+        0.51,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27
+      ]
+    },
+    {
+      "preset": 13,
+      "products": [
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        }
+      ],
+      "lengths": [
+        0.51,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27
+      ]
+    },
+    {
+      "preset": 15,
+      "products": [
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        }
+      ],
+      "lengths": [
+        0.51,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27
+      ]
+    }
+  ],
+  "mixed": [
+    {
+      "preset": 7,
+      "products": [
+        null,
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        null,
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        null,
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        }
+      ],
+      "lengths": [
+        0.51,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27
+      ]
+    },
+    {
+      "preset": 11,
+      "products": [
+        null,
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        null,
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        null,
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        null,
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        }
+      ],
+      "lengths": [
+        0.51,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27
+      ]
+    },
+    {
+      "preset": 13,
+      "products": [
+        null,
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        null,
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        null,
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        null,
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        null
+      ],
+      "lengths": [
+        0.51,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27
+      ]
+    },
+    {
+      "preset": 15,
+      "products": [
+        null,
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        null,
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        null,
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        null,
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        },
+        null,
+        {
+          "kind": "foilHeart",
+          "sizeCm": 37
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42
+        }
+      ],
+      "lengths": [
+        0.51,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27,
+        0.27
+      ]
+    }
+  ]
+}
