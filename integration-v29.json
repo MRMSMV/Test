@@ -1,0 +1,20 @@
+{
+  "version": "v29",
+  "target": "MRMSMV/Test/main/index.html",
+  "protectedLegacySha256": {
+    "v16": "4ed81f9f46093c7ee3a07f8db8eed0009a082ba46ec20c5b2d7bd152dd2a6a75",
+    "v17": "839376c440df773315b9b99f6d622b00dc1eadad60e45cefce6649263a0c7666",
+    "v18": "4bf671a006ac6a4aea1c4ba5b85906607c69a11cf2e25e27fb7f21e209f96610",
+    "v19": "8d7a3a0ef3271cd6fb9acba2f95f864f1a2ee2c3a311fb857c7bcddecf58adc6"
+  },
+  "lowerMinimumCm": 5,
+  "topRibbonCm": {
+    "latex60": 70,
+    "latex91.5": 90,
+    "others": 51
+  },
+  "sha256": {
+    "candysky-rapier-lab-1-v29-fountain-ribbon-lengths.html": "630c7cb30e84f7374baf873680ba3945667af7420985fd0f58f9a4b07e191246",
+    "test-report-v29.json": "7ed801cc6ca57c143bb5fa621a7dc6950bbb238bd806f450f8747d97510356fb"
+  }
+}
