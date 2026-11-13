@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#fffaf8">
-<title>CandySky — Rapier Lab 1.9 · несколько фонтанов · v23</title>
+<title>CandySky — Rapier Lab 1.9 · несколько фонтанов · v24</title>
 <style>
 :root{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#26313a;background:#fffaf8;color-scheme:light}
 *{box-sizing:border-box}
@@ -163,7 +163,7 @@ button:hover{background:#faf4f3}button.primary{background:#f4d4d2;border-color:#
 <body>
 <div class="app" id="app">
  <canvas id="view" aria-label="Единая 3D-сцена нескольких фонтанов CandySky"></canvas>
- <header class="topbar"><div class="brand"><strong>CandySky · Фонтаны · v23</strong><small>Несколько композиций в одном физическом мире</small></div><div class="state" id="status"><i></i><span id="statusText">Загрузка движка</span></div></header>
+ <header class="topbar"><div class="brand"><strong>CandySky · Фонтаны · v24</strong><small>Несколько композиций в одном физическом мире</small></div><div class="state" id="status"><i></i><span id="statusText">Загрузка движка</span></div></header>
  <div class="panel-backdrop" id="panelBackdrop" aria-hidden="true"></div>
  <button type="button" class="panel-toggle" id="panelToggle" aria-controls="labPanel" aria-expanded="false" aria-label="Открыть управление фонтанами"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16M9 4v6M15 14v6"/></svg><span>Управление</span><span class="panel-toggle-count" id="panelToggleCount">0</span></button>
  <section class="panel" id="labPanel" aria-label="Управление фонтанами" aria-hidden="true" inert>
@@ -199,7 +199,7 @@ button:hover{background:#faf4f3}button.primary{background:#f4d4d2;border-color:#
  <div class="load" id="loading"><h2>Загрузка CandySky 3D</h2><p id="loadText">Подключаю Three.js и Rapier…</p><button id="retry" hidden>Повторить</button><button id="copyError" hidden>Скопировать ошибку</button></div>
 </div>
 <script type="module">
-// CandySky v23: единый экспериментальный мир для нескольких независимых фонтанов.
+// CandySky v24: единый экспериментальный мир для нескольких независимых фонтанов.
 // Оригинальные v16 / v17 / v18 / v19 остаются неизменными файлами.
 // Реальная физика Rapier + XPBD локально, библиотеки тестово загружаются с CDN (не production/offline).
 const THREE_SOURCES=[['jsDelivr · Three.js 0.164.1','https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js']];
@@ -253,12 +253,19 @@ function renderBalloonEditor(){const f=selectedFountain(),b=chosen(),list=el('ba
  for(const item of balloons){const mat=item.visual?.children[0]?.material;if(mat?.emissive){mat.emissive.setHex(item.id===b?.id?0x24131c:0);mat.emissiveIntensity=.18}}
 }
 function fitReplacement(b,spec){const j=getRing(b),oldTie=getTie(b),candidates=[];
- // Keep attachment for identical products; otherwise search feasible points on the existing rope.
- candidates.push({x:oldTie.x,y:oldTie.y-spec.tie,z:oldTie.z});
- for(const angle of [0,.25,.5,.8,1.1,1.4])for(let n=0;n<12;n++){const a=n*Math.PI/6; candidates.push({x:j.x+b.length*Math.sin(angle)*Math.cos(a),y:j.y+b.length*Math.cos(angle)-spec.tie,z:j.z+b.length*Math.sin(angle)*Math.sin(a)})}
+ const identity=new THREE.Quaternion(),current=b.body.rotation();
+ const add=(tie,q)=>{const offset=new THREE.Vector3(0,spec.tie,0).applyQuaternion(q);candidates.push({x:tie.x-offset.x,y:tie.y-offset.y,z:tie.z-offset.z,rotation:{x:q.x,y:q.y,z:q.z,w:q.w}})};
+ add(oldTie,new THREE.Quaternion(current.x,current.y,current.z,current.w));
+ // Search both attachment direction and balloon orientation; the rope length is unchanged.
+ for(const tilt of b.fountainRole==='top'?[0,.3,.6,.9,1.2]:[0])
+  for(const angle of [0,.25,.5,.8,1.1,1.4,Math.PI/2])for(let n=0;n<24;n++){
+   const azimuth=n*Math.PI/12,q=tilt===0?identity:new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0,1,0),new THREE.Vector3(Math.sin(tilt)*Math.cos(azimuth),Math.cos(tilt),Math.sin(tilt)*Math.sin(azimuth)));
+   add({x:j.x+b.length*Math.sin(angle)*Math.cos(azimuth),y:j.y+b.length*Math.cos(angle),z:j.z+b.length*Math.sin(angle)*Math.sin(azimuth)},q);
+  }
  const others=balloons.filter(other=>other!==b).flatMap(other=>{const s=productSpec(other.product),p=other.body.translation(),q=other.body.rotation(),rotation=new THREE.Quaternion(q.x,q.y,q.z,q.w);return s.parts.map(part=>{const c=new THREE.Vector3(part.x,part.y,part.z).applyQuaternion(rotation).add(vec(p));return {...c,r:part.r}})});
- for(const p of candidates){if(p.y+spec.tie<.01||spec.parts.some(s=>Math.abs(p.x+s.x)+s.r>2.49||Math.abs(p.z+s.z)+s.r>2.49||p.y+s.y+s.r>2.49||p.y+s.y-s.r<.01))continue;
-  if(spec.parts.some(s=>others.some(o=>Math.hypot(p.x+s.x-o.x,p.y+s.y-o.y,p.z+s.z-o.z)<s.r+o.r+.003)))continue;
+ for(const p of candidates){const q=new THREE.Quaternion(p.rotation.x,p.rotation.y,p.rotation.z,p.rotation.w),parts=spec.parts.map(part=>{const c=new THREE.Vector3(part.x,part.y,part.z).applyQuaternion(q);return {x:p.x+c.x,y:p.y+c.y,z:p.z+c.z,r:part.r}});
+  if(parts.some(c=>Math.abs(c.x)+c.r>2.49||Math.abs(c.z)+c.r>2.49||c.y+c.r>2.49||c.y-c.r<.01))continue;
+  if(parts.some(c=>others.some(o=>Math.hypot(c.x-o.x,c.y-o.y,c.z-o.z)<c.r+o.r+.003)))continue;
   return p;
  }throw Error('Шар не помещается: мешают соседние шары, стены или потолок. Выбери меньший размер или уменьши высоту фонтана.');
 }
@@ -469,6 +476,7 @@ function createBalloonPhysics(b){
  const linearDamping=FOUNTAIN_LINEAR_DAMPING;
  const angularDamping=FOUNTAIN_ANGULAR_DAMPING;
  const start=spawnPosition(b);b.body=world.createRigidBody(RAPIER.RigidBodyDesc.dynamic().setTranslation(start.x,start.y,start.z).setLinearDamping(linearDamping).setAngularDamping(angularDamping).setCcdEnabled(true));
+ if(start.rotation)b.body.setRotation(start.rotation,true);
  if(spec.kind==='latex')for(const part of spec.parts)world.createCollider(RAPIER.ColliderDesc.ball(part.r).setTranslation(part.x,part.y,part.z).setMass(spec.mass*part.mass).setRestitution(.04).setFriction(contactFriction),b.body);
  else for(const rod of spec.rods){const dx=rod.b.x-rod.a.x,dy=rod.b.y-rod.a.y,len=Math.hypot(dx,dy),q=new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0,1,0),new THREE.Vector3(dx/len,dy/len,0));world.createCollider(RAPIER.ColliderDesc.capsule(len/2,spec.r).setTranslation((rod.a.x+rod.b.x)/2,(rod.a.y+rod.b.y)/2,0).setRotation(q).setMass(spec.mass/spec.rods.length).setFriction(contactFriction).setRestitution(.04),b.body)}
  b.visual=new THREE.Group();const material=new THREE.MeshPhysicalMaterial({color:b.color,roughness:spec.kind==='latex'?.40:.22,metalness:spec.kind==='latex'?0:.65,clearcoat:.16,clearcoatRoughness:.45,specularIntensity:.58});
@@ -721,7 +729,7 @@ async function draftRecord(mode,value){const db=await openDraftDb();return new P
 })}
 function snapshotScene(){return {schema:DRAFT_SCHEMA,createdAt:new Date().toISOString(),nextFountainId,selectedFountainId,orbit:{...orbit},
  fountains:fountains.map(f=>({id:f.id,type:f.presetKey,height:f.targetHeight,weight:{x:f.weight.body?.translation().x??f.weight.x,z:f.weight.body?.translation().z??f.weight.z},
-  products:f.balloons.map(b=>b.product||null),colors:f.balloons.map(b=>b.color),positions:f.balloons.map(b=>{const p=b.body.translation();return {x:p.x,y:p.y,z:p.z}})}))}}
+  products:f.balloons.map(b=>b.product||null),colors:f.balloons.map(b=>b.color),positions:f.balloons.map(b=>{const p=b.body.translation(),q=b.body.rotation();return {x:p.x,y:p.y,z:p.z,rotation:{x:q.x,y:q.y,z:q.z,w:q.w}}})}))}}
 async function saveDraftNow(explicit=false){if(!ready||testing||restoringDraft||(draftWritesBlocked&&!explicit))return;if(draftSaveTimer){clearTimeout(draftSaveTimer);draftSaveTimer=null}
  try{await draftRecord('put',snapshotScene());draftWritesBlocked=false;el('draftStatus').textContent='Сцена сохранена на устройстве · '+new Date().toLocaleTimeString('ru-RU')}
  catch(err){el('draftStatus').textContent='Не удалось сохранить: '+String(err.message||err);console.warn(err)}
@@ -731,7 +739,7 @@ function validateSnapshot(s){if(!s||![1,2].includes(s.schema)||!Array.isArray(s.
  const isNum=n=>typeof n==='number'&&Number.isFinite(n);
  const ids=new Set();for(const f of s.fountains){if(!Number.isSafeInteger(f.id)||f.id<1||ids.has(f.id)||!PRESETS[f.type]||!isNum(f.height)||!f.weight||![f.weight.x,f.weight.z].every(isNum)||
  Math.abs(f.weight.x)>2.3||Math.abs(f.weight.z)>2.3||!Array.isArray(f.colors)||f.colors.length!==Number(f.type)||!f.colors.every(isNum)||!Array.isArray(f.positions)||f.positions.length!==Number(f.type)||!f.positions.every(p=>p&&[p.x,p.y,p.z].every(isNum)&&Math.abs(p.x)<=2.5&&Math.abs(p.z)<=2.5&&p.y>=0&&p.y<=2.5))throw Error('Повреждённые данные фонтана');ids.add(f.id)}
- for(const f of s.fountains){if(f.products!==undefined){if(!Array.isArray(f.products)||f.products.length!==Number(f.type))throw Error('Повреждённый состав шаров');f.products.forEach((p,i)=>{if(p){const spec=productSpec(p);if(i>0&&(PRODUCT_RULES[spec.kind].topOnly||spec.sizeCm>=61))throw Error('Неверная позиция товара')}})}}
+ for(const f of s.fountains){for(const p of f.positions){if(p.rotation){const q=p.rotation,values=[q.x,q.y,q.z,q.w];if(!values.every(isNum)||Math.abs(Math.hypot(...values)-1)>.01)throw Error('Повреждённая ориентация шара')}}if(f.products!==undefined){if(!Array.isArray(f.products)||f.products.length!==Number(f.type))throw Error('Повреждённый состав шаров');f.products.forEach((p,i)=>{if(p){const spec=productSpec(p);if(i>0&&(PRODUCT_RULES[spec.kind].topOnly||spec.sizeCm>=61))throw Error('Неверная позиция товара')}})}}
  return s;
 }
 async function restoreDraft(preloaded=null){if(!ready||testing||restoringDraft)return false;clearTimeout(draftSaveTimer);draftSaveTimer=null;restoringDraft=true;try{const raw=preloaded??await draftRecord('get');if(!raw){el('draftStatus').textContent='Нет сохранённой сцены';return false}const s=validateSnapshot(raw);if(!s){el('draftStatus').textContent='Нет сохранённой сцены';return false}
@@ -746,7 +754,7 @@ async function restoreDraft(preloaded=null){if(!ready||testing||restoringDraft)r
  draftWritesBlocked=false;renderControls();metrics();el('draftStatus').textContent='Сцена восстановлена · '+s.createdAt;msg('Восстановлено '+fountains.length+' фонтана из локального черновика.');return true;
  }catch(err){draftWritesBlocked=true;el('draftStatus').textContent='Ошибка восстановления: '+String(err.message||err)+'. Исходный черновик сохранён. Автосохранение выключено до нажатия «Сохранить сцену». ';console.warn(err);return false}finally{restoringDraft=false}
 }
-async function initialize(){if(booting||ready)return;booting=true;lastLoadReport='CandySky v23 / '+new Date().toISOString()+'\n'+location.href+'\n';
+async function initialize(){if(booting||ready)return;booting=true;lastLoadReport='CandySky v24 / '+new Date().toISOString()+'\n'+location.href+'\n';
  el('loading').hidden=false;el('retry').hidden=true;el('copyError').hidden=true;
  try{el('loadText').textContent='Загружаю Three.js…';THREE=await loadThree();el('loadText').textContent='Загружаю Rapier WASM…';RAPIER=await loadRapier();
   createScene();if(!pointersBound){setupPointer();pointersBound=true}if(!controlsBound){setupButtons();controlsBound=true}
@@ -755,7 +763,7 @@ async function initialize(){if(booting||ready)return;booting=true;lastLoadReport
    if(saved){const restored=await restoreDraft(saved);if(!restored&&!fountains.length)addFountain(7,{x:0,z:0})}
    else addFountain(7,{x:0,z:0});
   }catch(err){draftWritesBlocked=true;el('draftStatus').textContent='Черновик недоступен: '+String(err.message||err)+'. Автосохранение выключено до нажатия «Сохранить сцену». ';if(!fountains.length)addFountain(7,{x:0,z:0})}
-  renderControls();el('offlineStatus').textContent='Тестовый v23: Three.js/Rapier с jsDelivr. Офлайн не готов.';
+  renderControls();el('offlineStatus').textContent='Тестовый v24: Three.js/Rapier с jsDelivr. Офлайн не готов.';
   el('loading').hidden=true;cancelAnimationFrame(frameReq);lastFrame=0;animate(0);msg('Общая сцена готова: '+fountains.length+' фонтан(ов).');
  }catch(err){ready=false;lastLoadReport+='\nОшибка: '+String(err.message||err);el('loadText').textContent='Запуск не удался: '+String(err.message||err)+'; нужен интернет для CDN.';el('retry').hidden=false;el('copyError').hidden=false;msg('Не удалось запустить Rapier',true);console.error(err)}finally{booting=false}
 }
