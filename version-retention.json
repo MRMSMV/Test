@@ -3,10 +3,10 @@
   "branch": "main",
   "keepLatestBuilds": 2,
   "retainedBuilds": [
-    "v31",
-    "v30"
+    "v32",
+    "v31"
   ],
-  "indexBuild": "v31",
+  "indexBuild": "v32",
   "gitHistoryRewrite": false,
   "localArchivesUnchanged": true,
   "preservedModelSources": [
@@ -165,10 +165,25 @@
     {
       "path": "v29-slider-390.png",
       "sha": "eae44ab4f2096f80fce3198edbde1a2ec13e24e1"
+    },
+    {
+      "path": "candysky-rapier-lab-1-v30-natural-top-ribbons.html"
+    },
+    {
+      "path": "integration-v30.json"
+    },
+    {
+      "path": "test-report-v30.json"
+    },
+    {
+      "path": "v30-contact.png"
+    },
+    {
+      "path": "v30-controls.png"
     }
   ],
   "retainedHtmlSha256": {
     "candysky-rapier-lab-1-v31-six-contact.html": "6528f3aabf8f1bd5e717e79955a2a2aa442b200db07dd8237a155e71b5f0feb7",
-    "candysky-rapier-lab-1-v30-natural-top-ribbons.html": "cf01226e819015b727e763cc5b06d03dfccc249bbb64e6c316c1d8fb22a5f7ed"
+    "candysky-rapier-lab-1-v32-layered-cristal.html": "b9f8e952599cb14d7dfb5f8f45f3ca5e6cfb1acd3f967786582051070b1d0588"
   }
 }
