@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#fffaf8">
-<title>CandySky — Rapier Lab 1.9 · несколько фонтанов · v29</title>
+<title>CandySky — Rapier Lab 1.9 · несколько фонтанов · v30</title>
 <style>
 :root{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#26313a;background:#fffaf8;color-scheme:light}
 *{box-sizing:border-box}
@@ -163,7 +163,7 @@ button:hover{background:#faf4f3}button.primary{background:#f4d4d2;border-color:#
 <body>
 <div class="app" id="app">
  <canvas id="view" aria-label="Единая 3D-сцена нескольких фонтанов CandySky"></canvas>
- <header class="topbar"><div class="brand"><strong>CandySky · Фонтаны · v29</strong><small>Несколько композиций в одном физическом мире</small></div><div class="state" id="status"><i></i><span id="statusText">Загрузка движка</span></div></header>
+ <header class="topbar"><div class="brand"><strong>CandySky · Фонтаны · v30</strong><small>Несколько композиций в одном физическом мире</small></div><div class="state" id="status"><i></i><span id="statusText">Загрузка движка</span></div></header>
  <div class="panel-backdrop" id="panelBackdrop" aria-hidden="true"></div>
  <button type="button" class="panel-toggle" id="panelToggle" aria-controls="labPanel" aria-expanded="false" aria-label="Открыть управление фонтанами"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16M9 4v6M15 14v6"/></svg><span>Управление</span><span class="panel-toggle-count" id="panelToggleCount">0</span></button>
  <section class="panel" id="labPanel" aria-label="Управление фонтанами" aria-hidden="true" inert>
@@ -202,7 +202,7 @@ button:hover{background:#faf4f3}button.primary{background:#f4d4d2;border-color:#
  <div class="load" id="loading"><h2>Загрузка CandySky 3D</h2><p id="loadText">Подключаю Three.js и Rapier…</p><button id="retry" hidden>Повторить</button><button id="copyError" hidden>Скопировать ошибку</button></div>
 </div>
 <script type="module">
-// CandySky v29: единый экспериментальный мир для нескольких независимых фонтанов.
+// CandySky v30: единый экспериментальный мир для нескольких независимых фонтанов.
 // Оригинальные v16 / v17 / v18 / v19 остаются неизменными файлами.
 // Реальная физика Rapier + XPBD локально, библиотеки тестово загружаются с CDN (не production/offline).
 const THREE_SOURCES=[['jsDelivr · Three.js 0.164.1','https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js']];
@@ -490,7 +490,7 @@ const PRESETS=Object.freeze({
  15:{name:'1+3+3+4+4',lowerMin:.05,lowerMax:.60,lowerDefault:.55,tiers:[{key:'crown',count:3,radius:.18,phase:0},{key:'upper',count:3,radius:.18,phase:Math.PI/3},{key:'middle',count:4,radius:.22,phase:Math.PI/4},{key:'lower',count:4,radius:.22,phase:0}]}
 });
 const TOP_LENGTH=.51,MIDDLE_LENGTH=.27,SIDE_LENGTH=.27;
-function topRibbonLength(product){return product?.kind==='latex'&&product.sizeCm===60?.70:product?.kind==='latex'&&product.sizeCm===91.5?.90:TOP_LENGTH}
+function topRibbonLength(product){return product?.kind==='latex'&&[60,91.5].includes(product.sizeCm)?.50:TOP_LENGTH}
 function balloonRibbonLength(b,product=b.product){return b.fountainRole==='top'?topRibbonLength(product):SIDE_LENGTH}
 function updateTopRibbonHint(){const product=editorProduct(),long=product.kind==='latex'&&[60,91.5].includes(product.sizeCm);el('topRibbonHint').hidden=!long;el('topRibbonHint').textContent=long?'В верхней позиции лента '+Math.round(topRibbonLength(product)*100)+' см. При нехватке места под потолком уменьши высоту фонтана.':''}
 
@@ -642,6 +642,9 @@ function addFountain(type,coords=null,{height=null,colors=null,positions=null,id
    if(positions?.[i]&&[positions[i].x,positions[i].y,positions[i].z].every(Number.isFinite))b.spawn=positions[i];
    f.balloons.push(b);balloons.push(b);createBalloonPhysics(b);
   }
+ const top=f.balloons[0];if(top?.product?.kind==='latex'&&[60,91.5].includes(top.product.sizeCm)){
+  const start=fitReplacement(top,productSpec(top.product));top.body.setTranslation(start,true);top.body.setRotation(start.rotation,true);initializeRibbon(top);syncBalloon(top);
+ }
  }catch(error){removeFountain(f,false);throw error}
  selectedFountainId=fid;selectedId=f.balloons[0]?.id||null;
  renderControls();metrics();requestDraftSave();return f;
@@ -673,6 +676,7 @@ function createBalloonPhysics(b){
  const angularDamping=FOUNTAIN_ANGULAR_DAMPING;
  const start=spawnPosition(b);b.body=world.createRigidBody(RAPIER.RigidBodyDesc.dynamic().setTranslation(start.x,start.y,start.z).setLinearDamping(linearDamping).setAngularDamping(angularDamping).setCcdEnabled(true));
  if(start.rotation)b.body.setRotation(start.rotation,true);
+ if(b.fountainRole==='top'&&spec.kind==='latex'&&[60,91.5].includes(spec.sizeCm))b.body.setAdditionalSolverIterations(32);
  if(spec.kind==='latex'){
   let properties=latexMassProperties.get(spec.series);
   if(!properties){
@@ -818,14 +822,25 @@ function renderControls(){renderBalloonEditor();const f=selectedFountain(),p=f?.
  const list=el('fountainList');list.replaceChildren();for(const item of fountains){const btn=document.createElement('button');btn.type='button';btn.className='fountain-chip';btn.dataset.fountainId=String(item.id);btn.setAttribute('aria-pressed',String(item.id===selectedFountainId));btn.disabled=testing;const title=document.createElement('strong');title.textContent='№'+item.id+' · '+item.presetKey+' шаров';const detail=document.createElement('small');detail.textContent=item.preset.name+' · '+Math.round(item.targetHeight*100)+' см';btn.append(title,detail);list.append(btn)}
 }
 function applyForces(){for(const b of balloons){
- b.body.resetForces(false);let f={x:0,y:b.buoyancy??buoyantForceN,z:0};
+ b.body.resetForces(false);const buoyancy=b.buoyancy??buoyantForceN;let f={x:0,y:buoyancy,z:0};
  if(drag?.kind==='balloon'&&drag.id===b.id&&drag.goal){const p=b.body.translation(),v=b.body.linvel(),goal=drag.goal,mass=b.body.mass(),kp=38,kd=13;
-  f={x:mass*(kp*(goal.x-p.x)-kd*v.x),y:(b.buoyancy??buoyantForceN)+mass*(kp*(goal.y-p.y)-kd*v.y),z:mass*(kp*(goal.z-p.z)-kd*v.z)};
-  const max=.85,m=Math.hypot(f.x,f.y,f.z);if(m>max)f={x:f.x*max/m,y:f.y*max/m,z:f.z*max/m}
+  const control={x:mass*(kp*(goal.x-p.x)-kd*v.x),y:mass*(kp*(goal.y-p.y)-kd*v.y),z:mass*(kp*(goal.z-p.z)-kd*v.z)};
+  const norm=Math.hypot(control.x,control.y,control.z),scale=norm>.85?.85/norm:1;
+  // A held balloon needs the hand to balance net lift; limit only the movement force.
+  const holdingForce=mass*GRAVITY-buoyancy;
+  f={x:control.x*scale,y:buoyancy+holdingForce+control.y*scale,z:control.z*scale};
  }b.body.addForce(f,false);
 }}
+function queueWeightMove(w,goal){const top=getFountain(w.fountainId)?.balloons[0],p=top?.product;w.moveTarget={x:goal.x,z:goal.z,smooth:top?.fountainRole==='top'&&p?.kind==='latex'&&[60,91.5].includes(p.sizeCm)}}
+function moveWeights(){
+ if(drag?.kind==='weight'&&drag.goal){const w=getWeight(drag.id);if(w?.body)queueWeightMove(w,drag.goal)}
+ for(const w of weights){if(!w.body||!w.moveTarget)continue;const target=w.moveTarget,p=w.body.translation(),dx=target.x-p.x,dz=target.z-p.z,distance=Math.hypot(dx,dz),scale=target.smooth&&distance>2*DT?2*DT/distance:1;
+  w.x=p.x+dx*scale;w.z=p.z+dz*scale;w.body.setNextKinematicTranslation({x:w.x,y:.072,z:w.z});
+  if(scale===1){delete w.moveTarget;if(drag?.id!==w.id||drag?.kind!=='weight')requestDraftSave()}
+ }
+}
 function step(){for(const f of fountains)reelFountain(f);
- if(drag?.kind==='weight'&&drag.goal){const w=getWeight(drag.id);if(w?.body){w.body.setNextKinematicTranslation({x:drag.goal.x,y:.072,z:drag.goal.z});w.x=drag.goal.x;w.z=drag.goal.z}}
+ moveWeights();
  applyForces();world.step();elapsed+=DT;
  for(const b of balloons)simulateRibbon(b);for(const seg of segments)simulateRibbon(seg);
 }
@@ -883,7 +898,7 @@ const touchPoints=new Map();let pinch=null;
 function setupPointer(){const canvas=el('view');
  canvas.addEventListener('pointerdown',e=>{
   if(!ready||testing)return;try{canvas.setPointerCapture(e.pointerId)}catch(_){ }
-  if(e.pointerType==='touch'){touchPoints.set(e.pointerId,{x:e.clientX,y:e.clientY});if(touchPoints.size>=2){drag=null;orbitDrag=null;const pts=[...touchPoints.values()];pinch={gap:Math.max(5,Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y)),distance:orbit.distance};return}}
+  if(e.pointerType==='touch'){touchPoints.set(e.pointerId,{x:e.clientX,y:e.clientY});if(touchPoints.size>=2){if(drag?.kind==='weight'){const w=getWeight(drag.id);if(w)delete w.moveTarget}drag=null;orbitDrag=null;const pts=[...touchPoints.values()];pinch={gap:Math.max(5,Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y)),distance:orbit.distance};return}}
   const hit=hitTest(e);if(hit){
    const b=hit.balloon,w=hit.weight;if(b)selectBalloon(b.id);if(w)selectWeight(w.id);
    const p=hit.kind==='balloon'?vec(b.body.translation()):vec(w.body.translation());drag={kind:hit.kind,id:b?.id??w?.id??null,pointerId:e.pointerId,goal:p.clone()};pointerNdc(e);
@@ -899,7 +914,7 @@ function setupPointer(){const canvas=el('view');
   if(drag?.pointerId===e.pointerId){pointerNdc(e);const point=new THREE.Vector3();if(raycaster.ray.intersectPlane(dragPlane,point)){point.add(dragOffset);if(drag.kind==='weight'){point.y=.072;point.x=THREE.MathUtils.clamp(point.x,-2.3,2.3);point.z=THREE.MathUtils.clamp(point.z,-2.3,2.3)}else clampTarget(point);drag.goal=point}}
   else if(orbitDrag?.id===e.pointerId){orbit.yaw=orbitDrag.yaw-(e.clientX-orbitDrag.x)*.007;orbit.pitch=THREE.MathUtils.clamp(orbitDrag.pitch+(e.clientY-orbitDrag.y)*.005,-.36,1.22);updateCamera()}
  });
- const release=e=>{touchPoints.delete(e.pointerId);if(touchPoints.size<2)pinch=null;if(drag?.pointerId===e.pointerId){const b=drag.kind==='balloon'?balloons.find(item=>item.id===drag.id):null;drag=null;if(b)b.body.wakeUp();requestDraftSave()}if(orbitDrag?.id===e.pointerId)orbitDrag=null};
+ const release=e=>{touchPoints.delete(e.pointerId);if(touchPoints.size<2)pinch=null;if(drag?.pointerId===e.pointerId){if(drag.kind==='weight'&&drag.goal){const w=getWeight(drag.id);if(w?.body){if(e.type==='pointercancel'||paused)delete w.moveTarget;else queueWeightMove(w,drag.goal)}}const b=drag.kind==='balloon'?balloons.find(item=>item.id===drag.id):null;drag=null;if(b)b.body.wakeUp();requestDraftSave()}if(orbitDrag?.id===e.pointerId)orbitDrag=null};
  canvas.addEventListener('pointerup',release);canvas.addEventListener('pointercancel',release);
  canvas.addEventListener('wheel',e=>{e.preventDefault();orbit.distance=THREE.MathUtils.clamp(orbit.distance+e.deltaY*.002,2.0,9.5);updateCamera()},{passive:false});
 }
@@ -923,7 +938,7 @@ function setupButtons(){setupBalloonEditor();
 
 
 async function readPreviousDraft(name='candysky-3d-multifountain-v23-drafts'){return new Promise((resolve,reject)=>{const req=indexedDB.open(name,1);req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains('scenes'))req.result.createObjectStore('scenes')};req.onerror=()=>reject(req.error);req.onsuccess=()=>{const db=req.result,tx=db.transaction('scenes','readonly'),read=tx.objectStore('scenes').get('current');let result;read.onsuccess=()=>{result=read.result};tx.oncomplete=()=>{db.close();resolve(result)};tx.onabort=()=>{db.close();reject(tx.error)}}})}
-const DRAFT_DB='candysky-3d-multifountain-v29-drafts',DRAFT_STORE='scenes',DRAFT_SCHEMA=3;
+const DRAFT_DB='candysky-3d-multifountain-v30-drafts',DRAFT_STORE='scenes',DRAFT_SCHEMA=3;
 let draftSaveTimer=null,dbPromise=null,restoringDraft=false,draftWritesBlocked=false;
 function openDraftDb(){if(!('indexedDB' in window))return Promise.reject(Error('IndexedDB недоступен'));
  if(!dbPromise)dbPromise=new Promise((resolve,reject)=>{const req=indexedDB.open(DRAFT_DB,1);
@@ -983,16 +998,16 @@ async function restoreDraft(preloaded=null){if(!ready||testing||restoringDraft)r
  draftWritesBlocked=false;renderControls();metrics();el('draftStatus').textContent='Сцена восстановлена · '+s.createdAt;msg('Восстановлено '+fountains.length+' фонтана из локального черновика.');return true;
  }catch(err){draftWritesBlocked=true;el('draftStatus').textContent='Ошибка восстановления: '+String(err.message||err)+'. Исходный черновик сохранён. Автосохранение выключено до нажатия «Сохранить сцену». ';console.warn(err);return false}finally{restoringDraft=false}
 }
-async function initialize(){if(booting||ready)return;booting=true;lastLoadReport='CandySky v29 / '+new Date().toISOString()+'\n'+location.href+'\n';
+async function initialize(){if(booting||ready)return;booting=true;lastLoadReport='CandySky v30 / '+new Date().toISOString()+'\n'+location.href+'\n';
  el('loading').hidden=false;el('retry').hidden=true;el('copyError').hidden=true;
  try{el('loadText').textContent='Подготавливаю утверждённые модели…';await loadDigitModels();el('loadText').textContent='Загружаю Three.js…';THREE=await loadThree();el('loadText').textContent='Загружаю Rapier WASM…';RAPIER=await loadRapier();
   createScene();if(!pointersBound){setupPointer();pointersBound=true}if(!controlsBound){setupButtons();controlsBound=true}
   ready=true;try{
-   let saved=await draftRecord('get');if(!saved){try{saved=await readPreviousDraft('candysky-3d-multifountain-v28-drafts')||await readPreviousDraft('candysky-3d-multifountain-v27-drafts')||await readPreviousDraft('candysky-3d-multifountain-v26-drafts')||await readPreviousDraft('candysky-3d-multifountain-v25-drafts')||await readPreviousDraft()||await readPreviousDraft('candysky-3d-multifountain-v21-drafts')}catch(err){console.warn('Предыдущий черновик недоступен',err)}}
+   let saved=await draftRecord('get');if(!saved){try{saved=await readPreviousDraft('candysky-3d-multifountain-v29-drafts')||await readPreviousDraft('candysky-3d-multifountain-v28-drafts')||await readPreviousDraft('candysky-3d-multifountain-v27-drafts')||await readPreviousDraft('candysky-3d-multifountain-v26-drafts')||await readPreviousDraft('candysky-3d-multifountain-v25-drafts')||await readPreviousDraft()||await readPreviousDraft('candysky-3d-multifountain-v21-drafts')}catch(err){console.warn('Предыдущий черновик недоступен',err)}}
    if(saved){const restored=await restoreDraft(saved);if(!restored&&!fountains.length)addFountain(7,{x:0,z:0})}
    else addFountain(7,{x:0,z:0});
   }catch(err){draftWritesBlocked=true;el('draftStatus').textContent='Черновик недоступен: '+String(err.message||err)+'. Автосохранение выключено до нажатия «Сохранить сцену». ';if(!fountains.length)addFountain(7,{x:0,z:0})}
-  renderControls();el('offlineStatus').textContent='Тестовый v29: Three.js/Rapier с jsDelivr. Офлайн не готов.';
+  renderControls();el('offlineStatus').textContent='Тестовый v30: Three.js/Rapier с jsDelivr. Офлайн не готов.';
   el('loading').hidden=true;cancelAnimationFrame(frameReq);lastFrame=0;animate(0);msg('Общая сцена готова: '+fountains.length+' фонтан(ов).');
  }catch(err){ready=false;lastLoadReport+='\nОшибка: '+String(err.message||err);el('loadText').textContent='Запуск не удался: '+String(err.message||err)+'; нужен интернет для CDN.';el('retry').hidden=false;el('copyError').hidden=false;msg('Не удалось запустить Rapier',true);console.error(err)}finally{booting=false}
 }
