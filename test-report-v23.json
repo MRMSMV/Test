@@ -1,0 +1,81 @@
+{
+  "errors": [],
+  "latex20": {
+    "kind": "latex",
+    "sizeCm": 20
+  },
+  "restrictedDigit": "Фольгированная цифра допустима только наверху. Можно выбрать верхнюю позицию.",
+  "topDigit": {
+    "kind": "foilDigit",
+    "sizeCm": 40,
+    "digit": 8
+  },
+  "digitPhysics": {
+    "mass": 0.0030107852071523666,
+    "colliders": 7,
+    "buoyancy": 0.034368594740043286,
+    "tie": -0.20800000000000002
+  },
+  "otherBodiesStable": {
+    "ok": true,
+    "idStable": true,
+    "otherHandlesStable": true,
+    "counts": [
+      7,
+      11
+    ]
+  },
+  "persisted": [
+    [
+      {
+        "kind": "foilDigit",
+        "sizeCm": 40,
+        "digit": 8
+      },
+      {
+        "kind": "latex",
+        "sizeCm": 20
+      },
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    [
+      {
+        "kind": "latex",
+        "sizeCm": 40
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  ],
+  "finite": true,
+  "restricted61": "Шар от 61 см допустим только наверху. Можно выбрать верхнюю позицию.",
+  "spaceRejected": {
+    "message": "Шар не помещается: мешают соседние шары, стены или потолок. Выбери меньший размер или уменьши высоту фонтана.",
+    "intact": true
+  },
+  "allDigits": [
+    6,
+    2,
+    5,
+    5,
+    4,
+    5,
+    6,
+    3,
+    7,
+    6
+  ],
+  "boundsValidation": false
+}
