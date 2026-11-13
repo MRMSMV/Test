@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#fffaf8">
-<title>CandySky — Rapier Lab 1.9 · несколько фонтанов · v27</title>
+<title>CandySky — Rapier Lab 1.9 · несколько фонтанов · v28</title>
 <style>
 :root{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#26313a;background:#fffaf8;color-scheme:light}
 *{box-sizing:border-box}
@@ -163,7 +163,7 @@ button:hover{background:#faf4f3}button.primary{background:#f4d4d2;border-color:#
 <body>
 <div class="app" id="app">
  <canvas id="view" aria-label="Единая 3D-сцена нескольких фонтанов CandySky"></canvas>
- <header class="topbar"><div class="brand"><strong>CandySky · Фонтаны · v27</strong><small>Несколько композиций в одном физическом мире</small></div><div class="state" id="status"><i></i><span id="statusText">Загрузка движка</span></div></header>
+ <header class="topbar"><div class="brand"><strong>CandySky · Фонтаны · v28</strong><small>Несколько композиций в одном физическом мире</small></div><div class="state" id="status"><i></i><span id="statusText">Загрузка движка</span></div></header>
  <div class="panel-backdrop" id="panelBackdrop" aria-hidden="true"></div>
  <button type="button" class="panel-toggle" id="panelToggle" aria-controls="labPanel" aria-expanded="false" aria-label="Открыть управление фонтанами"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16M9 4v6M15 14v6"/></svg><span>Управление</span><span class="panel-toggle-count" id="panelToggleCount">0</span></button>
  <section class="panel" id="labPanel" aria-label="Управление фонтанами" aria-hidden="true" inert>
@@ -202,7 +202,7 @@ button:hover{background:#faf4f3}button.primary{background:#f4d4d2;border-color:#
  <div class="load" id="loading"><h2>Загрузка CandySky 3D</h2><p id="loadText">Подключаю Three.js и Rapier…</p><button id="retry" hidden>Повторить</button><button id="copyError" hidden>Скопировать ошибку</button></div>
 </div>
 <script type="module">
-// CandySky v27: единый экспериментальный мир для нескольких независимых фонтанов.
+// CandySky v28: единый экспериментальный мир для нескольких независимых фонтанов.
 // Оригинальные v16 / v17 / v18 / v19 остаются неизменными файлами.
 // Реальная физика Rapier + XPBD локально, библиотеки тестово загружаются с CDN (не production/offline).
 const THREE_SOURCES=[['jsDelivr · Three.js 0.164.1','https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js']];
@@ -395,6 +395,8 @@ function setupSempertexStudio(){
  for(const light of scene.children.filter(o=>o.isLight)){if(light.isHemisphereLight)light.intensity=1.15;else light.intensity*=.65}renderer.toneMappingExposure=1.1;
 }
 
+const LATEX_COLLIDERS={"R-5":[{"x":0,"y":0.026983559588050994,"z":0,"r":0.027259720918770085},{"x":0,"y":0.052658619258759976,"z":0,"r":0.04461096401280354},{"x":0,"y":0.08523274828172075,"z":0,"r":0.062455019920817596},{"x":0,"y":0.10063702168646574,"z":0,"r":0.06499999999999999},{"x":0,"y":0.11114631972086754,"z":0,"r":0.05991916854683426}],"R-9":[{"x":0,"y":0.04774021977508164,"z":0,"r":0.048228809205298435},{"x":0,"y":0.09316525059804923,"z":0,"r":0.07892709090673299},{"x":0,"y":0.1507964010321313,"z":0,"r":0.11049734304214107},{"x":0,"y":0.1780501154590887,"z":0,"r":0.11499999999999999},{"x":0,"y":0.1966434909372394,"z":0,"r":0.10601083495594774}],"R-10":[{"x":0,"y":0.05189155181326264,"z":0,"r":0.05242262686316461},{"x":0,"y":0.10126657686440967,"z":0,"r":0.08579031628454284},{"x":0,"y":0.16390913158360138,"z":0,"r":0.12010580766704329},{"x":0,"y":0.1935327342130856,"z":0,"r":0.12499999999999999},{"x":0,"y":0.2137429251820235,"z":0,"r":0.11522916823628647}],"R-12":[{"x":0,"y":0.06311253393438003,"z":0,"r":0.06371947125938576},{"x":0,"y":0.1251702193756222,"z":0,"r":0.10514158464148281},{"x":0,"y":0.19864741211937206,"z":0,"r":0.14488607931055406},{"x":0,"y":0.23281621455110055,"z":0,"r":0.14999999999999997},{"x":0,"y":0.2567117874122182,"z":0,"r":0.13805747260223336}],"R-18":[{"x":0,"y":0.08029796320292379,"z":0,"r":0.05354004123594338},{"x":0,"y":0.15179398787718792,"z":0,"r":0.15307801733248494},{"x":0,"y":0.22664249546478193,"z":0,"r":0.20595746933905876},{"x":0,"y":0.2677893839791282,"z":0,"r":0.22499999999999998},{"x":0,"y":0.2890797626989983,"z":0,"r":0.21800876698296986}],"R-24":[{"x":0,"y":0.20635769834211531,"z":0,"r":0.20759809982551627},{"x":0,"y":0.24615831945122257,"z":0,"r":0.2431318077329573},{"x":0,"y":0.2942894839689753,"z":0,"r":0.2793801547909613},{"x":0,"y":0.33122591413409486,"z":0,"r":0.29970724591209263},{"x":0,"y":0.33590574372745813,"z":0,"r":0.29692579613868386}],"R-36":[{"x":0,"y":0.152130121854471,"z":0,"r":0.027592001492881317},{"x":0,"y":0.329110877887958,"z":0,"r":0.33077299454491016},{"x":0,"y":0.4362847267644554,"z":0,"r":0.4183443258425826},{"x":0,"y":0.5078279550337347,"z":0,"r":0.4571593320291058},{"x":0,"y":0.5588749933385915,"z":0,"r":0.3531930783969997}]};
+const latexMassProperties=new Map();
 const sempertexSpecs=new Map();
 function sempertexSpec(p){
  const data=SEMPERTEX_DATA.find(d=>d.maxDiameterCm===p.sizeCm);if(!data||!LATEX_FINISHES[p.finish||'fashion'])throw Error('Неизвестный Sempertex');
@@ -406,7 +408,7 @@ function sempertexSpec(p){
   // Conservative placement bounds from short sections; never use a whole giant bounding sphere for a pear.
   for(let i=0;i<profile.length-1;i+=20){const slice=profile.slice(i,Math.min(i+21,profile.length)),lo=Math.min(...slice.map(v=>v[1])),hi=Math.max(...slice.map(v=>v[1])),r=Math.max(...slice.map(v=>v[0]));parts.push({x:0,y:(lo+hi)/2,z:0,r:Math.hypot(r,(hi-lo)/2)})}
   const volume=data.visualGasVolumeM3,gas=data.series==='R-5'?'air':'helium',shellMass=.003*(data.maxDiameterCm/30)**1.8;
-  sempertexSpecs.set(data.series,{geometry,series:data.series,hulls:[new Float32Array(verts)],parts,tie:data.knotCenterY,top:geometry.boundingBox.max.y,radius:data.maxDiameterCm/200,volume,gas,mass:shellMass+(gas==='air'?AIR_DENSITY:.1786)*volume});
+  sempertexSpecs.set(data.series,{geometry,series:data.series,hulls:[new Float32Array(verts)],parts:LATEX_COLLIDERS[data.series],tie:data.knotCenterY,top:geometry.boundingBox.max.y,radius:data.maxDiameterCm/200,volume,gas,mass:shellMass+(gas==='air'?AIR_DENSITY:.1786)*volume});
  }
  return {...sempertexSpecs.get(data.series),...p,brand:'Sempertex',finish:p.finish||'fashion'};
 }
@@ -664,7 +666,18 @@ function createBalloonPhysics(b){
  const angularDamping=FOUNTAIN_ANGULAR_DAMPING;
  const start=spawnPosition(b);b.body=world.createRigidBody(RAPIER.RigidBodyDesc.dynamic().setTranslation(start.x,start.y,start.z).setLinearDamping(linearDamping).setAngularDamping(angularDamping).setCcdEnabled(true));
  if(start.rotation)b.body.setRotation(start.rotation,true);
- if(spec.hulls)for(const vertices of spec.hulls){const desc=RAPIER.ColliderDesc.convexHull(vertices);if(!desc)throw Error('Не удалось создать коллайдер фигуры');world.createCollider(desc.setMass(spec.mass/spec.hulls.length).setRestitution(.04).setFriction(contactFriction),b.body)}
+ if(spec.kind==='latex'){
+  let properties=latexMassProperties.get(spec.series);
+  if(!properties){
+   // Preserve v27 mass distribution/inertia; change only contact geometry.
+   const desc=RAPIER.ColliderDesc.convexHull(spec.hulls[0]);if(!desc)throw Error('Не удалось рассчитать инерцию латекса');
+   const reference=world.createCollider(desc.setMass(spec.mass),b.body);b.body.recomputeMassPropertiesFromColliders();
+   properties={com:b.body.localCom(),inertia:b.body.principalInertia(),frame:b.body.principalInertiaLocalFrame()};latexMassProperties.set(spec.series,properties);world.removeCollider(reference,true);
+  }
+  for(const sphere of spec.parts)world.createCollider(RAPIER.ColliderDesc.ball(sphere.r).setTranslation(sphere.x,sphere.y,sphere.z).setMass(0).setRestitution(.04).setFriction(contactFriction),b.body);
+  b.body.setAdditionalMassProperties(spec.mass,properties.com,properties.inertia,properties.frame,true);b.body.recomputeMassPropertiesFromColliders();
+ }
+ else if(spec.hulls)for(const vertices of spec.hulls){const desc=RAPIER.ColliderDesc.convexHull(vertices);if(!desc)throw Error('Не удалось создать коллайдер фигуры');world.createCollider(desc.setMass(spec.mass/spec.hulls.length).setRestitution(.04).setFriction(contactFriction),b.body)}
  else if(spec.kind==='latex')for(const part of spec.parts)world.createCollider(RAPIER.ColliderDesc.ball(part.r).setTranslation(part.x,part.y,part.z).setMass(spec.mass*part.mass).setRestitution(.04).setFriction(contactFriction),b.body);
 
  createBalloonVisual(b,spec);
@@ -903,7 +916,7 @@ function setupButtons(){setupBalloonEditor();
 
 
 async function readPreviousDraft(name='candysky-3d-multifountain-v23-drafts'){return new Promise((resolve,reject)=>{const req=indexedDB.open(name,1);req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains('scenes'))req.result.createObjectStore('scenes')};req.onerror=()=>reject(req.error);req.onsuccess=()=>{const db=req.result,tx=db.transaction('scenes','readonly'),read=tx.objectStore('scenes').get('current');let result;read.onsuccess=()=>{result=read.result};tx.oncomplete=()=>{db.close();resolve(result)};tx.onabort=()=>{db.close();reject(tx.error)}}})}
-const DRAFT_DB='candysky-3d-multifountain-v27-drafts',DRAFT_STORE='scenes',DRAFT_SCHEMA=3;
+const DRAFT_DB='candysky-3d-multifountain-v28-drafts',DRAFT_STORE='scenes',DRAFT_SCHEMA=3;
 let draftSaveTimer=null,dbPromise=null,restoringDraft=false,draftWritesBlocked=false;
 function openDraftDb(){if(!('indexedDB' in window))return Promise.reject(Error('IndexedDB недоступен'));
  if(!dbPromise)dbPromise=new Promise((resolve,reject)=>{const req=indexedDB.open(DRAFT_DB,1);
@@ -963,16 +976,16 @@ async function restoreDraft(preloaded=null){if(!ready||testing||restoringDraft)r
  draftWritesBlocked=false;renderControls();metrics();el('draftStatus').textContent='Сцена восстановлена · '+s.createdAt;msg('Восстановлено '+fountains.length+' фонтана из локального черновика.');return true;
  }catch(err){draftWritesBlocked=true;el('draftStatus').textContent='Ошибка восстановления: '+String(err.message||err)+'. Исходный черновик сохранён. Автосохранение выключено до нажатия «Сохранить сцену». ';console.warn(err);return false}finally{restoringDraft=false}
 }
-async function initialize(){if(booting||ready)return;booting=true;lastLoadReport='CandySky v27 / '+new Date().toISOString()+'\n'+location.href+'\n';
+async function initialize(){if(booting||ready)return;booting=true;lastLoadReport='CandySky v28 / '+new Date().toISOString()+'\n'+location.href+'\n';
  el('loading').hidden=false;el('retry').hidden=true;el('copyError').hidden=true;
  try{el('loadText').textContent='Подготавливаю утверждённые модели…';await loadDigitModels();el('loadText').textContent='Загружаю Three.js…';THREE=await loadThree();el('loadText').textContent='Загружаю Rapier WASM…';RAPIER=await loadRapier();
   createScene();if(!pointersBound){setupPointer();pointersBound=true}if(!controlsBound){setupButtons();controlsBound=true}
   ready=true;try{
-   let saved=await draftRecord('get');if(!saved){try{saved=await readPreviousDraft('candysky-3d-multifountain-v26-drafts')||await readPreviousDraft('candysky-3d-multifountain-v25-drafts')||await readPreviousDraft()||await readPreviousDraft('candysky-3d-multifountain-v21-drafts')}catch(err){console.warn('Предыдущий черновик недоступен',err)}}
+   let saved=await draftRecord('get');if(!saved){try{saved=await readPreviousDraft('candysky-3d-multifountain-v27-drafts')||await readPreviousDraft('candysky-3d-multifountain-v26-drafts')||await readPreviousDraft('candysky-3d-multifountain-v25-drafts')||await readPreviousDraft()||await readPreviousDraft('candysky-3d-multifountain-v21-drafts')}catch(err){console.warn('Предыдущий черновик недоступен',err)}}
    if(saved){const restored=await restoreDraft(saved);if(!restored&&!fountains.length)addFountain(7,{x:0,z:0})}
    else addFountain(7,{x:0,z:0});
   }catch(err){draftWritesBlocked=true;el('draftStatus').textContent='Черновик недоступен: '+String(err.message||err)+'. Автосохранение выключено до нажатия «Сохранить сцену». ';if(!fountains.length)addFountain(7,{x:0,z:0})}
-  renderControls();el('offlineStatus').textContent='Тестовый v27: Three.js/Rapier с jsDelivr. Офлайн не готов.';
+  renderControls();el('offlineStatus').textContent='Тестовый v28: Three.js/Rapier с jsDelivr. Офлайн не готов.';
   el('loading').hidden=true;cancelAnimationFrame(frameReq);lastFrame=0;animate(0);msg('Общая сцена готова: '+fountains.length+' фонтан(ов).');
  }catch(err){ready=false;lastLoadReport+='\nОшибка: '+String(err.message||err);el('loadText').textContent='Запуск не удался: '+String(err.message||err)+'; нужен интернет для CDN.';el('retry').hidden=false;el('copyError').hidden=false;msg('Не удалось запустить Rapier',true);console.error(err)}finally{booting=false}
 }

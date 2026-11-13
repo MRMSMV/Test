@@ -1,0 +1,388 @@
+{
+  "sphereFits": {
+    "3": {
+      "series": "R-12",
+      "parts": [
+        {
+          "y": 0.07528529346522096,
+          "r": 0.07554707293244624
+        },
+        {
+          "y": 0.1942734414298429,
+          "r": 0.1457147024620318
+        },
+        {
+          "y": 0.249400708428054,
+          "r": 0.145293223290046
+        }
+      ],
+      "rmsRadialErrorMm": 3.6885195038521816
+    },
+    "5": {
+      "series": "R-12",
+      "parts": [
+        {
+          "y": 0.06311253393438003,
+          "r": 0.06371947125938576
+        },
+        {
+          "y": 0.1251702193756222,
+          "r": 0.10514158464148281
+        },
+        {
+          "y": 0.19864741211937206,
+          "r": 0.14488607931055406
+        },
+        {
+          "y": 0.23281621455110055,
+          "r": 0.14999999999999997
+        },
+        {
+          "y": 0.2567117874122182,
+          "r": 0.13805747260223336
+        }
+      ],
+      "rmsRadialErrorMm": 1.3147133474747372
+    }
+  },
+  "scope": "diagnostic only; unchanged approved visuals, colliders, topology, damping and 60 Hz step; fresh world per case; unperturbed default spawn; only contact colliders replaced in injected harness; original current mass, center of mass and principal inertia explicitly preserved; sphere envelopes fitted to approved R12 profile; sphere fits are approximations",
+  "errors": [],
+  "results": [
+    {
+      "mode": "current",
+      "preset": 7,
+      "massG": 6.050189957022667,
+      "buoyancyN": 0.20523455938711918,
+      "window20to30s": {
+        "rmsSpeedMmS": 23.76317139091137,
+        "rmsAngularSpeedDegS": 22.811380125250707,
+        "rmsStepDisplacementMm": 0.6550991597176352,
+        "rmsSecondDifferenceMm": 0.33137716962383335,
+        "peakSpeedMmS": 109.33628149199407,
+        "peakAngularSpeedDegS": 120.96451231955686,
+        "peakSecondDifferenceMm": 2.052781597359452,
+        "rmsRopeOverextensionMm": 0.00037624074746491414,
+        "finite": true
+      },
+      "window60to70s": {
+        "rmsSpeedMmS": 0,
+        "rmsAngularSpeedDegS": 0,
+        "rmsStepDisplacementMm": 0,
+        "rmsSecondDifferenceMm": 0,
+        "peakSpeedMmS": 0,
+        "peakAngularSpeedDegS": 0,
+        "peakSecondDifferenceMm": 0,
+        "rmsRopeOverextensionMm": 3.653239692083691e-05,
+        "finite": true
+      }
+    },
+    {
+      "mode": "spheres3",
+      "preset": 7,
+      "massG": 6.050189957022667,
+      "buoyancyN": 0.20523455938711918,
+      "window20to30s": {
+        "rmsSpeedMmS": 0,
+        "rmsAngularSpeedDegS": 0,
+        "rmsStepDisplacementMm": 0,
+        "rmsSecondDifferenceMm": 0,
+        "peakSpeedMmS": 0,
+        "peakAngularSpeedDegS": 0,
+        "peakSecondDifferenceMm": 0,
+        "rmsRopeOverextensionMm": 0,
+        "finite": true
+      },
+      "window60to70s": {
+        "rmsSpeedMmS": 0,
+        "rmsAngularSpeedDegS": 0,
+        "rmsStepDisplacementMm": 0,
+        "rmsSecondDifferenceMm": 0,
+        "peakSpeedMmS": 0,
+        "peakAngularSpeedDegS": 0,
+        "peakSecondDifferenceMm": 0,
+        "rmsRopeOverextensionMm": 0,
+        "finite": true
+      }
+    },
+    {
+      "mode": "spheres5",
+      "preset": 7,
+      "massG": 6.050189957022667,
+      "buoyancyN": 0.20523455938711918,
+      "window20to30s": {
+        "rmsSpeedMmS": 0,
+        "rmsAngularSpeedDegS": 0,
+        "rmsStepDisplacementMm": 0,
+        "rmsSecondDifferenceMm": 0,
+        "peakSpeedMmS": 0,
+        "peakAngularSpeedDegS": 0,
+        "peakSecondDifferenceMm": 0,
+        "rmsRopeOverextensionMm": 0.00015983304452985342,
+        "finite": true
+      },
+      "window60to70s": {
+        "rmsSpeedMmS": 0,
+        "rmsAngularSpeedDegS": 0,
+        "rmsStepDisplacementMm": 0,
+        "rmsSecondDifferenceMm": 0,
+        "peakSpeedMmS": 0,
+        "peakAngularSpeedDegS": 0,
+        "peakSecondDifferenceMm": 0,
+        "rmsRopeOverextensionMm": 0.00015983304452985342,
+        "finite": true
+      }
+    },
+    {
+      "mode": "current",
+      "preset": 11,
+      "massG": 6.050189957022667,
+      "buoyancyN": 0.20523455938711918,
+      "window20to30s": {
+        "rmsSpeedMmS": 44.92156026243966,
+        "rmsAngularSpeedDegS": 47.06720986279011,
+        "rmsStepDisplacementMm": 1.392692237108803,
+        "rmsSecondDifferenceMm": 0.7114345768443449,
+        "peakSpeedMmS": 140.46548901994558,
+        "peakAngularSpeedDegS": 169.1894627796095,
+        "peakSecondDifferenceMm": 4.028685169073314,
+        "rmsRopeOverextensionMm": 0.0008408957153041526,
+        "finite": true
+      },
+      "window60to70s": {
+        "rmsSpeedMmS": 46.29949533855112,
+        "rmsAngularSpeedDegS": 44.282744043204914,
+        "rmsStepDisplacementMm": 1.3933565758255189,
+        "rmsSecondDifferenceMm": 0.6920191776831041,
+        "peakSpeedMmS": 142.61793366656508,
+        "peakAngularSpeedDegS": 164.8693810630688,
+        "peakSecondDifferenceMm": 2.9898022842563714,
+        "rmsRopeOverextensionMm": 0.0008153406623635104,
+        "finite": true
+      }
+    },
+    {
+      "mode": "spheres3",
+      "preset": 11,
+      "massG": 6.050189957022667,
+      "buoyancyN": 0.20523455938711918,
+      "window20to30s": {
+        "rmsSpeedMmS": 0,
+        "rmsAngularSpeedDegS": 0,
+        "rmsStepDisplacementMm": 0,
+        "rmsSecondDifferenceMm": 0,
+        "peakSpeedMmS": 0,
+        "peakAngularSpeedDegS": 0,
+        "peakSecondDifferenceMm": 0,
+        "rmsRopeOverextensionMm": 2.3867977467863225e-05,
+        "finite": true
+      },
+      "window60to70s": {
+        "rmsSpeedMmS": 0,
+        "rmsAngularSpeedDegS": 0,
+        "rmsStepDisplacementMm": 0,
+        "rmsSecondDifferenceMm": 0,
+        "peakSpeedMmS": 0,
+        "peakAngularSpeedDegS": 0,
+        "peakSecondDifferenceMm": 0,
+        "rmsRopeOverextensionMm": 2.3867977467863225e-05,
+        "finite": true
+      }
+    },
+    {
+      "mode": "spheres5",
+      "preset": 11,
+      "massG": 6.050189957022667,
+      "buoyancyN": 0.20523455938711918,
+      "window20to30s": {
+        "rmsSpeedMmS": 0,
+        "rmsAngularSpeedDegS": 0,
+        "rmsStepDisplacementMm": 0,
+        "rmsSecondDifferenceMm": 0,
+        "peakSpeedMmS": 0,
+        "peakAngularSpeedDegS": 0,
+        "peakSecondDifferenceMm": 0,
+        "rmsRopeOverextensionMm": 0.0015395409487720317,
+        "finite": true
+      },
+      "window60to70s": {
+        "rmsSpeedMmS": 0,
+        "rmsAngularSpeedDegS": 0,
+        "rmsStepDisplacementMm": 0,
+        "rmsSecondDifferenceMm": 0,
+        "peakSpeedMmS": 0,
+        "peakAngularSpeedDegS": 0,
+        "peakSecondDifferenceMm": 0,
+        "rmsRopeOverextensionMm": 0.0015395409487720317,
+        "finite": true
+      }
+    },
+    {
+      "mode": "current",
+      "preset": 13,
+      "massG": 6.050189957022667,
+      "buoyancyN": 0.20523455938711918,
+      "window20to30s": {
+        "rmsSpeedMmS": 48.248468267825636,
+        "rmsAngularSpeedDegS": 52.6087082579188,
+        "rmsStepDisplacementMm": 1.6050929612685423,
+        "rmsSecondDifferenceMm": 0.8469846035865685,
+        "peakSpeedMmS": 177.41039856642695,
+        "peakAngularSpeedDegS": 181.88889837206574,
+        "peakSecondDifferenceMm": 5.221751489285639,
+        "rmsRopeOverextensionMm": 0.0007616999502748993,
+        "finite": true
+      },
+      "window60to70s": {
+        "rmsSpeedMmS": 51.03069888638606,
+        "rmsAngularSpeedDegS": 54.87132793087092,
+        "rmsStepDisplacementMm": 1.6399270536562676,
+        "rmsSecondDifferenceMm": 0.8760412492699161,
+        "peakSpeedMmS": 253.75681894168562,
+        "peakAngularSpeedDegS": 202.88229565850196,
+        "peakSecondDifferenceMm": 6.576662290594396,
+        "rmsRopeOverextensionMm": 0.0008241979120470064,
+        "finite": true
+      }
+    },
+    {
+      "mode": "spheres3",
+      "preset": 13,
+      "massG": 6.050189957022667,
+      "buoyancyN": 0.20523455938711918,
+      "window20to30s": {
+        "rmsSpeedMmS": 0,
+        "rmsAngularSpeedDegS": 0,
+        "rmsStepDisplacementMm": 0,
+        "rmsSecondDifferenceMm": 0,
+        "peakSpeedMmS": 0,
+        "peakAngularSpeedDegS": 0,
+        "peakSecondDifferenceMm": 0,
+        "rmsRopeOverextensionMm": 0,
+        "finite": true
+      },
+      "window60to70s": {
+        "rmsSpeedMmS": 0,
+        "rmsAngularSpeedDegS": 0,
+        "rmsStepDisplacementMm": 0,
+        "rmsSecondDifferenceMm": 0,
+        "peakSpeedMmS": 0,
+        "peakAngularSpeedDegS": 0,
+        "peakSecondDifferenceMm": 0,
+        "rmsRopeOverextensionMm": 0,
+        "finite": true
+      }
+    },
+    {
+      "mode": "spheres5",
+      "preset": 13,
+      "massG": 6.050189957022667,
+      "buoyancyN": 0.20523455938711918,
+      "window20to30s": {
+        "rmsSpeedMmS": 0,
+        "rmsAngularSpeedDegS": 0,
+        "rmsStepDisplacementMm": 0,
+        "rmsSecondDifferenceMm": 0,
+        "peakSpeedMmS": 0,
+        "peakAngularSpeedDegS": 0,
+        "peakSecondDifferenceMm": 0,
+        "rmsRopeOverextensionMm": 0.0007929938905900064,
+        "finite": true
+      },
+      "window60to70s": {
+        "rmsSpeedMmS": 0,
+        "rmsAngularSpeedDegS": 0,
+        "rmsStepDisplacementMm": 0,
+        "rmsSecondDifferenceMm": 0,
+        "peakSpeedMmS": 0,
+        "peakAngularSpeedDegS": 0,
+        "peakSecondDifferenceMm": 0,
+        "rmsRopeOverextensionMm": 0.0007929938905900064,
+        "finite": true
+      }
+    },
+    {
+      "mode": "current",
+      "preset": 15,
+      "massG": 6.050189957022667,
+      "buoyancyN": 0.20523455938711918,
+      "window20to30s": {
+        "rmsSpeedMmS": 47.69151382465818,
+        "rmsAngularSpeedDegS": 53.24604795543359,
+        "rmsStepDisplacementMm": 1.6792928472008968,
+        "rmsSecondDifferenceMm": 0.8500494357252425,
+        "peakSpeedMmS": 474.3921931133174,
+        "peakAngularSpeedDegS": 170.0986887713562,
+        "peakSecondDifferenceMm": 13.711805715787449,
+        "rmsRopeOverextensionMm": 0.0009312882547120175,
+        "finite": true
+      },
+      "window60to70s": {
+        "rmsSpeedMmS": 48.12810989254352,
+        "rmsAngularSpeedDegS": 52.740968377695616,
+        "rmsStepDisplacementMm": 1.7201676155926335,
+        "rmsSecondDifferenceMm": 0.8755043693033733,
+        "peakSpeedMmS": 272.2223120788175,
+        "peakAngularSpeedDegS": 179.70940156656096,
+        "peakSecondDifferenceMm": 7.149806174745934,
+        "rmsRopeOverextensionMm": 0.0012844954641677755,
+        "finite": true
+      }
+    },
+    {
+      "mode": "spheres3",
+      "preset": 15,
+      "massG": 6.050189957022667,
+      "buoyancyN": 0.20523455938711918,
+      "window20to30s": {
+        "rmsSpeedMmS": 0,
+        "rmsAngularSpeedDegS": 0,
+        "rmsStepDisplacementMm": 0,
+        "rmsSecondDifferenceMm": 0,
+        "peakSpeedMmS": 0,
+        "peakAngularSpeedDegS": 0,
+        "peakSecondDifferenceMm": 0,
+        "rmsRopeOverextensionMm": 0.0015266381344773493,
+        "finite": true
+      },
+      "window60to70s": {
+        "rmsSpeedMmS": 0,
+        "rmsAngularSpeedDegS": 0,
+        "rmsStepDisplacementMm": 0,
+        "rmsSecondDifferenceMm": 0,
+        "peakSpeedMmS": 0,
+        "peakAngularSpeedDegS": 0,
+        "peakSecondDifferenceMm": 0,
+        "rmsRopeOverextensionMm": 0.0015266381344773493,
+        "finite": true
+      }
+    },
+    {
+      "mode": "spheres5",
+      "preset": 15,
+      "massG": 6.050189957022667,
+      "buoyancyN": 0.20523455938711918,
+      "window20to30s": {
+        "rmsSpeedMmS": 0,
+        "rmsAngularSpeedDegS": 0,
+        "rmsStepDisplacementMm": 0,
+        "rmsSecondDifferenceMm": 0,
+        "peakSpeedMmS": 0,
+        "peakAngularSpeedDegS": 0,
+        "peakSecondDifferenceMm": 0,
+        "rmsRopeOverextensionMm": 0.004426551508794482,
+        "finite": true
+      },
+      "window60to70s": {
+        "rmsSpeedMmS": 0,
+        "rmsAngularSpeedDegS": 0,
+        "rmsStepDisplacementMm": 0,
+        "rmsSecondDifferenceMm": 0,
+        "peakSpeedMmS": 0,
+        "peakAngularSpeedDegS": 0,
+        "peakSecondDifferenceMm": 0,
+        "rmsRopeOverextensionMm": 0.004426551508794482,
+        "finite": true
+      }
+    }
+  ]
+}
