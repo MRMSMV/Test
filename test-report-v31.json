@@ -1,0 +1,886 @@
+{
+  "errors": [],
+  "cases": [
+    {
+      "preset": 7,
+      "sizeCm": 60,
+      "height": 0.05,
+      "before": {
+        "length": 0.57,
+        "distance": 0.569975954225609,
+        "gapsMm": [
+          -0.01332064581671677,
+          -0.1573924202972199,
+          -0.2176792077044909
+        ],
+        "finite": true
+      },
+      "afterWeight": {
+        "length": 0.57,
+        "distance": 0.5699609588866807,
+        "gapsMm": [
+          -0.6627910178827467,
+          -0.6628527987880828,
+          -0.6566268311729573
+        ],
+        "finite": true
+      },
+      "afterBalloon": {
+        "length": 0.57,
+        "distance": 0.5699668568641342,
+        "gapsMm": [
+          -0.5486405268010364,
+          -0.5696030649561257,
+          -0.7461359277566859
+        ],
+        "finite": true
+      },
+      "peakExtensionMm": 0.41863960959998003,
+      "lengthVariation": 0,
+      "endpointError": 0,
+      "maxWeightStepMm": 33.333350612842615,
+      "weightTargetError": 5.960464455334602e-09,
+      "pendingFinished": true,
+      "rmsSpeedMmS": 0,
+      "heldForceYN": 0.3050897419452667,
+      "expectedHeldForceYN": 0.3050897508300841,
+      "releasedLiftN": 1.3896723985671997,
+      "expectedLiftN": 1.3896723608199437,
+      "jointAudit": {
+        "total": 9,
+        "expected": 9,
+        "betweenBalloons": 0
+      },
+      "neighboursUnchanged": true,
+      "materialKeepsBody": true,
+      "standardLength": 0.51
+    },
+    {
+      "preset": 7,
+      "sizeCm": 91.5,
+      "height": 0.05,
+      "before": {
+        "length": 0.586,
+        "distance": 0.5859715124339138,
+        "gapsMm": [
+          -3.649682697726142e-05,
+          -0.05797102615942573,
+          -0.04298532703425617
+        ],
+        "finite": true
+      },
+      "afterWeight": {
+        "length": 0.586,
+        "distance": 0.5859685121990124,
+        "gapsMm": [
+          -0.019227328260457144,
+          0.03374488620003224,
+          0.0013816074218298002
+        ],
+        "finite": true
+      },
+      "afterBalloon": {
+        "length": 0.586,
+        "distance": 0.5859707802563997,
+        "gapsMm": [
+          0.0029176130028341074,
+          -0.18114105621516718,
+          -0.05677257184907858
+        ],
+        "finite": true
+      },
+      "peakExtensionMm": 0.0010753799326579383,
+      "lengthVariation": 0,
+      "endpointError": 0,
+      "maxWeightStepMm": 33.333350612842615,
+      "weightTargetError": 5.960464455334602e-09,
+      "pendingFinished": true,
+      "rmsSpeedMmS": 0,
+      "heldForceYN": 0.9375925660133362,
+      "expectedHeldForceYN": 0.9375925514101983,
+      "releasedLiftN": 4.928459167480469,
+      "expectedLiftN": 4.928459250286589,
+      "jointAudit": {
+        "total": 9,
+        "expected": 9,
+        "betweenBalloons": 0
+      },
+      "neighboursUnchanged": true,
+      "materialKeepsBody": true,
+      "standardLength": 0.51
+    },
+    {
+      "preset": 7,
+      "sizeCm": 60,
+      "height": 0.55,
+      "before": {
+        "length": 0.57,
+        "distance": 0.5701737888864696,
+        "gapsMm": [
+          -0.1644135221240961,
+          -0.334749539580792,
+          -0.4441483213258324
+        ],
+        "finite": true
+      },
+      "afterWeight": {
+        "length": 0.57,
+        "distance": 0.5701590985813475,
+        "gapsMm": [
+          -0.05156782336163124,
+          -0.46475326242939596,
+          -0.5539628007721342
+        ],
+        "finite": true
+      },
+      "afterBalloon": {
+        "length": 0.57,
+        "distance": 0.5701579479177241,
+        "gapsMm": [
+          -0.012100980693929841,
+          -0.3862008276569462,
+          -0.4612960725566273
+        ],
+        "finite": true
+      },
+      "peakExtensionMm": 0.37973156831649924,
+      "lengthVariation": 0,
+      "endpointError": 0,
+      "maxWeightStepMm": 33.333350612842615,
+      "weightTargetError": 5.960464455334602e-09,
+      "pendingFinished": true,
+      "rmsSpeedMmS": 0,
+      "heldForceYN": 0.3050897419452667,
+      "expectedHeldForceYN": 0.3050897508300841,
+      "releasedLiftN": 1.3896723985671997,
+      "expectedLiftN": 1.3896723608199437,
+      "jointAudit": {
+        "total": 9,
+        "expected": 9,
+        "betweenBalloons": 0
+      },
+      "neighboursUnchanged": true,
+      "materialKeepsBody": true,
+      "standardLength": 0.51
+    },
+    {
+      "preset": 7,
+      "sizeCm": 91.5,
+      "height": 0.55,
+      "before": {
+        "length": 0.586,
+        "distance": 0.5859723112580133,
+        "gapsMm": [
+          -0.067373318648839,
+          -0.08821874983785949,
+          -0.1984531243387211
+        ],
+        "finite": true
+      },
+      "afterWeight": {
+        "length": 0.586,
+        "distance": 0.5859695007459661,
+        "gapsMm": [
+          -0.1355152485578437,
+          -0.018364677606214075,
+          -0.11527906916633524
+        ],
+        "finite": true
+      },
+      "afterBalloon": {
+        "length": 0.586,
+        "distance": 0.5859719060387367,
+        "gapsMm": [
+          -0.20127629491042964,
+          -0.054551491899174076,
+          -0.20738912931242415
+        ],
+        "finite": true
+      },
+      "peakExtensionMm": 0.0003752850619154202,
+      "lengthVariation": 0,
+      "endpointError": 0,
+      "maxWeightStepMm": 33.333350612842615,
+      "weightTargetError": 5.960464455334602e-09,
+      "pendingFinished": true,
+      "rmsSpeedMmS": 0,
+      "heldForceYN": 0.9375925660133362,
+      "expectedHeldForceYN": 0.9375925514101983,
+      "releasedLiftN": 4.928459167480469,
+      "expectedLiftN": 4.928459250286589,
+      "jointAudit": {
+        "total": 9,
+        "expected": 9,
+        "betweenBalloons": 0
+      },
+      "neighboursUnchanged": true,
+      "materialKeepsBody": true,
+      "standardLength": 0.51
+    },
+    {
+      "preset": 11,
+      "sizeCm": 60,
+      "height": 0.05,
+      "before": {
+        "length": 0.57,
+        "distance": 0.5699698541036502,
+        "gapsMm": [
+          -0.18377592492596628,
+          -0.18540848914128105,
+          -0.05263283789452844
+        ],
+        "finite": true
+      },
+      "afterWeight": {
+        "length": 0.57,
+        "distance": 0.569972353598441,
+        "gapsMm": [
+          -0.0027309346943282797,
+          -0.05741046053386878,
+          -0.156735990598178
+        ],
+        "finite": true
+      },
+      "afterBalloon": {
+        "length": 0.57,
+        "distance": 0.5699727896136846,
+        "gapsMm": [
+          0.005292013092073056,
+          -0.08567888434535265,
+          -0.17486599385369006
+        ],
+        "finite": true
+      },
+      "peakExtensionMm": 0.00011262533772260497,
+      "lengthVariation": 0,
+      "endpointError": 0,
+      "maxWeightStepMm": 33.333350612842615,
+      "weightTargetError": 5.960464455334602e-09,
+      "pendingFinished": true,
+      "rmsSpeedMmS": 0,
+      "heldForceYN": 0.3050897419452667,
+      "expectedHeldForceYN": 0.3050897508300841,
+      "releasedLiftN": 1.3896723985671997,
+      "expectedLiftN": 1.3896723608199437,
+      "jointAudit": {
+        "total": 14,
+        "expected": 14,
+        "betweenBalloons": 0
+      },
+      "neighboursUnchanged": true,
+      "materialKeepsBody": true,
+      "standardLength": 0.51
+    },
+    {
+      "preset": 11,
+      "sizeCm": 91.5,
+      "height": 0.05,
+      "before": {
+        "length": 0.586,
+        "distance": 0.5859652058201087,
+        "gapsMm": [
+          0.03542080138332904,
+          -0.011975254117307932,
+          0.003835610467101125
+        ],
+        "finite": true
+      },
+      "afterWeight": {
+        "length": 0.586,
+        "distance": 0.5859680835531289,
+        "gapsMm": [
+          -0.00654817326953272,
+          0.0017701565246108775,
+          -0.006176999411605655
+        ],
+        "finite": true
+      },
+      "afterBalloon": {
+        "length": 0.586,
+        "distance": 0.5859666178804941,
+        "gapsMm": [
+          0.03767882608476936,
+          -0.008989879283521907,
+          -0.08624716999824922
+        ],
+        "finite": true
+      },
+      "peakExtensionMm": 0.00012099999302517261,
+      "lengthVariation": 0,
+      "endpointError": 0,
+      "maxWeightStepMm": 33.333350612842615,
+      "weightTargetError": 5.960464455334602e-09,
+      "pendingFinished": true,
+      "rmsSpeedMmS": 0,
+      "heldForceYN": 0.9375925660133362,
+      "expectedHeldForceYN": 0.9375925514101983,
+      "releasedLiftN": 4.928459167480469,
+      "expectedLiftN": 4.928459250286589,
+      "jointAudit": {
+        "total": 14,
+        "expected": 14,
+        "betweenBalloons": 0
+      },
+      "neighboursUnchanged": true,
+      "materialKeepsBody": true,
+      "standardLength": 0.51
+    },
+    {
+      "preset": 11,
+      "sizeCm": 60,
+      "height": 0.55,
+      "before": {
+        "length": 0.57,
+        "distance": 0.5699990332191438,
+        "gapsMm": [
+          0.0025243759427806545,
+          -0.16316649027503516,
+          -0.036241901932743126
+        ],
+        "finite": true
+      },
+      "afterWeight": {
+        "length": 0.57,
+        "distance": 0.5699990539701413,
+        "gapsMm": [
+          -0.21620094466556772,
+          -0.05367659937144387,
+          -0.08311591640491889
+        ],
+        "finite": true
+      },
+      "afterBalloon": {
+        "length": 0.57,
+        "distance": 0.569999016147737,
+        "gapsMm": [
+          0.007993965845443096,
+          -0.19274021259657603,
+          -0.14036235963493793
+        ],
+        "finite": true
+      },
+      "peakExtensionMm": 0.000631041603527116,
+      "lengthVariation": 0,
+      "endpointError": 0,
+      "maxWeightStepMm": 33.333350612842615,
+      "weightTargetError": 5.960464455334602e-09,
+      "pendingFinished": true,
+      "rmsSpeedMmS": 0,
+      "heldForceYN": 0.3050897419452667,
+      "expectedHeldForceYN": 0.3050897508300841,
+      "releasedLiftN": 1.3896723985671997,
+      "expectedLiftN": 1.3896723608199437,
+      "jointAudit": {
+        "total": 14,
+        "expected": 14,
+        "betweenBalloons": 0
+      },
+      "neighboursUnchanged": true,
+      "materialKeepsBody": true,
+      "standardLength": 0.51
+    },
+    {
+      "preset": 11,
+      "sizeCm": 91.5,
+      "height": 0.55,
+      "before": {
+        "length": 0.586,
+        "distance": 0.5859649787576077,
+        "gapsMm": [
+          0.044252570674335745,
+          -0.0061334968873560936,
+          -0.01188489687461991
+        ],
+        "finite": true
+      },
+      "afterWeight": {
+        "length": 0.586,
+        "distance": 0.5859654364938965,
+        "gapsMm": [
+          0.17332704127401288,
+          -0.09871270399039456,
+          -0.054607716574089915
+        ],
+        "finite": true
+      },
+      "afterBalloon": {
+        "length": 0.586,
+        "distance": 0.585967016060107,
+        "gapsMm": [
+          -0.0006848189442465458,
+          0.0020893260068988173,
+          -0.08761188869108039
+        ],
+        "finite": true
+      },
+      "peakExtensionMm": 0.00026443216938343284,
+      "lengthVariation": 0,
+      "endpointError": 0,
+      "maxWeightStepMm": 33.333350612842615,
+      "weightTargetError": 5.960464455334602e-09,
+      "pendingFinished": true,
+      "rmsSpeedMmS": 0,
+      "heldForceYN": 0.9375925660133362,
+      "expectedHeldForceYN": 0.9375925514101983,
+      "releasedLiftN": 4.928459167480469,
+      "expectedLiftN": 4.928459250286589,
+      "jointAudit": {
+        "total": 14,
+        "expected": 14,
+        "betweenBalloons": 0
+      },
+      "neighboursUnchanged": true,
+      "materialKeepsBody": true,
+      "standardLength": 0.51
+    },
+    {
+      "preset": 13,
+      "sizeCm": 60,
+      "height": 0.05,
+      "before": {
+        "length": 0.57,
+        "distance": 0.5699994766936762,
+        "gapsMm": [
+          0.015132612591284289,
+          -0.01652437033272669,
+          0.0006269602179087563
+        ],
+        "finite": true
+      },
+      "afterWeight": {
+        "length": 0.57,
+        "distance": 0.569998946275037,
+        "gapsMm": [
+          0.01109694912637682,
+          -0.006799004878321746,
+          -0.01581854283366768
+        ],
+        "finite": true
+      },
+      "afterBalloon": {
+        "length": 0.57,
+        "distance": 0.5699994009027421,
+        "gapsMm": [
+          -0.12836823232620365,
+          0.0024664869595625305,
+          -0.013920177717452464
+        ],
+        "finite": true
+      },
+      "peakExtensionMm": 0.001086197000343958,
+      "lengthVariation": 0,
+      "endpointError": 0,
+      "maxWeightStepMm": 33.333350612842615,
+      "weightTargetError": 5.960464455334602e-09,
+      "pendingFinished": true,
+      "rmsSpeedMmS": 0,
+      "heldForceYN": 0.3050897419452667,
+      "expectedHeldForceYN": 0.3050897508300841,
+      "releasedLiftN": 1.3896723985671997,
+      "expectedLiftN": 1.3896723608199437,
+      "jointAudit": {
+        "total": 16,
+        "expected": 16,
+        "betweenBalloons": 0
+      },
+      "neighboursUnchanged": true,
+      "materialKeepsBody": true,
+      "standardLength": 0.51
+    },
+    {
+      "preset": 13,
+      "sizeCm": 91.5,
+      "height": 0.05,
+      "before": {
+        "length": 0.586,
+        "distance": 0.585966617852556,
+        "gapsMm": [
+          -0.016448473011382303,
+          0.004360073905723683,
+          -0.054825174541223154
+        ],
+        "finite": true
+      },
+      "afterWeight": {
+        "length": 0.586,
+        "distance": 0.5859668681550521,
+        "gapsMm": [
+          -0.05108375138798693,
+          0.0027942204126329973,
+          0.4367028853033694
+        ],
+        "finite": true
+      },
+      "afterBalloon": {
+        "length": 0.586,
+        "distance": 0.5859659218006336,
+        "gapsMm": [
+          -4.733272426782342e-05,
+          -0.004254233472861246,
+          2.004899476612504
+        ],
+        "finite": true
+      },
+      "peakExtensionMm": 0.0007095056961947677,
+      "lengthVariation": 0,
+      "endpointError": 0,
+      "maxWeightStepMm": 33.333350612842615,
+      "weightTargetError": 5.960464455334602e-09,
+      "pendingFinished": true,
+      "rmsSpeedMmS": 0,
+      "heldForceYN": 0.9375925660133362,
+      "expectedHeldForceYN": 0.9375925514101983,
+      "releasedLiftN": 4.928459167480469,
+      "expectedLiftN": 4.928459250286589,
+      "jointAudit": {
+        "total": 16,
+        "expected": 16,
+        "betweenBalloons": 0
+      },
+      "neighboursUnchanged": true,
+      "materialKeepsBody": true,
+      "standardLength": 0.51
+    },
+    {
+      "preset": 13,
+      "sizeCm": 60,
+      "height": 0.55,
+      "before": {
+        "length": 0.57,
+        "distance": 0.5699992626614243,
+        "gapsMm": [
+          -0.14160022423270746,
+          -0.08921985776910724,
+          -0.1579051564618572
+        ],
+        "finite": true
+      },
+      "afterWeight": {
+        "length": 0.57,
+        "distance": 0.5699993480255955,
+        "gapsMm": [
+          0.016176009283219717,
+          -0.17703377004851806,
+          0.0018967109720602338
+        ],
+        "finite": true
+      },
+      "afterBalloon": {
+        "length": 0.57,
+        "distance": 0.569999219787331,
+        "gapsMm": [
+          0.007656671051126107,
+          0.005604701446115801,
+          -0.009846257300383243
+        ],
+        "finite": true
+      },
+      "peakExtensionMm": 0.0026138645314865983,
+      "lengthVariation": 0,
+      "endpointError": 0,
+      "maxWeightStepMm": 33.333350612842615,
+      "weightTargetError": 5.960464455334602e-09,
+      "pendingFinished": true,
+      "rmsSpeedMmS": 0,
+      "heldForceYN": 0.3050897419452667,
+      "expectedHeldForceYN": 0.3050897508300841,
+      "releasedLiftN": 1.3896723985671997,
+      "expectedLiftN": 1.3896723608199437,
+      "jointAudit": {
+        "total": 16,
+        "expected": 16,
+        "betweenBalloons": 0
+      },
+      "neighboursUnchanged": true,
+      "materialKeepsBody": true,
+      "standardLength": 0.51
+    },
+    {
+      "preset": 13,
+      "sizeCm": 91.5,
+      "height": 0.55,
+      "before": {
+        "length": 0.586,
+        "distance": 0.5859681466159038,
+        "gapsMm": [
+          -0.019725718978708118,
+          -0.00013722914707359202,
+          0.0004684557047551774
+        ],
+        "finite": true
+      },
+      "afterWeight": {
+        "length": 0.586,
+        "distance": 0.5859645658510987,
+        "gapsMm": [
+          0.0023226877932380763,
+          -0.08822111212472561,
+          0.04396062347430951
+        ],
+        "finite": true
+      },
+      "afterBalloon": {
+        "length": 0.586,
+        "distance": 0.5859717346183102,
+        "gapsMm": [
+          -0.06875381307294703,
+          0.001419365383142912,
+          0.04588394663920803
+        ],
+        "finite": true
+      },
+      "peakExtensionMm": 0.005805341984466139,
+      "lengthVariation": 0,
+      "endpointError": 0,
+      "maxWeightStepMm": 33.333350612842615,
+      "weightTargetError": 5.960464455334602e-09,
+      "pendingFinished": true,
+      "rmsSpeedMmS": 0,
+      "heldForceYN": 0.9375925660133362,
+      "expectedHeldForceYN": 0.9375925514101983,
+      "releasedLiftN": 4.928459167480469,
+      "expectedLiftN": 4.928459250286589,
+      "jointAudit": {
+        "total": 16,
+        "expected": 16,
+        "betweenBalloons": 0
+      },
+      "neighboursUnchanged": true,
+      "materialKeepsBody": true,
+      "standardLength": 0.51
+    },
+    {
+      "preset": 15,
+      "sizeCm": 60,
+      "height": 0.05,
+      "before": {
+        "length": 0.57,
+        "distance": 0.5699993513449769,
+        "gapsMm": [
+          0.0002854644247096694,
+          -0.18168472713742112,
+          -0.014315647609564053
+        ],
+        "finite": true
+      },
+      "afterWeight": {
+        "length": 0.57,
+        "distance": 0.5699991584784752,
+        "gapsMm": [
+          -0.09751515668737776,
+          -0.03315052587299361,
+          -0.03601512502732218
+        ],
+        "finite": true
+      },
+      "afterBalloon": {
+        "length": 0.57,
+        "distance": 0.5699993585017211,
+        "gapsMm": [
+          0.009728252071183885,
+          -0.009193658096318114,
+          -0.03166668636139791
+        ],
+        "finite": true
+      },
+      "peakExtensionMm": 0.0010746154746055225,
+      "lengthVariation": 0,
+      "endpointError": 0,
+      "maxWeightStepMm": 33.333350612842615,
+      "weightTargetError": 5.960464455334602e-09,
+      "pendingFinished": true,
+      "rmsSpeedMmS": 0,
+      "heldForceYN": 0.3050897419452667,
+      "expectedHeldForceYN": 0.3050897508300841,
+      "releasedLiftN": 1.3896723985671997,
+      "expectedLiftN": 1.3896723608199437,
+      "jointAudit": {
+        "total": 19,
+        "expected": 19,
+        "betweenBalloons": 0
+      },
+      "neighboursUnchanged": true,
+      "materialKeepsBody": true,
+      "standardLength": 0.51
+    },
+    {
+      "preset": 15,
+      "sizeCm": 91.5,
+      "height": 0.05,
+      "before": {
+        "length": 0.586,
+        "distance": 0.5859671619683171,
+        "gapsMm": [
+          0.03227708065425827,
+          -0.09660498539956763,
+          -0.09103072785007771
+        ],
+        "finite": true
+      },
+      "afterWeight": {
+        "length": 0.586,
+        "distance": 0.585983441268299,
+        "gapsMm": [
+          -0.048731607056179405,
+          -0.06659608778511461,
+          0.0029158400121354067
+        ],
+        "finite": true
+      },
+      "afterBalloon": {
+        "length": 0.586,
+        "distance": 0.5859730865644771,
+        "gapsMm": [
+          -0.0002806481757267054,
+          0.04504219183407154,
+          -0.016919194535641724
+        ],
+        "finite": true
+      },
+      "peakExtensionMm": 0.0006598658771617139,
+      "lengthVariation": 0,
+      "endpointError": 0,
+      "maxWeightStepMm": 33.333350612842615,
+      "weightTargetError": 5.960464455334602e-09,
+      "pendingFinished": true,
+      "rmsSpeedMmS": 0,
+      "heldForceYN": 0.9375925660133362,
+      "expectedHeldForceYN": 0.9375925514101983,
+      "releasedLiftN": 4.928459167480469,
+      "expectedLiftN": 4.928459250286589,
+      "jointAudit": {
+        "total": 19,
+        "expected": 19,
+        "betweenBalloons": 0
+      },
+      "neighboursUnchanged": true,
+      "materialKeepsBody": true,
+      "standardLength": 0.51
+    },
+    {
+      "preset": 15,
+      "sizeCm": 60,
+      "height": 0.55,
+      "before": {
+        "length": 0.57,
+        "distance": 0.5699993263098111,
+        "gapsMm": [
+          0.002764508635677565,
+          0.0012965844334855703,
+          -0.04123207409095775
+        ],
+        "finite": true
+      },
+      "afterWeight": {
+        "length": 0.57,
+        "distance": 0.5699993030293297,
+        "gapsMm": [
+          -0.08058121482235059,
+          -0.056910820651456806,
+          0.0017771449582482113
+        ],
+        "finite": true
+      },
+      "afterBalloon": {
+        "length": 0.57,
+        "distance": 0.5699987975672447,
+        "gapsMm": [
+          0.0009287963780857389,
+          -0.016594164993388727,
+          0.013587297851114233
+        ],
+        "finite": true
+      },
+      "peakExtensionMm": 0.0009938553739985423,
+      "lengthVariation": 0,
+      "endpointError": 0,
+      "maxWeightStepMm": 33.333350612842615,
+      "weightTargetError": 5.960464455334602e-09,
+      "pendingFinished": true,
+      "rmsSpeedMmS": 0,
+      "heldForceYN": 0.3050897419452667,
+      "expectedHeldForceYN": 0.3050897508300841,
+      "releasedLiftN": 1.3896723985671997,
+      "expectedLiftN": 1.3896723608199437,
+      "jointAudit": {
+        "total": 19,
+        "expected": 19,
+        "betweenBalloons": 0
+      },
+      "neighboursUnchanged": true,
+      "materialKeepsBody": true,
+      "standardLength": 0.51
+    },
+    {
+      "preset": 15,
+      "sizeCm": 91.5,
+      "height": 0.55,
+      "before": {
+        "length": 0.586,
+        "distance": 0.5859806956939646,
+        "gapsMm": [
+          0.0033775176061234813,
+          0.024590582848788012,
+          -0.016691055140211075
+        ],
+        "finite": true
+      },
+      "afterWeight": {
+        "length": 0.586,
+        "distance": 0.5859802322143166,
+        "gapsMm": [
+          0.026939892178806657,
+          0.012285675803108687,
+          -0.0006766841146588209
+        ],
+        "finite": true
+      },
+      "afterBalloon": {
+        "length": 0.586,
+        "distance": 0.5859811935662398,
+        "gapsMm": [
+          -0.03621317774668564,
+          0.008484604289232811,
+          -0.07806817505748298
+        ],
+        "finite": true
+      },
+      "peakExtensionMm": 0.0005253470940491667,
+      "lengthVariation": 0,
+      "endpointError": 0,
+      "maxWeightStepMm": 33.333350612842615,
+      "weightTargetError": 5.960464455334602e-09,
+      "pendingFinished": true,
+      "rmsSpeedMmS": 0,
+      "heldForceYN": 0.9375925660133362,
+      "expectedHeldForceYN": 0.9375925514101983,
+      "releasedLiftN": 4.928459167480469,
+      "expectedLiftN": 4.928459250286589,
+      "jointAudit": {
+        "total": 19,
+        "expected": 19,
+        "betweenBalloons": 0
+      },
+      "neighboursUnchanged": true,
+      "materialKeepsBody": true,
+      "standardLength": 0.51
+    }
+  ],
+  "saveRestore": true,
+  "reset": true,
+  "legacyImportSourceUnchanged": true,
+  "restoredTieWithinLength": [
+    true,
+    true
+  ],
+  "noInterBalloonJointsAfterRestore": {
+    "total": 28,
+    "expected": 28,
+    "betweenBalloons": 0
+  },
+  "pointerWeightDrag": true,
+  "foilRegression": {
+    "kind": "foilDigit",
+    "length": 0.51
+  }
+}
