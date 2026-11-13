@@ -1,0 +1,174 @@
+{
+  "repository": "MRMSMV/Test",
+  "branch": "main",
+  "keepLatestBuilds": 2,
+  "retainedBuilds": [
+    "v31",
+    "v30"
+  ],
+  "indexBuild": "v31",
+  "gitHistoryRewrite": false,
+  "localArchivesUnchanged": true,
+  "preservedModelSources": [
+    "latex-colliders-v28.json",
+    "digit-sources-v26.json"
+  ],
+  "deletedPaths": [
+    {
+      "path": "candysky-rapier-lab-1-v16-fountain-node-mini.html",
+      "sha": "c86afbd3bbcfd130016d4080127cfc1433a98968"
+    },
+    {
+      "path": "candysky-rapier-lab-1-v17-fountain-11-test.html",
+      "sha": "1c3449428c94c52dcad5398f158870131b71f4f4"
+    },
+    {
+      "path": "candysky-rapier-lab-1-v18-fountain-13-test.html",
+      "sha": "b1417653dac7488c34603308f1ab8b0e7ed8603b"
+    },
+    {
+      "path": "candysky-rapier-lab-1-v19-fountain-15-test.html",
+      "sha": "bd4821a4580900209d61006cff35ce10dcf9558b"
+    },
+    {
+      "path": "candysky-rapier-lab-1-v21-multi-fountains.html",
+      "sha": "685f49f0181ec601e9d3843a6e502e7adfeeeef6"
+    },
+    {
+      "path": "candysky-rapier-lab-1-v22-multi-fountains.html",
+      "sha": "05265e77eca90c0cdd3088cee9cbd61db07800df"
+    },
+    {
+      "path": "candysky-rapier-lab-1-v23-balloon-editor.html",
+      "sha": "09f770ae8e80b709ea58ca9972129596b25ee394"
+    },
+    {
+      "path": "candysky-rapier-lab-1-v24-balloon-editor.html",
+      "sha": "41459f0de75eaa1c60723355e23d760ce912cc81"
+    },
+    {
+      "path": "candysky-rapier-lab-1-v25-star-heart.html",
+      "sha": "eb6a10849ed62ccf0e4bd72e91749d6141540c39"
+    },
+    {
+      "path": "candysky-rapier-lab-1-v26-agura-digits.html",
+      "sha": "a2caeddc6b2ebce66af5cfa2fe115b91612b5f5e"
+    },
+    {
+      "path": "candysky-rapier-lab-1-v27-approved-catalogue.html",
+      "sha": "f340fa86837f14f39b508389f9d45378759f7a22"
+    },
+    {
+      "path": "candysky-rapier-lab-1-v28-smooth-latex-contacts.html",
+      "sha": "b555ddb2b2363d81e577d2c18956dd98f4ea6cf2"
+    },
+    {
+      "path": "candysky-rapier-lab-1-v29-fountain-ribbon-lengths.html",
+      "sha": "52488875c27b9a222716dc14dff474750d022efa"
+    },
+    {
+      "path": "collider-comparison-v27.json",
+      "sha": "50af2d6771caff0657c6777ac4ad38d92c94afab"
+    },
+    {
+      "path": "collider-impulse-check-v27.json",
+      "sha": "988c5f92c2f95a3f185c766bc5bf51ed1f1afef8"
+    },
+    {
+      "path": "force-balance-comparison-v27.json",
+      "sha": "a269454e2118f8955af07427e09d6c90d52c4cc6"
+    },
+    {
+      "path": "integration-v27.json",
+      "sha": "df864c4a3ad8a50acebb58a5ba64a092d6a51844"
+    },
+    {
+      "path": "integration-v28.json",
+      "sha": "bcd4da60a343b2121bdc7e06835304817cd50b9e"
+    },
+    {
+      "path": "integration-v29.json",
+      "sha": "0f008c8fe10b40c43000c3f48f5cf92fb14b0e05"
+    },
+    {
+      "path": "test-report-v22.json",
+      "sha": "c9d57594101b29d6a8a273bf2ab2000e76ebc59d"
+    },
+    {
+      "path": "test-report-v23.json",
+      "sha": "ff9bbe3fae174fd07cea6eefd94dbfc03d9c4b67"
+    },
+    {
+      "path": "test-report-v24.json",
+      "sha": "c00ac4c04f1aef000050725373e8f067b123f3a8"
+    },
+    {
+      "path": "test-report-v25.json",
+      "sha": "c920d796be5a80922ce623040570bac6a3fdd52d"
+    },
+    {
+      "path": "test-report-v26.json",
+      "sha": "8d767604e5cc0bd858a90ac055eeb8f899970044"
+    },
+    {
+      "path": "test-report-v27-followup.json",
+      "sha": "42a846a0cac7a29acdf3314ff08bdf1682366dd2"
+    },
+    {
+      "path": "test-report-v27.json",
+      "sha": "2cbcfea0efe4c478037b95bb606dcb4c90a27b73"
+    },
+    {
+      "path": "test-report-v28.json",
+      "sha": "e73c5b03118856acdefc5da317e4e4db72c56b40"
+    },
+    {
+      "path": "test-report-v29.json",
+      "sha": "cd29b021cdec028085c895124858444df201b3ca"
+    },
+    {
+      "path": "v26-digits.png",
+      "sha": "c894a492b64a3c2e3e5b1882b4c8ec15e22766eb"
+    },
+    {
+      "path": "v27-catalogue-390.png",
+      "sha": "57ad6defa6603128acec8feb63afbda8b573e330"
+    },
+    {
+      "path": "v27-digits.png",
+      "sha": "9c12c92d8df7544b9b894cdd669a758c191e1ae7"
+    },
+    {
+      "path": "v27-fountain.png",
+      "sha": "e48b8b32af4403a2e08325f0f23c4e2c31435c90"
+    },
+    {
+      "path": "v27-latex.png",
+      "sha": "19794f4e706c8d8480f379c4ca88e6c07d1ebaa8"
+    },
+    {
+      "path": "v27-shapes.png",
+      "sha": "156eb78d5e92cee430ef683562e0351ce5cbeb03"
+    },
+    {
+      "path": "v28-controls-390.png",
+      "sha": "e431fdb56badf8e4d61cf8d840683bec96ce719e"
+    },
+    {
+      "path": "v28-fountain.png",
+      "sha": "7af449bb79d58b0f2fba0402b50f713ca5b9eb72"
+    },
+    {
+      "path": "v29-fountains.png",
+      "sha": "0785d1c4f653b402ddb06dca7f97a77affc69d05"
+    },
+    {
+      "path": "v29-slider-390.png",
+      "sha": "eae44ab4f2096f80fce3198edbde1a2ec13e24e1"
+    }
+  ],
+  "retainedHtmlSha256": {
+    "candysky-rapier-lab-1-v31-six-contact.html": "6528f3aabf8f1bd5e717e79955a2a2aa442b200db07dd8237a155e71b5f0feb7",
+    "candysky-rapier-lab-1-v30-natural-top-ribbons.html": "cf01226e819015b727e763cc5b06d03dfccc249bbb64e6c316c1d8fb22a5f7ed"
+  }
+}
