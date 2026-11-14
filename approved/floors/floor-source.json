@@ -1,0 +1,33 @@
+{
+  "source": "User supplied CandySky_Dark_Oak_2000x2000.png",
+  "sourcePx": [
+    2000,
+    2000
+  ],
+  "sourceSha256": "bfa13fa7dd82047987cd8a32041e84093a82c569dcd378ddfd686ef997c85c33",
+  "sourceBytes": 3644790,
+  "deliveryFormat": "WebP quality 92, same complete layout",
+  "deliveryBytes": 277304,
+  "deliverySha256": "04323115e5a78bc82655ea00f97f91705e888e322abf81ab067f8ef768342d67",
+  "floorMetres": [
+    5,
+    5
+  ],
+  "repeat": [
+    1,
+    1
+  ],
+  "runtimeTextures": {
+    "desktop": [
+      2000,
+      2000
+    ],
+    "mobile": [
+      1000,
+      1000
+    ]
+  },
+  "material": "existing MeshStandardMaterial, roughness 1, white color multiplier",
+  "gridRemoved": true,
+  "sourceArchive": "PNG/WebP retained in local full archive; delivered texture embedded in HTML"
+}

@@ -1,0 +1,201 @@
+{
+  "errors": [],
+  "desktop": {
+    "roomHeight": 3,
+    "floor": {
+      "name": "room-floor-dark-oak",
+      "size": [
+        5,
+        5
+      ],
+      "texture": [
+        2000,
+        2000
+      ],
+      "mapAssigned": true,
+      "repeat": [
+        1,
+        1
+      ],
+      "color": "ffffff",
+      "roughness": 1,
+      "worldBox": [
+        [
+          -2.5,
+          -0.0010000000000005551,
+          -2.5
+        ],
+        [
+          2.5,
+          -0.000999999999999445,
+          2.5
+        ]
+      ]
+    },
+    "walls": [
+      {
+        "name": "room-wall-left",
+        "size": [
+          5,
+          3
+        ],
+        "texture": [
+          2000,
+          1200
+        ]
+      },
+      {
+        "name": "room-wall-center",
+        "size": [
+          5,
+          3
+        ],
+        "texture": [
+          2000,
+          1200
+        ]
+      },
+      {
+        "name": "room-wall-right",
+        "size": [
+          5,
+          3
+        ],
+        "texture": [
+          2000,
+          1200
+        ]
+      }
+    ],
+    "gridCount": 0
+  },
+  "reflections": {
+    "checks": [
+      {
+        "id": 8,
+        "floorVisible": true,
+        "wallsVisible": true,
+        "ownerHidden": true
+      },
+      {
+        "id": 9,
+        "floorVisible": true,
+        "wallsVisible": true,
+        "ownerHidden": true
+      }
+    ],
+    "maps": [
+      {
+        "id": 8,
+        "size": 256,
+        "error": null
+      },
+      {
+        "id": 9,
+        "size": 256,
+        "error": null
+      }
+    ],
+    "finite": true
+  },
+  "saveRestore": true,
+  "legacy44Unchanged": true,
+  "mobile": {
+    "roomHeight": 3,
+    "floor": {
+      "name": "room-floor-dark-oak",
+      "size": [
+        5,
+        5
+      ],
+      "texture": [
+        1000,
+        1000
+      ],
+      "mapAssigned": true,
+      "repeat": [
+        1,
+        1
+      ],
+      "color": "ffffff",
+      "roughness": 1,
+      "worldBox": [
+        [
+          -2.5,
+          -0.0010000000000005551,
+          -2.5
+        ],
+        [
+          2.5,
+          -0.000999999999999445,
+          2.5
+        ]
+      ]
+    },
+    "walls": [
+      {
+        "name": "room-wall-left",
+        "size": [
+          5,
+          3
+        ],
+        "texture": [
+          1000,
+          600
+        ]
+      },
+      {
+        "name": "room-wall-center",
+        "size": [
+          5,
+          3
+        ],
+        "texture": [
+          1000,
+          600
+        ]
+      },
+      {
+        "name": "room-wall-right",
+        "size": [
+          5,
+          3
+        ],
+        "texture": [
+          1000,
+          600
+        ]
+      }
+    ],
+    "gridCount": 0
+  },
+  "mobileReflections": {
+    "checks": [
+      {
+        "id": 8,
+        "floorVisible": true,
+        "wallsVisible": true,
+        "ownerHidden": true
+      },
+      {
+        "id": 9,
+        "floorVisible": true,
+        "wallsVisible": true,
+        "ownerHidden": true
+      }
+    ],
+    "maps": [
+      {
+        "id": 8,
+        "size": 64,
+        "error": null
+      },
+      {
+        "id": 9,
+        "size": 64,
+        "error": null
+      }
+    ],
+    "finite": true
+  }
+}

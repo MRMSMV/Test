@@ -3,10 +3,10 @@
   "branch": "main",
   "keepLatestBuilds": 2,
   "retainedBuilds": [
-    "v44",
-    "v43"
+    "v45",
+    "v44"
   ],
-  "indexBuild": "v44",
+  "indexBuild": "v45",
   "gitHistoryRewrite": false,
   "localArchivesUnchanged": true,
   "preservedModelSources": [
@@ -546,10 +546,34 @@
     {
       "path": "test-report-v42.json",
       "sha": "6caa929e97a89f374b8fe25c2ce96f10967bcb99"
+    },
+    {
+      "path": "candysky-rapier-lab-1-v43-individual-reflections.html",
+      "sha": "c98fcdc34cb9b81088706c1fea2799d346829534"
+    },
+    {
+      "path": "foil-baseline-check-v43.json",
+      "sha": "21b47aeb5dd6027f6c736eebc3a84d68eec59da3"
+    },
+    {
+      "path": "integration-v43.json",
+      "sha": "380f121acfab27db0eab255a47fc3bfa5a2d4d1b"
+    },
+    {
+      "path": "test-report-v43.json",
+      "sha": "44110acc85bd4da826091a40086c580a5bd1ca32"
+    },
+    {
+      "path": "v43-individual-mobile.png",
+      "sha": "b2b2a294e82d912b70152ef012c397cac1684d90"
+    },
+    {
+      "path": "v43-individual-reflections.png",
+      "sha": "69b6eccb66854d5a2e253919bc342dfd4ec72fe8"
     }
   ],
   "retainedHtmlSha256": {
-    "candysky-rapier-lab-1-v44-panorama-walls.html": "3a22b92e4f804c20ea0f36fc1b5093abb5bf2cddaab3940e6055275fd07ab455",
-    "candysky-rapier-lab-1-v43-individual-reflections.html": "125aa54f87ff7e31d762350a95f5abedd86d859f2591b6c40c0e5f046567f815"
+    "candysky-rapier-lab-1-v45-dark-oak-floor.html": "65d3ba2ddc5e0ecb34d2eda57056d6ef56fb64f73629231450b9bffd676f5161",
+    "candysky-rapier-lab-1-v44-panorama-walls.html": "3a22b92e4f804c20ea0f36fc1b5093abb5bf2cddaab3940e6055275fd07ab455"
   }
 }
