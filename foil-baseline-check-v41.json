@@ -21,8 +21,8 @@
       "seam": "f3213d466c47371ff364b7017e5105fda3b1d01dc5539337d69bef5e40dd639e",
       "tie": -0.21962270686246943,
       "shellMass": 0.023047619047619046,
-      "volume": 0.046,
-      "mass": 0.03126321904761904
+      "volume": 0.047,
+      "mass": 0.03144181904761904
     },
     {
       "kind": "foilStar",
@@ -57,8 +57,8 @@
       "seam": "790c2902e5ecdba23ebcfe0ea118c53f83c1c724acffd7d6d42a495e9eb43cd6",
       "tie": -0.312,
       "shellMass": 0.02747747747747748,
-      "volume": 0.059,
-      "mass": 0.038014877477477484
+      "volume": 0.053,
+      "mass": 0.036943277477477485
     },
     {
       "kind": "foilHeart",

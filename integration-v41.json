@@ -1,5 +1,5 @@
 {
-  "version": "v39",
+  "version": "v41",
   "target": "MRMSMV/Test/main/index.html",
   "protectedLegacySha256": {
     "v16": "4ed81f9f46093c7ee3a07f8db8eed0009a082ba46ec20c5b2d7bd152dd2a6a75",
@@ -13,14 +13,13 @@
   },
   "additionalInterBalloonJoints": false,
   "sha256": {
-    "candysky-rapier-lab-1-v39-helium-correction.html": "90eb7ad7527202b900b92689d98fe5c589ef454c7b29af2deb2d4e86cf680e83",
-    "test-report-v39.json": "9adc9eb10f277bef4f5cb0ea604cb02c715efe06c683ea132df4ed236e358ac8",
-    "test-report-v39-61.json": "bfb766dbbcc011250c8a4557f68e342f73f40f321b594d33a1160ba35e800c09",
-    "foil-baseline-check-v39.json": "0bbde40a0efacfa6abd1e4570cb381255ac1ba74b8685deb7b9734bbd53bbc15",
-    "technical-spec.md": "5084da8efd3d9b8599538ef6182d8050584f7ee30ab82da363a1e16636e22630",
-    "changelog.md": "b1d428d6928475a83c5e2db7f1665d50b760cd42a2b6f7035a2a8fb84448467a",
-    "instructions.md": "fad9d56a9d48f31ce7f39474d5abfe3da04c84d3ad097311ada01e7551282bf8",
-    "README.md": "9043b5dfe486be2f2100f92a9d29dbd6e38092dd1b86b1eabc4739add807a438"
+    "candysky-rapier-lab-1-v41-neighbor-reflections.html": "cef557d5ea8d577e7ba99eedbfbe8f22e72de382270f9413a666741b51516a36",
+    "test-report-v41.json": "74c2d28be408866354249403c407eefd89483ee4fa225cd5b9851b041e66c96a",
+    "foil-baseline-check-v41.json": "918da6b6f79428933582cec2e399dafd57b7ff7ee5de84fa35e38303ffdc8232",
+    "technical-spec.md": "e67dd54ee6c21083ead510b4cf0e99f2a86b744004f71519962373c9f182e458",
+    "changelog.md": "cbb5a1a89692a9f45c52c5c605c6c07625e5ef12f905648557bd9fac103bc91a",
+    "instructions.md": "5f5f824ddd67eed6bcbc8d9829bcad15ef79fd81026960142e2d9bb7dce10c10",
+    "README.md": "4a87790f1f6cd073640f9e6d09ecbc1ee212454a29a1bb2e9433f7ba6ffa0a54"
   },
   "roomMetres": [
     5,
@@ -188,5 +187,60 @@
     },
     "scope": "Only heart/star 30; user excluded small shapes and digits",
     "geometryChanged": false
+  },
+  "foilChrome": {
+    "approvedPreview": "chrome-fountains-scene-v4.png",
+    "gold": "#ffbf40",
+    "silver": "#ffffff",
+    "red": "#e51d2b",
+    "foilFinish": "chrome",
+    "metalness": 1,
+    "bodyRoughness": {
+      "goldSilver": 0.24,
+      "red": 0.25
+    },
+    "detailRoughness": {
+      "goldSilver": 0.3,
+      "red": 0.31
+    },
+    "clearcoat": 0.16,
+    "clearcoatRoughness": 0.14,
+    "bumpScale": {
+      "goldSilver": 0.005,
+      "red": 0.0035
+    },
+    "envMapIntensity": {
+      "goldSilver": 1.05,
+      "red": 1.1
+    },
+    "sharedReflectionMap": true,
+    "sceneLightingUnchanged": true
+  },
+  "neighborReflections": {
+    "status": "user authorized experiment in Test",
+    "rollbackBuild": "v40",
+    "room": {
+      "background": "#686e75",
+      "floor": "#7d8187",
+      "gridOpacity": 0.18
+    },
+    "mapsPerFountain": 1,
+    "owner": "first chrome balloon, top if chrome",
+    "faceSize": {
+      "desktop": 256,
+      "mobile": 128
+    },
+    "checkIntervalMs": {
+      "desktop": 160,
+      "mobile": 250
+    },
+    "maxCapturesPerCheck": 1,
+    "idleSkip": true,
+    "singleReflectionBounce": true,
+    "selfExcluded": "probe owner only; shared map approximate for other receivers",
+    "lightCards": "only visible during capture",
+    "onFailure": "retry after 5 seconds; static fallback",
+    "onRemoval": "texture/camera/target disposed",
+    "realIphoneFpsMeasured": false
   }
 }

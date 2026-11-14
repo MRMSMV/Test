@@ -1,0 +1,185 @@
+{
+  "errors": [],
+  "initial": {
+    "states": [
+      {
+        "id": 2,
+        "captures": 1,
+        "size": 256,
+        "owner": 8,
+        "error": null
+      }
+    ],
+    "products": [
+      [
+        {
+          "kind": "foilHeart",
+          "sizeCm": 61,
+          "foilFinish": "chrome"
+        },
+        {
+          "kind": "latex",
+          "sizeCm": 30,
+          "finish": "fashion"
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42,
+          "foilFinish": "chrome"
+        },
+        null,
+        null,
+        null,
+        null
+      ]
+    ],
+    "colors": [
+      [
+        16777215,
+        15015211,
+        16760640,
+        11063789,
+        15775652,
+        14067926,
+        12178092
+      ]
+    ],
+    "cardsVisible": false,
+    "allVisible": true,
+    "background": "686e75"
+  },
+  "idleSkipped": true,
+  "motionAndColorRefresh": true,
+  "recreatedVisualReattached": true,
+  "oneCapturePerCall": true,
+  "multi": {
+    "states": [
+      {
+        "id": 2,
+        "captures": 5,
+        "size": 256,
+        "owner": 8,
+        "error": null
+      },
+      {
+        "id": 3,
+        "captures": 1,
+        "size": 256,
+        "owner": 15,
+        "error": null
+      }
+    ],
+    "products": [
+      [
+        {
+          "kind": "foilHeart",
+          "sizeCm": 61,
+          "foilFinish": "chrome"
+        },
+        {
+          "kind": "latex",
+          "sizeCm": 30,
+          "finish": "fashion"
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42,
+          "foilFinish": "chrome"
+        },
+        null,
+        null,
+        null,
+        null
+      ],
+      [
+        {
+          "kind": "foilDigit",
+          "sizeCm": 102,
+          "digit": 8,
+          "foilFinish": "chrome"
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    ],
+    "colors": [
+      [
+        16777215,
+        2189039,
+        16760640,
+        11063789,
+        15775652,
+        14067926,
+        12178092
+      ],
+      [
+        15015211,
+        12169705,
+        11063789,
+        15775652,
+        14067926,
+        12178092,
+        15776712
+      ]
+    ],
+    "cardsVisible": false,
+    "allVisible": true,
+    "background": "686e75"
+  },
+  "disposedOnDelete": true,
+  "saveRestore": true,
+  "legacy40Unchanged": true,
+  "disposedWithoutChrome": true,
+  "mobile": {
+    "states": [
+      {
+        "id": 4,
+        "captures": 1,
+        "size": 128,
+        "owner": 8,
+        "error": null
+      }
+    ],
+    "products": [
+      [
+        {
+          "kind": "foilHeart",
+          "sizeCm": 61,
+          "foilFinish": "chrome"
+        },
+        {
+          "kind": "latex",
+          "sizeCm": 30,
+          "finish": "fashion"
+        },
+        {
+          "kind": "foilStar",
+          "sizeCm": 42,
+          "foilFinish": "chrome"
+        },
+        null,
+        null,
+        null,
+        null
+      ]
+    ],
+    "colors": [
+      [
+        16777215,
+        15015211,
+        16760640,
+        14067926,
+        12178092,
+        15776712,
+        10869450
+      ]
+    ],
+    "cardsVisible": false,
+    "allVisible": true,
+    "background": "686e75"
+  }
+}

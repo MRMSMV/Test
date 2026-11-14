@@ -1,0 +1,27 @@
+{
+  "status": "user authorized experiment in Test",
+  "rollbackBuild": "v40",
+  "room": {
+    "background": "#686e75",
+    "floor": "#7d8187",
+    "gridOpacity": 0.18
+  },
+  "mapsPerFountain": 1,
+  "owner": "first chrome balloon, top if chrome",
+  "faceSize": {
+    "desktop": 256,
+    "mobile": 128
+  },
+  "checkIntervalMs": {
+    "desktop": 160,
+    "mobile": 250
+  },
+  "maxCapturesPerCheck": 1,
+  "idleSkip": true,
+  "singleReflectionBounce": true,
+  "selfExcluded": "probe owner only; shared map approximate for other receivers",
+  "lightCards": "only visible during capture",
+  "onFailure": "retry after 5 seconds; static fallback",
+  "onRemoval": "texture/camera/target disposed",
+  "realIphoneFpsMeasured": false
+}
