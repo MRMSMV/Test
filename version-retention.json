@@ -3,10 +3,10 @@
   "branch": "main",
   "keepLatestBuilds": 2,
   "retainedBuilds": [
-    "v43",
-    "v42"
+    "v44",
+    "v43"
   ],
-  "indexBuild": "v43",
+  "indexBuild": "v44",
   "gitHistoryRewrite": false,
   "localArchivesUnchanged": true,
   "preservedModelSources": [
@@ -530,10 +530,26 @@
     {
       "path": "v41-reflection-mobile.png",
       "sha": "8703e5f67a8191610a14f30f2fcce5f17f3a97de"
+    },
+    {
+      "path": "baseline-check-v42.json",
+      "sha": "87286c79d5a05c9e11052a1ee73e32b62db1f10d"
+    },
+    {
+      "path": "candysky-rapier-lab-1-v42-mobile-reflections.html",
+      "sha": "b37c73269887ed5e2aea52605183bf9b45450971"
+    },
+    {
+      "path": "integration-v42.json",
+      "sha": "6d8468808c443c6bb4bfeb7bdfc27778d5d15868"
+    },
+    {
+      "path": "test-report-v42.json",
+      "sha": "6caa929e97a89f374b8fe25c2ce96f10967bcb99"
     }
   ],
   "retainedHtmlSha256": {
-    "candysky-rapier-lab-1-v43-individual-reflections.html": "125aa54f87ff7e31d762350a95f5abedd86d859f2591b6c40c0e5f046567f815",
-    "candysky-rapier-lab-1-v42-mobile-reflections.html": "8bcaa718a3acc8457089d3dbb4893d4a45013dca8e92092c61ed20a0a4d49400"
+    "candysky-rapier-lab-1-v44-panorama-walls.html": "3a22b92e4f804c20ea0f36fc1b5093abb5bf2cddaab3940e6055275fd07ab455",
+    "candysky-rapier-lab-1-v43-individual-reflections.html": "125aa54f87ff7e31d762350a95f5abedd86d859f2591b6c40c0e5f046567f815"
   }
 }
