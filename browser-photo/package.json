@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "esbuild": "0.25.12",
+    "three": "0.164.1",
+    "three-gpu-pathtracer": "0.0.23",
+    "three-mesh-bvh": "0.8.0",
+    "xatlas-web": "0.1.0"
+  }
+}

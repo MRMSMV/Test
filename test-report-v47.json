@@ -1,0 +1,314 @@
+{
+  "version": "v47",
+  "browser": "Chromium WebGL2 SwiftShader; genuine Rapier",
+  "behavior": {
+    "digitStarClearLatexAuto128": {
+      "stage": "done",
+      "samples": 128,
+      "target": 128,
+      "last": {
+        "meshes": 52,
+        "triangles": 392916,
+        "cameraPosition": [
+          1.4,
+          1.65,
+          4.7
+        ],
+        "cameraQuaternion": [
+          -0.05323905936003726,
+          0.14403794381204793,
+          0.007760731232509286,
+          0.98810851850978
+        ],
+        "width": 67,
+        "height": 80,
+        "lights": [
+          {
+            "name": "photo-key",
+            "position": [
+              -1.5,
+              2.5,
+              1.9
+            ],
+            "width": 0.55,
+            "height": 0.8
+          },
+          {
+            "name": "photo-fill",
+            "position": [
+              1.7,
+              2.1,
+              1.4
+            ],
+            "width": 1,
+            "height": 1.2
+          }
+        ],
+        "normalMaps": 2,
+        "denoiser": "classical NLM in display color space",
+        "profile": {
+          "key": 100,
+          "fill": 3.4,
+          "environment": 0.14,
+          "exposure": 1.7,
+          "contrast": 1.17,
+          "ceiling": 0.84
+        },
+        "radianceClamp": 6,
+        "aiUsed": false,
+        "samples": 128,
+        "seconds": 66.54530000000447
+      }
+    },
+    "download": true,
+    "sourceMaterialsPositionsPreserved": true,
+    "earlyFinish": 2,
+    "cancelAndResume": true,
+    "contextLossRecoverable": true,
+    "unsupportedDeviceRecoverable": true,
+    "mobile64": {
+      "stage": "done",
+      "samples": 64,
+      "target": 64,
+      "last": {
+        "meshes": 52,
+        "triangles": 392916,
+        "cameraPosition": [
+          1.4,
+          1.65,
+          4.7
+        ],
+        "cameraQuaternion": [
+          -0.05323905936003726,
+          0.14403794381204793,
+          0.007760731232509286,
+          0.98810851850978
+        ],
+        "width": 30,
+        "height": 64,
+        "lights": [
+          {
+            "name": "photo-key",
+            "position": [
+              -1.5,
+              2.5,
+              1.9
+            ],
+            "width": 0.55,
+            "height": 0.8
+          },
+          {
+            "name": "photo-fill",
+            "position": [
+              1.7,
+              2.1,
+              1.4
+            ],
+            "width": 1,
+            "height": 1.2
+          }
+        ],
+        "normalMaps": 2,
+        "denoiser": "classical NLM in display color space",
+        "profile": {
+          "key": 100,
+          "fill": 3.4,
+          "environment": 0.14,
+          "exposure": 1.7,
+          "contrast": 1.17,
+          "ceiling": 0.84
+        },
+        "radianceClamp": 6,
+        "aiUsed": false,
+        "samples": 64,
+        "seconds": 30.68069999999553
+      }
+    },
+    "v45DraftUnchanged": true,
+    "moduleFailureRetry": true,
+    "noComputeServer": true,
+    "errors": [],
+    "consoleErrors": []
+  },
+  "endToEndSmoke": {
+    "stage": "done",
+    "samples": 2,
+    "target": 2,
+    "last": {
+      "meshes": 48,
+      "triangles": 356054,
+      "cameraPosition": [
+        0,
+        2.7,
+        7.2
+      ],
+      "cameraQuaternion": [
+        -0.11240035914472367,
+        0,
+        0,
+        0.9936630008529738
+      ],
+      "width": 80,
+      "height": 96,
+      "lights": [
+        {
+          "name": "photo-key",
+          "position": [
+            -1.5,
+            2.5,
+            1.9
+          ],
+          "width": 0.55,
+          "height": 0.8
+        },
+        {
+          "name": "photo-fill",
+          "position": [
+            1.7,
+            2.1,
+            1.4
+          ],
+          "width": 1,
+          "height": 1.2
+        }
+      ],
+      "normalMaps": 2,
+      "denoiser": "classical NLM in display color space",
+      "profile": {
+        "key": 100,
+        "fill": 3.4,
+        "environment": 0.14,
+        "exposure": 1.7,
+        "contrast": 1.17,
+        "ceiling": 0.84
+      },
+      "radianceClamp": 6,
+      "aiUsed": false,
+      "samples": 2,
+      "seconds": 23.21570000000298
+    }
+  },
+  "gpuPostprocessing": {
+    "errors": [],
+    "shaderErrors": [],
+    "logs": [],
+    "method": "non-neural classical NLM in display color space"
+  },
+  "lightingCalibration": {
+    "reference": {
+      "ceiling": [
+        186.4,
+        185.6,
+        185.2
+      ],
+      "floor": [
+        161.3,
+        122.0,
+        91.2
+      ],
+      "wall": [
+        60.5,
+        56.8,
+        54.8
+      ],
+      "peach": [
+        226.5,
+        202.7,
+        194.2
+      ],
+      "lavender": [
+        218.8,
+        217.4,
+        231.8
+      ]
+    },
+    "browser": {
+      "ceiling": [
+        184.1,
+        183.4,
+        184.3
+      ],
+      "floor": [
+        160.7,
+        123.3,
+        96.1
+      ],
+      "wall": [
+        69.5,
+        65.5,
+        64.7
+      ],
+      "peach": [
+        227.9,
+        203.8,
+        194.6
+      ],
+      "lavender": [
+        219.4,
+        218.1,
+        236.1
+      ]
+    }
+  },
+  "fullSizeLightingTest": {
+    "audit": {
+      "meshes": 46,
+      "triangles": 300802,
+      "cameraPosition": [
+        1.4,
+        1.65,
+        4.7
+      ],
+      "cameraQuaternion": [
+        -0.05323905936003726,
+        0.14403794381204793,
+        0.007760731232509286,
+        0.98810851850978
+      ],
+      "width": 800,
+      "height": 960,
+      "lights": [
+        {
+          "name": "photo-key",
+          "position": [
+            -1.5,
+            2.5,
+            1.9
+          ],
+          "width": 0.55,
+          "height": 0.8
+        },
+        {
+          "name": "photo-fill",
+          "position": [
+            1.7,
+            2.1,
+            1.4
+          ],
+          "width": 1,
+          "height": 1.2
+        }
+      ],
+      "normalMaps": 3,
+      "profile": {
+        "key": 100,
+        "fill": 3.4,
+        "environment": 0.14,
+        "exposure": 1.7,
+        "contrast": 1.17,
+        "ceiling": 0.84
+      },
+      "radianceClamp": 6,
+      "aiUsed": false
+    },
+    "samples": 16,
+    "seconds": 397.5168000000045
+  },
+  "limitations": [
+    "State tests use reduced pixel dimensions with real 128/64 samples",
+    "Calibration statistics precede final display-space NLM",
+    "Full-size lighting test uses 16 samples, not default final quality",
+    "Native GPU / actual iPhone Safari / user acceptance not yet verified",
+    "SwiftShader times do not predict phone performance"
+  ]
+}
