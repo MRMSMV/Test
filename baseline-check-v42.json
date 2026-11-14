@@ -1,0 +1,20 @@
+{
+  "packedApprovedModelsUnchanged": true,
+  "foilGeometryGeneratorUnchanged": true,
+  "physicsForcesUnchanged": true,
+  "mobile": {
+    "before": {
+      "facePx": 128,
+      "intervalMs": 250
+    },
+    "after": {
+      "facePx": 64,
+      "intervalMs": 500
+    }
+  },
+  "desktop": {
+    "facePx": 256,
+    "intervalMs": 160
+  },
+  "note": "4x fewer cubemap texels per face; half update frequency. Not a measured whole-app FPS improvement."
+}

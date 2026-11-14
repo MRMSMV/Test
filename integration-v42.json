@@ -1,5 +1,5 @@
 {
-  "version": "v40",
+  "version": "v42",
   "target": "MRMSMV/Test/main/index.html",
   "protectedLegacySha256": {
     "v16": "4ed81f9f46093c7ee3a07f8db8eed0009a082ba46ec20c5b2d7bd152dd2a6a75",
@@ -13,13 +13,13 @@
   },
   "additionalInterBalloonJoints": false,
   "sha256": {
-    "candysky-rapier-lab-1-v40-foil-chrome.html": "3034ea92e65db723acb97fc6230bc6298972d12f74f7e607c21e0f97b171c723",
-    "test-report-v40.json": "75d9610fd9c00e4fb8c30891dc9a119820d8b344c875c8cc62215ac16795788f",
-    "foil-baseline-check-v40.json": "918da6b6f79428933582cec2e399dafd57b7ff7ee5de84fa35e38303ffdc8232",
-    "technical-spec.md": "7eb66af6ed9ebc20d712df817b4af7cad0a8f3559892ee12d07102ab1e903d47",
-    "changelog.md": "7c5cbd6f6a14700d59abbc69f2d07641e4b0e72b7c97faa49569744df7e030fe",
-    "instructions.md": "02524ce226ff4adbb6f091c1dee58c866bbc502b75e9f84454048d27dcd0044c",
-    "README.md": "26d23d674543c8f36f92bb5c7fdf1d512d3a404f84cd10c03d1bfb6e6b73a764"
+    "candysky-rapier-lab-1-v42-mobile-reflections.html": "8bcaa718a3acc8457089d3dbb4893d4a45013dca8e92092c61ed20a0a4d49400",
+    "test-report-v42.json": "825d3f2273c3c0110f57b9d082d2dac4a6698ed480163d1af797ab8268fe14e4",
+    "baseline-check-v42.json": "3a01e417ea1ed7da7efa70d95b8790e5783d39837b9650899264dab91ebc8c64",
+    "technical-spec.md": "df4877635452451ab05ef98819172060ce4461351e9368ad907906d4ec0a4653",
+    "changelog.md": "124814d40d0f9e9cef5f75f8fc61a2dfcc97db48fab44a18ef5287796663592f",
+    "instructions.md": "dab693ca715d2af6a0e706df939cba738bc5de7d1a691de62adfbe99e84a84b1",
+    "README.md": "cc700dcad264962a09921eb737d0d4c33c9a1ba5e4ecfbf5b133c73522acbbfd"
   },
   "roomMetres": [
     5,
@@ -215,5 +215,32 @@
     },
     "sharedReflectionMap": true,
     "sceneLightingUnchanged": true
+  },
+  "neighborReflections": {
+    "status": "user authorized experiment in Test",
+    "rollbackBuild": "v41",
+    "room": {
+      "background": "#686e75",
+      "floor": "#7d8187",
+      "gridOpacity": 0.18
+    },
+    "mapsPerFountain": 1,
+    "owner": "first chrome balloon, top if chrome",
+    "faceSize": {
+      "desktop": 256,
+      "mobile": 64
+    },
+    "checkIntervalMs": {
+      "desktop": 160,
+      "mobile": 500
+    },
+    "maxCapturesPerCheck": 1,
+    "idleSkip": true,
+    "singleReflectionBounce": true,
+    "selfExcluded": "probe owner only; shared map approximate for other receivers",
+    "lightCards": "only visible during capture",
+    "onFailure": "retry after 5 seconds; static fallback",
+    "onRemoval": "texture/camera/target disposed",
+    "realIphoneFpsMeasured": false
   }
 }
