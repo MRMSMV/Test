@@ -1,0 +1,49 @@
+{
+  "version": "v34",
+  "target": "MRMSMV/Test/main/index.html",
+  "protectedLegacySha256": {
+    "v16": "4ed81f9f46093c7ee3a07f8db8eed0009a082ba46ec20c5b2d7bd152dd2a6a75",
+    "v17": "839376c440df773315b9b99f6d622b00dc1eadad60e45cefce6649263a0c7666",
+    "v18": "4bf671a006ac6a4aea1c4ba5b85906607c69a11cf2e25e27fb7f21e209f96610",
+    "v19": "8d7a3a0ef3271cd6fb9acba2f95f864f1a2ee2c3a311fb857c7bcddecf58adc6"
+  },
+  "largeTopRibbonCm": {
+    "60": 57,
+    "91.5": 58.6
+  },
+  "additionalInterBalloonJoints": false,
+  "sha256": {
+    "candysky-rapier-lab-1-v34-star-ribbon-level.html": "e08ab804638c19444bef3297afb163df0c0363d5f685a2bddcc1d44f9af1e5f9",
+    "test-report-v34.json": "ad59b515b8c3d77128618c9605815e6898875b521b498bac77e77f2d33d8ef50",
+    "test-report-v34-migration.json": "153a9accdc5d798abae511f8de053c8d74bdaafe5931a77d66f9917848712f82",
+    "technical-spec.md": "344e4d566b5ea902408ae95c847d9e468fbef9267e47a321300617e6d98ff634",
+    "changelog.md": "71b4b7b21374534e2bf2d10301a4328cd00d05b56c1bd5588cf3771b7bccc8b2",
+    "instructions.md": "0222fcf4037e367b88720f10fda25c29a9f625b8c8b54563b1915ebd99077d31",
+    "README.md": "acb5b6afa60d83424e5402e914b4fdeef9a8a3c2427b8b039f900d5829e0886d"
+  },
+  "roomMetres": [
+    5,
+    5,
+    3.2
+  ],
+  "cristalRendering": "alpha-blended thin shells, angle-dependent opacity and highlights; no screen-space transmission",
+  "foilTierPlacement": {
+    "finalSideLengthCm": {
+      "star": 36,
+      "heart": 27
+    },
+    "topLengthCm": 51,
+    "probe": "exact Compound of 20 approved convex sectors",
+    "entrySideLengthCm": {
+      "star": 48,
+      "heart": 45
+    },
+    "entryTopLengthCm": 63,
+    "reelRateMPerSecond": 0.12,
+    "extraSolverIterationsDuringEntry": 16,
+    "savedInProgress": true,
+    "editorReplacementsTested": 75,
+    "additionalInterBalloonJoints": false
+  },
+  "starAlignmentReference": "lower ray tips versus lower latex body surface, approximate at rest; no pose lock"
+}

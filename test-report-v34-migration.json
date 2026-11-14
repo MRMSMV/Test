@@ -1,0 +1,51 @@
+{
+  "errors": [],
+  "cases": [],
+  "migratedStates": [
+    {
+      "length": 0.36,
+      "target": null,
+      "distance": 0.2733545067660489
+    },
+    {
+      "length": 0.436,
+      "target": 0.36,
+      "distance": 0.2776312124295648
+    },
+    {
+      "length": 0.36,
+      "target": null,
+      "distance": 0.272316247224133
+    }
+  ],
+  "settledStates": [
+    {
+      "length": 0.36,
+      "target": null,
+      "distance": 0.3598754600406575
+    },
+    {
+      "length": 0.36,
+      "target": null,
+      "distance": 0.3598638729807804
+    },
+    {
+      "length": 0.36,
+      "target": null,
+      "distance": 0.3599533050572897
+    }
+  ],
+  "legacySourceUnchanged": true,
+  "regression": {
+    "topLength": 0.51,
+    "heartLength": 0.27,
+    "starLength": 0.36,
+    "info": "№7 · Ярус 2 · Звезда · 42×40×21 см · лента 36 см",
+    "latexLength": 0.27,
+    "cristal": {
+      "transparent": true,
+      "depthWrite": false,
+      "transmission": 0
+    }
+  }
+}
