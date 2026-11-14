@@ -3,10 +3,10 @@
   "branch": "main",
   "keepLatestBuilds": 2,
   "retainedBuilds": [
-    "v35",
-    "v34"
+    "v36",
+    "v35"
   ],
-  "indexBuild": "v35",
+  "indexBuild": "v36",
   "gitHistoryRewrite": false,
   "localArchivesUnchanged": true,
   "preservedModelSources": [
@@ -258,10 +258,46 @@
     },
     {
       "path": "v33-editor-mobile.png"
+    },
+    {
+      "path": "candysky-rapier-lab-1-v34-star-ribbon-level.html",
+      "sha": "2d74d345c65eca36eaae5232839755c97952eeba"
+    },
+    {
+      "path": "integration-v34.json",
+      "sha": "02850331f1a08dce019c70d8f65d463d9708fde4"
+    },
+    {
+      "path": "test-report-v34-migration.json",
+      "sha": "dc0335486b925003ab4be3876d903cb21754ba1d"
+    },
+    {
+      "path": "test-report-v34.json",
+      "sha": "b5758d0bd87d6ed1b2feb7187e2d90545cf39ed7"
+    },
+    {
+      "path": "v34-editor-mobile.png",
+      "sha": "b57cc9798f837a3a54c659e8b37162ae5e5a65a0"
+    },
+    {
+      "path": "v34-mixed.png",
+      "sha": "0eeb166b1374c7d4315f49be902835ca2ec1cd7c"
+    },
+    {
+      "path": "v34-star-level-front.png",
+      "sha": "8b1d0cba938656f2bcb8bb59d9c5a2dfcd0bca58"
+    },
+    {
+      "path": "v34-star-level-side.png",
+      "sha": "f32997de9f35ff47e9c4d079967419b9fc40f864"
+    },
+    {
+      "path": "v34-stars.png",
+      "sha": "73e2293d74669fb7a7932cbb53b374b176a5bd4c"
     }
   ],
   "retainedHtmlSha256": {
-    "candysky-rapier-lab-1-v34-star-ribbon-level.html": "e08ab804638c19444bef3297afb163df0c0363d5f685a2bddcc1d44f9af1e5f9",
+    "candysky-rapier-lab-1-v36-large-star.html": "ee03b0dc2b017147f72e0894c45bbfc2ee69764073b223b743ae59e72d386bc4",
     "candysky-rapier-lab-1-v35-top-star-level.html": "648f826942452222a4704b53ba02abd635343ae0fbb35b959bfb34462869cd62"
   }
 }

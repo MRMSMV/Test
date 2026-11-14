@@ -1,0 +1,49 @@
+{
+  "errors": [],
+  "cases": [],
+  "spec": {
+    "big": {
+      "dimensions": [
+        0.8600000143051147,
+        0.8100000023841858,
+        0.38999998569488525
+      ],
+      "gas": 0.094,
+      "mass": 0.05825268571428571,
+      "hulls": 20
+    },
+    "cacheSeparated": true,
+    "small": {
+      "dimensions": [
+        0.42,
+        0.4,
+        0.21
+      ],
+      "gas": 0.014,
+      "mass": 0.0125004
+    },
+    "heart": {
+      "dimensions": [
+        0.37,
+        0.36,
+        0.2
+      ]
+    }
+  },
+  "mixed": {
+    "productsRestored": true,
+    "pending": {
+      "length": 0.75,
+      "target": 0.64
+    },
+    "finalLength": 0.64,
+    "finished": true,
+    "solverIterations": 32,
+    "finite": true,
+    "joints": {
+      "total": 19,
+      "expected": 19,
+      "between": 0
+    }
+  }
+}

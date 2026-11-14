@@ -1,0 +1,47 @@
+{
+  "old": [
+    {
+      "label": "Звезда",
+      "positions": "2c0757cfce2fb5584e769291de3818e924665fed47398e90aa2739dbc3184957",
+      "normals": "2705578d1a13fb6d1d52918368366d736fa7a25592edd7134723d595472fb428",
+      "indices": "d1846c62f26c42be049e93efbe15f824b6ec61b882702c82b7c138dcf87c46f7",
+      "seam": "8662ff076d05350c128d550498fe27280a6f013d3d5c06644b444b4e0dc58cdd",
+      "tie": -0.14883288597246974,
+      "mass": 0.0125004,
+      "volume": 0.014
+    },
+    {
+      "label": "Сердечко",
+      "positions": "e7893d2ea1cb94202886314780b43b53ff218f0ac9f5f014c4f71546c19a3f2b",
+      "normals": "f755298e9754f8659694acc32f4949f7206d98eb587d660bd68ace20e0dd6624",
+      "indices": "d1846c62f26c42be049e93efbe15f824b6ec61b882702c82b7c138dcf87c46f7",
+      "seam": "5913907596370181406b3a33a81aa9f8cdc515c31531afa3beabd8e3db73a8b2",
+      "tie": -0.192,
+      "mass": 0.0123218,
+      "volume": 0.013
+    }
+  ],
+  "new": [
+    {
+      "label": "Звезда",
+      "positions": "2c0757cfce2fb5584e769291de3818e924665fed47398e90aa2739dbc3184957",
+      "normals": "2705578d1a13fb6d1d52918368366d736fa7a25592edd7134723d595472fb428",
+      "indices": "d1846c62f26c42be049e93efbe15f824b6ec61b882702c82b7c138dcf87c46f7",
+      "seam": "8662ff076d05350c128d550498fe27280a6f013d3d5c06644b444b4e0dc58cdd",
+      "tie": -0.14883288597246974,
+      "mass": 0.0125004,
+      "volume": 0.014
+    },
+    {
+      "label": "Сердечко",
+      "positions": "e7893d2ea1cb94202886314780b43b53ff218f0ac9f5f014c4f71546c19a3f2b",
+      "normals": "f755298e9754f8659694acc32f4949f7206d98eb587d660bd68ace20e0dd6624",
+      "indices": "d1846c62f26c42be049e93efbe15f824b6ec61b882702c82b7c138dcf87c46f7",
+      "seam": "5913907596370181406b3a33a81aa9f8cdc515c31531afa3beabd8e3db73a8b2",
+      "tie": -0.192,
+      "mass": 0.0123218,
+      "volume": 0.013
+    }
+  ],
+  "identical": true
+}

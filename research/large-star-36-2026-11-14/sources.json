@@ -1,0 +1,19 @@
+{
+  "brand": "Grabo",
+  "sku": "362S01WH",
+  "url": "https://www.grabo-balloons.com/en/362s01wh-balloon-star-36inc-satin-white-white",
+  "nominalInches": 36,
+  "inflatedCm": {
+    "width": 86,
+    "height": 81,
+    "depth": 39
+  },
+  "heliumLitres": 94,
+  "shellMassGrams": {
+    "value": 41.464285714285715,
+    "status": "estimate, not manufacturer data",
+    "formula": "10g * (86*81)/(42*40)"
+  },
+  "model": "approved star contour scaled independently along x/y/z",
+  "topRibbonCm": 64
+}
