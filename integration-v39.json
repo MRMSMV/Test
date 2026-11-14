@@ -1,0 +1,192 @@
+{
+  "version": "v39",
+  "target": "MRMSMV/Test/main/index.html",
+  "protectedLegacySha256": {
+    "v16": "4ed81f9f46093c7ee3a07f8db8eed0009a082ba46ec20c5b2d7bd152dd2a6a75",
+    "v17": "839376c440df773315b9b99f6d622b00dc1eadad60e45cefce6649263a0c7666",
+    "v18": "4bf671a006ac6a4aea1c4ba5b85906607c69a11cf2e25e27fb7f21e209f96610",
+    "v19": "8d7a3a0ef3271cd6fb9acba2f95f864f1a2ee2c3a311fb857c7bcddecf58adc6"
+  },
+  "largeTopRibbonCm": {
+    "60": 57,
+    "91.5": 58.6
+  },
+  "additionalInterBalloonJoints": false,
+  "sha256": {
+    "candysky-rapier-lab-1-v39-helium-correction.html": "90eb7ad7527202b900b92689d98fe5c589ef454c7b29af2deb2d4e86cf680e83",
+    "test-report-v39.json": "9adc9eb10f277bef4f5cb0ea604cb02c715efe06c683ea132df4ed236e358ac8",
+    "test-report-v39-61.json": "bfb766dbbcc011250c8a4557f68e342f73f40f321b594d33a1160ba35e800c09",
+    "foil-baseline-check-v39.json": "0bbde40a0efacfa6abd1e4570cb381255ac1ba74b8685deb7b9734bbd53bbc15",
+    "technical-spec.md": "5084da8efd3d9b8599538ef6182d8050584f7ee30ab82da363a1e16636e22630",
+    "changelog.md": "b1d428d6928475a83c5e2db7f1665d50b760cd42a2b6f7035a2a8fb84448467a",
+    "instructions.md": "fad9d56a9d48f31ce7f39474d5abfe3da04c84d3ad097311ada01e7551282bf8",
+    "README.md": "9043b5dfe486be2f2100f92a9d29dbd6e38092dd1b86b1eabc4739add807a438"
+  },
+  "roomMetres": [
+    5,
+    5,
+    3.2
+  ],
+  "cristalRendering": "alpha-blended thin shells, angle-dependent opacity and highlights; no screen-space transmission",
+  "foilTierPlacement": {
+    "finalSideLengthCm": {
+      "star": 36,
+      "heart": 27
+    },
+    "topLengthCm": {
+      "star": 58,
+      "heart": 51,
+      "largeStar36": 64,
+      "mediumStar30": 61,
+      "mediumHeart30": 56,
+      "largeHeart36": 59
+    },
+    "probe": "exact Compound of 20 approved convex sectors",
+    "entrySideLengthCm": {
+      "star": 48,
+      "heart": 45
+    },
+    "entryTopLengthCm": {
+      "star": 70,
+      "heart": 63,
+      "largeStar36": 75,
+      "mediumStar30": 75
+    },
+    "reelRateMPerSecond": 0.12,
+    "extraSolverIterationsDuringEntry": 16,
+    "savedInProgress": true,
+    "additionalInterBalloonJoints": false,
+    "largeStarExtraSolverIterations": 32,
+    "mediumStarExtraSolverIterations": 32,
+    "newHeartExtraSolverIterations": 32
+  },
+  "starAlignmentReference": "lower ray tips versus lower latex body surface, approximate at rest; no pose lock",
+  "largeStar": {
+    "brand": "Grabo",
+    "sku": "362S01WH",
+    "url": "https://www.grabo-balloons.com/en/362s01wh-balloon-star-36inc-satin-white-white",
+    "nominalInches": 36,
+    "inflatedCm": {
+      "width": 86,
+      "height": 81,
+      "depth": 39
+    },
+    "heliumLitres": 94,
+    "shellMassGrams": {
+      "value": 41.464285714285715,
+      "status": "estimate, not manufacturer data",
+      "formula": "10g * (86*81)/(42*40)"
+    },
+    "model": "approved star contour scaled independently along x/y/z",
+    "topRibbonCm": 64
+  },
+  "mediumStar": {
+    "brand": "Agura",
+    "nominalInches": 30,
+    "url": "https://sharlar.ru/optovaya-torgovlya/torgovye-marki/vozdushnye-shary-agura/",
+    "sourceType": "retailer description",
+    "flatCm": [
+      76,
+      76
+    ],
+    "heliumLitres": 47,
+    "estimatedInflatedCm": [
+      64,
+      60.5,
+      30
+    ],
+    "inflatedDimensionsStatus": "user agreed arithmetic midpoint of existing 42x40x21 and 86x81x39 cm; not manufacturer measurements",
+    "shellMassGrams": {
+      "value": 23.047619047619047,
+      "status": "estimate by projected area, not manufacturer data"
+    },
+    "proportionalVolumeLitres": 46.095238095238095,
+    "topRibbonCm": 61
+  },
+  "heartSizes": {
+    "medium": {
+      "brand": "Agura",
+      "nominalInches": 30,
+      "url": "https://sharlar.ru/optovaya-torgovlya/torgovye-marki/vozdushnye-shary-agura/",
+      "sourceType": "retailer description",
+      "flatCm": [
+        76,
+        76
+      ],
+      "heliumLitres": 53,
+      "estimatedInflatedCm": [
+        61,
+        60,
+        33
+      ],
+      "inflatedDimensionsStatus": "user agreed estimate by scaling current small heart to 59L; not manufacturer measurements",
+      "shellMassGrams": {
+        "value": 27.47747747747748,
+        "status": "estimate by area"
+      },
+      "proportionalVolumeLitres": 58.939189189189186,
+      "topRibbonCm": 56,
+      "note": "Old geometric scaling estimate retained; does not validate corrected gas volume or 3D dimensions"
+    },
+    "large": {
+      "brand": "Grabo",
+      "sku": "360S01WH",
+      "nominalInches": 36,
+      "url": "https://www.grabo-balloons.com/en/360s01wh-balloon-heart-36inc-satin-white-white",
+      "sourceType": "manufacturer",
+      "inflatedCm": [
+        75,
+        70,
+        41
+      ],
+      "heliumLitres": 111,
+      "shellMassGrams": {
+        "value": 39.414414414414416,
+        "status": "estimate by area, not manufacturer data"
+      },
+      "topRibbonCm": 59
+    }
+  },
+  "heliumCorrection": {
+    "basis": "User supplied rashod_geliya.xlsx; original PDF not supplied or verified",
+    "workbookSourceClaim": "ОПТШАР.РФ; 1 portion = 14 L",
+    "sheet": "Замеры по моделям",
+    "heart30": {
+      "row": 32,
+      "pdfPage": 12,
+      "brand": "Agura",
+      "nominalInches": 30,
+      "measuredSpanCm": 62,
+      "axis": "not specified",
+      "heliumLitres": 53,
+      "previousLitres": 59,
+      "dimensionsUnchangedCm": [
+        61,
+        60,
+        33
+      ],
+      "dimensionsStatus": "prior agreed estimate; not validated by single span"
+    },
+    "star30": {
+      "row": 52,
+      "pdfPages": [
+        26,
+        29
+      ],
+      "brand": "Agura",
+      "nominalInches": 30,
+      "measuredSpanCm": 66,
+      "axis": "not specified",
+      "heliumLitres": 47,
+      "previousLitres": 46,
+      "dimensionsUnchangedCm": [
+        64,
+        60.5,
+        30
+      ],
+      "dimensionsStatus": "prior agreed estimate; not validated by single span"
+    },
+    "scope": "Only heart/star 30; user excluded small shapes and digits",
+    "geometryChanged": false
+  }
+}

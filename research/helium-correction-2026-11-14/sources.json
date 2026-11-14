@@ -1,0 +1,42 @@
+{
+  "basis": "User supplied rashod_geliya.xlsx; original PDF not supplied or verified",
+  "workbookSourceClaim": "ОПТШАР.РФ; 1 portion = 14 L",
+  "sheet": "Замеры по моделям",
+  "heart30": {
+    "row": 32,
+    "pdfPage": 12,
+    "brand": "Agura",
+    "nominalInches": 30,
+    "measuredSpanCm": 62,
+    "axis": "not specified",
+    "heliumLitres": 53,
+    "previousLitres": 59,
+    "dimensionsUnchangedCm": [
+      61,
+      60,
+      33
+    ],
+    "dimensionsStatus": "prior agreed estimate; not validated by single span"
+  },
+  "star30": {
+    "row": 52,
+    "pdfPages": [
+      26,
+      29
+    ],
+    "brand": "Agura",
+    "nominalInches": 30,
+    "measuredSpanCm": 66,
+    "axis": "not specified",
+    "heliumLitres": 47,
+    "previousLitres": 46,
+    "dimensionsUnchangedCm": [
+      64,
+      60.5,
+      30
+    ],
+    "dimensionsStatus": "prior agreed estimate; not validated by single span"
+  },
+  "scope": "Only heart/star 30; user excluded small shapes and digits",
+  "geometryChanged": false
+}

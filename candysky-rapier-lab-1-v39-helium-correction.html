@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#fffaf8">
-<title>CandySky — Rapier Lab 1.9 · несколько фонтанов · v37</title>
+<title>CandySky — Rapier Lab 1.9 · несколько фонтанов · v39</title>
 <style>
 :root{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#26313a;background:#fffaf8;color-scheme:light}
 *{box-sizing:border-box}
@@ -163,7 +163,7 @@ button:hover{background:#faf4f3}button.primary{background:#f4d4d2;border-color:#
 <body>
 <div class="app" id="app">
  <canvas id="view" aria-label="Единая 3D-сцена нескольких фонтанов CandySky"></canvas>
- <header class="topbar"><div class="brand"><strong>CandySky · Фонтаны · v37</strong><small>Несколько композиций · высота сцены 3,2 м</small></div><div class="state" id="status"><i></i><span id="statusText">Загрузка движка</span></div></header>
+ <header class="topbar"><div class="brand"><strong>CandySky · Фонтаны · v39</strong><small>Несколько композиций · высота сцены 3,2 м</small></div><div class="state" id="status"><i></i><span id="statusText">Загрузка движка</span></div></header>
  <div class="panel-backdrop" id="panelBackdrop" aria-hidden="true"></div>
  <button type="button" class="panel-toggle" id="panelToggle" aria-controls="labPanel" aria-expanded="false" aria-label="Открыть управление фонтанами"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16M9 4v6M15 14v6"/></svg><span>Управление</span><span class="panel-toggle-count" id="panelToggleCount">0</span></button>
  <section class="panel" id="labPanel" aria-label="Управление фонтанами" aria-hidden="true" inert>
@@ -202,7 +202,7 @@ button:hover{background:#faf4f3}button.primary{background:#f4d4d2;border-color:#
  <div class="load" id="loading"><h2>Загрузка CandySky 3D</h2><p id="loadText">Подключаю Three.js и Rapier…</p><button id="retry" hidden>Повторить</button><button id="copyError" hidden>Скопировать ошибку</button></div>
 </div>
 <script type="module">
-// CandySky v37: единый экспериментальный мир для нескольких независимых фонтанов.
+// CandySky v39: единый экспериментальный мир для нескольких независимых фонтанов.
 // Оригинальные v16 / v17 / v18 / v19 остаются неизменными файлами.
 // Реальная физика Rapier + XPBD локально, библиотеки тестово загружаются с CDN (не production/offline).
 const THREE_SOURCES=[['jsDelivr · Three.js 0.164.1','https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js']];
@@ -236,11 +236,13 @@ const FOIL_SHAPES=Object.freeze({
  foilHeart:{label:'Сердечко',sizeCm:37,width:.37,height:.36,depth:.20,volume:.013,shellMass:.010,source:'Grabo 183000MSPK',reference:'Agura 940387'}
 });
 const LARGE_FOIL_STAR=Object.freeze({label:'Звезда 36″',sizeCm:86,nominalInches:36,width:.86,height:.81,depth:.39,volume:.094,shellMass:.010*(.86*.81)/(.42*.40),source:'Grabo 362S01WH',sourceUrl:'https://www.grabo-balloons.com/en/362s01wh-balloon-star-36inc-satin-white-white',massIsEstimate:true});
-const MEDIUM_FOIL_STAR=Object.freeze({label:'Звезда Agura 30″',sizeCm:64,nominalInches:30,width:.64,height:.605,depth:.30,volume:.046,shellMass:.010*(.64*.605)/(.42*.40),source:'Agura 30″; inflated dimensions estimated by agreed midpoint',sourceUrl:'https://sharlar.ru/optovaya-torgovlya/torgovye-marki/vozdushnye-shary-agura/',massIsEstimate:true,dimensionsAreEstimate:true});
-const FOIL_SHAPE_SIZES=Object.freeze({foilStar:[42,64,86],foilHeart:[37]});
-function foilShapeSpec(kind,sizeCm=FOIL_SHAPES[kind]?.sizeCm){if(kind==='foilStar'&&sizeCm===64)return MEDIUM_FOIL_STAR;if(kind==='foilStar'&&sizeCm===86)return LARGE_FOIL_STAR;const spec=FOIL_SHAPES[kind];if(!spec||spec.sizeCm!==sizeCm)throw Error('Неизвестный размер фигуры');return spec}
+const MEDIUM_FOIL_STAR=Object.freeze({label:'Звезда Agura 30″',sizeCm:64,nominalInches:30,width:.64,height:.605,depth:.30,volume:.047,shellMass:.010*(.64*.605)/(.42*.40),source:'Agura 30″; inflated dimensions estimated by agreed midpoint',sourceUrl:'research/helium-correction-2026-11-14/sources.json',heliumSource:'ОПТШАР.РФ; rashod_geliya.xlsx, Замеры по моделям',measuredSpanCm:66,massIsEstimate:true,dimensionsAreEstimate:true});
+const MEDIUM_FOIL_HEART=Object.freeze({label:'Сердечко Agura 30″',sizeCm:61,nominalInches:30,width:.61,height:.60,depth:.33,volume:.053,shellMass:.010*(.61*.60)/(.37*.36),source:'Agura 30″; inflated dimensions estimated by volume scaling',sourceUrl:'research/helium-correction-2026-11-14/sources.json',heliumSource:'ОПТШАР.РФ; rashod_geliya.xlsx, Замеры по моделям',measuredSpanCm:62,massIsEstimate:true,dimensionsAreEstimate:true});
+const LARGE_FOIL_HEART=Object.freeze({label:'Сердечко Grabo 36″',sizeCm:75,nominalInches:36,width:.75,height:.70,depth:.41,volume:.111,shellMass:.010*(.75*.70)/(.37*.36),source:'Grabo 360S01WH',sourceUrl:'https://www.grabo-balloons.com/en/360s01wh-balloon-heart-36inc-satin-white-white',massIsEstimate:true});
+const FOIL_SHAPE_SIZES=Object.freeze({foilStar:[42,64,86],foilHeart:[37,61,75]});
+function foilShapeSpec(kind,sizeCm=FOIL_SHAPES[kind]?.sizeCm){if(kind==='foilHeart'&&sizeCm===61)return MEDIUM_FOIL_HEART;if(kind==='foilHeart'&&sizeCm===75)return LARGE_FOIL_HEART;if(kind==='foilStar'&&sizeCm===64)return MEDIUM_FOIL_STAR;if(kind==='foilStar'&&sizeCm===86)return LARGE_FOIL_STAR;const spec=FOIL_SHAPES[kind];if(!spec||spec.sizeCm!==sizeCm)throw Error('Неизвестный размер фигуры');return spec}
 function foilSizeLabel(kind,sizeCm){const spec=foilShapeSpec(kind,sizeCm);return (spec.nominalInches?spec.nominalInches+'″ · ':'')+[spec.width,spec.height,spec.depth].map(v=>(v*100).toLocaleString('ru-RU',{maximumFractionDigits:1})).join('×')+' см'}
-function isLargeTopProduct(p){return p?.kind==='latex'&&[60,91.5].includes(p.sizeCm)||p?.kind==='foilStar'&&[64,86].includes(p.sizeCm)}
+function isLargeTopProduct(p){return p?.kind==='latex'&&[60,91.5].includes(p.sizeCm)||p?.kind==='foilStar'&&[64,86].includes(p.sizeCm)||p?.kind==='foilHeart'&&[61,75].includes(p.sizeCm)}
 const foilShapeCache=new Map();
 function foilShapeData(kind,sizeCm=FOIL_SHAPES[kind]?.sizeCm){
  const key=kind+':'+sizeCm;if(foilShapeCache.has(key))return foilShapeCache.get(key);
@@ -449,7 +451,7 @@ function productLabel(b){const s=productSpec(b.product);return FOIL_SHAPES[s.kin
 function slotLabel(b){const f=getFountain(b.fountainId),i=f.balloons.indexOf(b);return '№'+(i+1)+(b.fountainRole==='top'?' · Верхний':' · Ярус '+(f.preset.tiers.findIndex(t=>t.key===b.junctionKey)+1))}
 function editorProduct(){const kind=el('productKind').value;return {kind,sizeCm:Number(el('productSize').value),...(kind==='foilDigit'?{digit:Number(el('productDigit').value)}:kind==='latex'?{finish:el('productFinish').value}:{})}}
 function updateProductSizes(){const kind=el('productKind').value,select=el('productSize');select.replaceChildren();for(const size of FOIL_SHAPES[kind]?FOIL_SHAPE_SIZES[kind]:kind==='latex'?SEMPERTEX_DATA.map(d=>d.maxDiameterCm):[102]){const o=document.createElement('option');o.value=size;o.textContent=FOIL_SHAPES[kind]?foilSizeLabel(kind,size):kind==='latex'?'Sempertex '+SEMPERTEX_DATA.find(d=>d.maxDiameterCm===size).series+' · '+size.toLocaleString('ru-RU')+' см':"Agura SLIM 40″ / 102 см";select.append(o)}select.value=FOIL_SHAPES[kind]?String(FOIL_SHAPES[kind].sizeCm):kind==='latex'?'30':'102';el('digitField').hidden=kind!=='foilDigit';el('finishField').hidden=kind!=='latex';el('latexReference').hidden=kind!=='latex';el('shapeReference').hidden=!FOIL_SHAPES[kind];el('digitReference').hidden=kind!=='foilDigit';updateSizeReference()}
-function updateSizeReference(){updateTopRibbonHint();if(FOIL_SHAPES[el('productKind').value]){const p=editorProduct(),spec=foilShapeSpec(p.kind,p.sizeCm);el('shapeReference').textContent=spec.sizeCm===64?'Agura 30″: расчётные надутые размеры 64×60,5×30 см, гелий 46 л. Размеры и масса оболочки оценочные.':spec.nominalInches?'Grabo 36″: 86×81×39 см, гелий 94 л. Масса оболочки оценочная.':'Контур по Agura; размеры по согласованному аналогу Grabo. Масса оболочки приблизительная.'}if(el('productKind').value==='foilDigit'){const d=Number(el('productDigit').value);el('digitReference').textContent='Agura SLIM 40″ / 102 см — номинал. Надутый корпус: высота '+DIGIT_HEIGHTS[d]+' см, глубина 17 см. Пропорции оценочные по согласованному Grabo.'}}
+function updateSizeReference(){updateTopRibbonHint();if(FOIL_SHAPES[el('productKind').value]){const p=editorProduct(),spec=foilShapeSpec(p.kind,p.sizeCm);el('shapeReference').textContent=p.kind==='foilHeart'&&spec.sizeCm===61?'Agura 30″: расчётные надутые размеры 61×60×33 см, гелий 53 л. Размеры и масса оболочки оценочные.':p.kind==='foilHeart'&&spec.sizeCm===75?'Grabo 36″: 75×70×41 см, гелий 111 л. Масса оболочки оценочная.':spec.sizeCm===64?'Agura 30″: расчётные надутые размеры 64×60,5×30 см, гелий 47 л. Размеры и масса оболочки оценочные.':spec.nominalInches?'Grabo 36″: 86×81×39 см, гелий 94 л. Масса оболочки оценочная.':'Контур по Agura; размеры по согласованному аналогу Grabo. Масса оболочки приблизительная.'}if(el('productKind').value==='foilDigit'){const d=Number(el('productDigit').value);el('digitReference').textContent='Agura SLIM 40″ / 102 см — номинал. Надутый корпус: высота '+DIGIT_HEIGHTS[d]+' см, глубина 17 см. Пропорции оценочные по согласованному Grabo.'}}
 
 function renderBalloonEditor(){const f=selectedFountain(),b=chosen(),list=el('balloonSlots');list.replaceChildren();
  for(const item of f?.balloons||[]){const btn=document.createElement('button');btn.type='button';btn.dataset.slotId=item.id;btn.setAttribute('aria-pressed',String(item.id===b?.id));btn.textContent=slotLabel(item);btn.style.borderColor=item.id===b?.id?'#a46874':'';list.append(btn)}
@@ -580,10 +582,10 @@ const PRESETS=Object.freeze({
  13:{name:'1+3+4+5',lowerMin:.05,lowerMax:.85,lowerDefault:.55,tiers:[{key:'upper',count:3,radius:.18,phase:0},{key:'middle',count:4,radius:.22,phase:Math.PI/4},{key:'lower',count:5,radius:.265,phase:Math.PI/5}]},
  15:{name:'1+3+3+4+4',lowerMin:.05,lowerMax:.60,lowerDefault:.55,tiers:[{key:'crown',count:3,radius:.18,phase:0},{key:'upper',count:3,radius:.18,phase:Math.PI/3},{key:'middle',count:4,radius:.22,phase:Math.PI/4},{key:'lower',count:4,radius:.22,phase:0}]}
 });
-const TOP_LENGTH=.51,MIDDLE_LENGTH=.27,SIDE_LENGTH=.27,STAR_SIDE_LENGTH=.36,STAR_TOP_LENGTH=.58,LARGE_STAR_TOP_LENGTH=.64,MEDIUM_STAR_TOP_LENGTH=.61;
-function topRibbonLength(product){return product?.kind==='foilStar'?(product.sizeCm===64?MEDIUM_STAR_TOP_LENGTH:product.sizeCm===86?LARGE_STAR_TOP_LENGTH:STAR_TOP_LENGTH):product?.kind==='latex'&&product.sizeCm===60?.57:product?.kind==='latex'&&product.sizeCm===91.5?.586:TOP_LENGTH}
+const TOP_LENGTH=.51,MIDDLE_LENGTH=.27,SIDE_LENGTH=.27,STAR_SIDE_LENGTH=.36,STAR_TOP_LENGTH=.58,LARGE_STAR_TOP_LENGTH=.64,MEDIUM_STAR_TOP_LENGTH=.61,MEDIUM_HEART_TOP_LENGTH=.56,LARGE_HEART_TOP_LENGTH=.59;
+function topRibbonLength(product){return product?.kind==='foilHeart'?(product.sizeCm===61?MEDIUM_HEART_TOP_LENGTH:product.sizeCm===75?LARGE_HEART_TOP_LENGTH:TOP_LENGTH):product?.kind==='foilStar'?(product.sizeCm===64?MEDIUM_STAR_TOP_LENGTH:product.sizeCm===86?LARGE_STAR_TOP_LENGTH:STAR_TOP_LENGTH):product?.kind==='latex'&&product.sizeCm===60?.57:product?.kind==='latex'&&product.sizeCm===91.5?.586:TOP_LENGTH}
 function balloonRibbonLength(b,product=b.product){return b.fountainRole==='top'?topRibbonLength(product):product?.kind==='foilStar'?STAR_SIDE_LENGTH:SIDE_LENGTH}
-function updateTopRibbonHint(){const product=editorProduct(),long=isLargeTopProduct(product);el('topRibbonHint').hidden=!long;el('topRibbonHint').textContent=long?(product.kind==='foilStar'?'Звезда '+foilShapeSpec(product.kind,product.sizeCm).nominalInches+'″ доступна только наверху. Лента ':'В верхней позиции лента ')+(topRibbonLength(product)*100).toLocaleString('ru-RU',{maximumFractionDigits:1})+' см. При нехватке места под потолком уменьши высоту фонтана.':''}
+function updateTopRibbonHint(){const product=editorProduct(),long=isLargeTopProduct(product);el('topRibbonHint').hidden=!long;el('topRibbonHint').textContent=long?(FOIL_SHAPES[product.kind]?(product.kind==='foilStar'?'Звезда ':'Сердечко ')+foilShapeSpec(product.kind,product.sizeCm).nominalInches+'″ '+(product.kind==='foilStar'?'доступна':'доступно')+' только наверху. Лента ':'В верхней позиции лента ')+(topRibbonLength(product)*100).toLocaleString('ru-RU',{maximumFractionDigits:1})+' см. При нехватке места под потолком уменьши высоту фонтана.':''}
 
 const el=id=>document.getElementById(id),fmtCm=m=>(m*100).toFixed(1)+' см';
 let THREE,RAPIER,world,balloonGeometry,weightGeometry,weightMaterial,ringGeometry,ringMaterial,scene,camera,renderer,raycaster,ndc,dragPlane,dragOffset;
@@ -1029,7 +1031,7 @@ function setupButtons(){setupBalloonEditor();
 
 
 async function readPreviousDraft(name='candysky-3d-multifountain-v23-drafts'){return new Promise((resolve,reject)=>{const req=indexedDB.open(name,1);req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains('scenes'))req.result.createObjectStore('scenes')};req.onerror=()=>reject(req.error);req.onsuccess=()=>{const db=req.result,tx=db.transaction('scenes','readonly'),read=tx.objectStore('scenes').get('current');let result;read.onsuccess=()=>{result=read.result};tx.oncomplete=()=>{db.close();resolve(result)};tx.onabort=()=>{db.close();reject(tx.error)}}})}
-const DRAFT_DB='candysky-3d-multifountain-v37-drafts',DRAFT_STORE='scenes',DRAFT_SCHEMA=3;
+const DRAFT_DB='candysky-3d-multifountain-v39-drafts',DRAFT_STORE='scenes',DRAFT_SCHEMA=3;
 let draftSaveTimer=null,dbPromise=null,restoringDraft=false,draftWritesBlocked=false;
 function openDraftDb(){if(!('indexedDB' in window))return Promise.reject(Error('IndexedDB недоступен'));
  if(!dbPromise)dbPromise=new Promise((resolve,reject)=>{const req=indexedDB.open(DRAFT_DB,1);
@@ -1090,16 +1092,16 @@ async function restoreDraft(preloaded=null){if(!ready||testing||restoringDraft)r
  draftWritesBlocked=false;renderControls();metrics();el('draftStatus').textContent='Сцена восстановлена · '+s.createdAt;msg('Восстановлено '+fountains.length+' фонтана из локального черновика.');return true;
  }catch(err){draftWritesBlocked=true;el('draftStatus').textContent='Ошибка восстановления: '+String(err.message||err)+'. Исходный черновик сохранён. Автосохранение выключено до нажатия «Сохранить сцену». ';console.warn(err);return false}finally{restoringDraft=false}
 }
-async function initialize(){if(booting||ready)return;booting=true;lastLoadReport='CandySky v37 / '+new Date().toISOString()+'\n'+location.href+'\n';
+async function initialize(){if(booting||ready)return;booting=true;lastLoadReport='CandySky v39 / '+new Date().toISOString()+'\n'+location.href+'\n';
  el('loading').hidden=false;el('retry').hidden=true;el('copyError').hidden=true;
  try{el('loadText').textContent='Подготавливаю утверждённые модели…';await loadDigitModels();el('loadText').textContent='Загружаю Three.js…';THREE=await loadThree();el('loadText').textContent='Загружаю Rapier WASM…';RAPIER=await loadRapier();
   createScene();if(!pointersBound){setupPointer();pointersBound=true}if(!controlsBound){setupButtons();controlsBound=true}
   ready=true;try{
-   let saved=await draftRecord('get');if(!saved){try{saved=await readPreviousDraft('candysky-3d-multifountain-v36-drafts')||await readPreviousDraft('candysky-3d-multifountain-v35-drafts')||await readPreviousDraft('candysky-3d-multifountain-v34-drafts')||await readPreviousDraft('candysky-3d-multifountain-v33-drafts')||await readPreviousDraft('candysky-3d-multifountain-v32-drafts')||await readPreviousDraft('candysky-3d-multifountain-v31-drafts')||await readPreviousDraft('candysky-3d-multifountain-v30-drafts')||await readPreviousDraft('candysky-3d-multifountain-v29-drafts')||await readPreviousDraft('candysky-3d-multifountain-v28-drafts')||await readPreviousDraft('candysky-3d-multifountain-v27-drafts')||await readPreviousDraft('candysky-3d-multifountain-v26-drafts')||await readPreviousDraft('candysky-3d-multifountain-v25-drafts')||await readPreviousDraft()||await readPreviousDraft('candysky-3d-multifountain-v21-drafts')}catch(err){console.warn('Предыдущий черновик недоступен',err)}}
+   let saved=await draftRecord('get');if(!saved){try{saved=await readPreviousDraft('candysky-3d-multifountain-v38-drafts')||await readPreviousDraft('candysky-3d-multifountain-v37-drafts')||await readPreviousDraft('candysky-3d-multifountain-v36-drafts')||await readPreviousDraft('candysky-3d-multifountain-v35-drafts')||await readPreviousDraft('candysky-3d-multifountain-v34-drafts')||await readPreviousDraft('candysky-3d-multifountain-v33-drafts')||await readPreviousDraft('candysky-3d-multifountain-v32-drafts')||await readPreviousDraft('candysky-3d-multifountain-v31-drafts')||await readPreviousDraft('candysky-3d-multifountain-v30-drafts')||await readPreviousDraft('candysky-3d-multifountain-v29-drafts')||await readPreviousDraft('candysky-3d-multifountain-v28-drafts')||await readPreviousDraft('candysky-3d-multifountain-v27-drafts')||await readPreviousDraft('candysky-3d-multifountain-v26-drafts')||await readPreviousDraft('candysky-3d-multifountain-v25-drafts')||await readPreviousDraft()||await readPreviousDraft('candysky-3d-multifountain-v21-drafts')}catch(err){console.warn('Предыдущий черновик недоступен',err)}}
    if(saved){const restored=await restoreDraft(saved);if(!restored&&!fountains.length)addFountain(7,{x:0,z:0})}
    else addFountain(7,{x:0,z:0});
   }catch(err){draftWritesBlocked=true;el('draftStatus').textContent='Черновик недоступен: '+String(err.message||err)+'. Автосохранение выключено до нажатия «Сохранить сцену». ';if(!fountains.length)addFountain(7,{x:0,z:0})}
-  renderControls();el('offlineStatus').textContent='Тестовый v37: Three.js/Rapier с jsDelivr. Офлайн не готов.';
+  renderControls();el('offlineStatus').textContent='Тестовый v39: Three.js/Rapier с jsDelivr. Офлайн не готов.';
   el('loading').hidden=true;cancelAnimationFrame(frameReq);lastFrame=0;animate(0);msg('Общая сцена готова: '+fountains.length+' фонтан(ов).');
  }catch(err){ready=false;lastLoadReport+='\nОшибка: '+String(err.message||err);el('loadText').textContent='Запуск не удался: '+String(err.message||err)+'; нужен интернет для CDN.';el('retry').hidden=false;el('copyError').hidden=false;msg('Не удалось запустить Rapier',true);console.error(err)}finally{booting=false}
 }

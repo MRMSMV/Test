@@ -3,10 +3,10 @@
   "branch": "main",
   "keepLatestBuilds": 2,
   "retainedBuilds": [
-    "v38",
-    "v37"
+    "v39",
+    "v38"
   ],
-  "indexBuild": "v38",
+  "indexBuild": "v39",
   "gitHistoryRewrite": false,
   "localArchivesUnchanged": true,
   "preservedModelSources": [
@@ -354,10 +354,50 @@
     {
       "path": "v36-star-sizes.png",
       "sha": "5b3364845dc0d733c3cb4783caef5027f5030da6"
+    },
+    {
+      "path": "candysky-rapier-lab-1-v37-medium-star.html",
+      "sha": "bf6b7dd72a476bb8e1a2b6103c9957f69502a309"
+    },
+    {
+      "path": "foil-baseline-check-v37.json",
+      "sha": "0f6c04391f12fe0c967867b253149f4aeda6dd1d"
+    },
+    {
+      "path": "integration-v37.json",
+      "sha": "53b5be0944c132fe28df2b92a39122fa97a10c0a"
+    },
+    {
+      "path": "test-report-v37-followup.json",
+      "sha": "2bfb3ee810334aa7893b18929719cdee49bc98d0"
+    },
+    {
+      "path": "test-report-v37.json",
+      "sha": "363aba799f568a4972548d1ddd696d50ee8f9fbc"
+    },
+    {
+      "path": "v37-large-star-15.png",
+      "sha": "ace638c9673704bef5ea83c732b095897c1103e7"
+    },
+    {
+      "path": "v37-large-star-7.png",
+      "sha": "5dc906b170e54782d8d57da65cac4d365dbb3b40"
+    },
+    {
+      "path": "v37-large-star-mobile.png",
+      "sha": "59b2a9a858a4a26542fa4206a025dff5e137a9d2"
+    },
+    {
+      "path": "v37-medium-star-front.png",
+      "sha": "ac6d29850efe121a8e07a5134657ebca12c15215"
+    },
+    {
+      "path": "v37-star-sizes.png",
+      "sha": "24edd44a30e90951b80a7a501cc5e71e67a020a4"
     }
   ],
   "retainedHtmlSha256": {
-    "candysky-rapier-lab-1-v38-heart-sizes.html": "827efaadee6d36a2ad06a01960587c1f786e221a0acbc6d97a9631fd437e8412",
-    "candysky-rapier-lab-1-v37-medium-star.html": "ecd73b8bdf9dbba376d3865f1eb8aefd1a07f3c479bf902f103b81e0bf46d3a5"
+    "candysky-rapier-lab-1-v39-helium-correction.html": "90eb7ad7527202b900b92689d98fe5c589ef454c7b29af2deb2d4e86cf680e83",
+    "candysky-rapier-lab-1-v38-heart-sizes.html": "827efaadee6d36a2ad06a01960587c1f786e221a0acbc6d97a9631fd437e8412"
   }
 }
