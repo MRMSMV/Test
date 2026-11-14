@@ -1,0 +1,103 @@
+{
+  "version": "v37",
+  "target": "MRMSMV/Test/main/index.html",
+  "protectedLegacySha256": {
+    "v16": "4ed81f9f46093c7ee3a07f8db8eed0009a082ba46ec20c5b2d7bd152dd2a6a75",
+    "v17": "839376c440df773315b9b99f6d622b00dc1eadad60e45cefce6649263a0c7666",
+    "v18": "4bf671a006ac6a4aea1c4ba5b85906607c69a11cf2e25e27fb7f21e209f96610",
+    "v19": "8d7a3a0ef3271cd6fb9acba2f95f864f1a2ee2c3a311fb857c7bcddecf58adc6"
+  },
+  "largeTopRibbonCm": {
+    "60": 57,
+    "91.5": 58.6
+  },
+  "additionalInterBalloonJoints": false,
+  "sha256": {
+    "candysky-rapier-lab-1-v37-medium-star.html": "ecd73b8bdf9dbba376d3865f1eb8aefd1a07f3c479bf902f103b81e0bf46d3a5",
+    "test-report-v37.json": "e2b17623c1328009f175fbab382796dff0c779e0b5b0d5efd4965b7a876d959c",
+    "test-report-v37-followup.json": "e715260b0b7429dcb949f889090180c36e62625b87002aa01bcb1fc32d05a03e",
+    "foil-baseline-check-v37.json": "5bfb8dba0726a4f374a0f16a0b57b1cafe7746eecd8c255d5a8712813ba37d1d",
+    "technical-spec.md": "6ae4c56a9a0ff7a973c280d2aa5ad52efdd2e4949ca992996d8c8c1eaff6f17c",
+    "changelog.md": "b6069a4c8c76f9bf22bb40fff758adfa098421c512a4449a300036ca7ac7147d",
+    "instructions.md": "c666cd834df3d330cc387950ffaa5bc906fffb4373199c7018e713f0587f7121",
+    "README.md": "22c3a7238a481f107479a2a29660b7238055f6c085673e1140ca2717becb98d4"
+  },
+  "roomMetres": [
+    5,
+    5,
+    3.2
+  ],
+  "cristalRendering": "alpha-blended thin shells, angle-dependent opacity and highlights; no screen-space transmission",
+  "foilTierPlacement": {
+    "finalSideLengthCm": {
+      "star": 36,
+      "heart": 27
+    },
+    "topLengthCm": {
+      "star": 58,
+      "heart": 51,
+      "largeStar36": 64,
+      "mediumStar30": 61
+    },
+    "probe": "exact Compound of 20 approved convex sectors",
+    "entrySideLengthCm": {
+      "star": 48,
+      "heart": 45
+    },
+    "entryTopLengthCm": {
+      "star": 70,
+      "heart": 63,
+      "largeStar36": 75,
+      "mediumStar30": 75
+    },
+    "reelRateMPerSecond": 0.12,
+    "extraSolverIterationsDuringEntry": 16,
+    "savedInProgress": true,
+    "additionalInterBalloonJoints": false,
+    "largeStarExtraSolverIterations": 32,
+    "mediumStarExtraSolverIterations": 32
+  },
+  "starAlignmentReference": "lower ray tips versus lower latex body surface, approximate at rest; no pose lock",
+  "largeStar": {
+    "brand": "Grabo",
+    "sku": "362S01WH",
+    "url": "https://www.grabo-balloons.com/en/362s01wh-balloon-star-36inc-satin-white-white",
+    "nominalInches": 36,
+    "inflatedCm": {
+      "width": 86,
+      "height": 81,
+      "depth": 39
+    },
+    "heliumLitres": 94,
+    "shellMassGrams": {
+      "value": 41.464285714285715,
+      "status": "estimate, not manufacturer data",
+      "formula": "10g * (86*81)/(42*40)"
+    },
+    "model": "approved star contour scaled independently along x/y/z",
+    "topRibbonCm": 64
+  },
+  "mediumStar": {
+    "brand": "Agura",
+    "nominalInches": 30,
+    "url": "https://sharlar.ru/optovaya-torgovlya/torgovye-marki/vozdushnye-shary-agura/",
+    "sourceType": "retailer description",
+    "flatCm": [
+      76,
+      76
+    ],
+    "heliumLitres": 46,
+    "estimatedInflatedCm": [
+      64,
+      60.5,
+      30
+    ],
+    "inflatedDimensionsStatus": "user agreed arithmetic midpoint of existing 42x40x21 and 86x81x39 cm; not manufacturer measurements",
+    "shellMassGrams": {
+      "value": 23.047619047619047,
+      "status": "estimate by projected area, not manufacturer data"
+    },
+    "proportionalVolumeLitres": 46.095238095238095,
+    "topRibbonCm": 61
+  }
+}

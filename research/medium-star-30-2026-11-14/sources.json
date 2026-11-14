@@ -1,0 +1,23 @@
+{
+  "brand": "Agura",
+  "nominalInches": 30,
+  "url": "https://sharlar.ru/optovaya-torgovlya/torgovye-marki/vozdushnye-shary-agura/",
+  "sourceType": "retailer description",
+  "flatCm": [
+    76,
+    76
+  ],
+  "heliumLitres": 46,
+  "estimatedInflatedCm": [
+    64,
+    60.5,
+    30
+  ],
+  "inflatedDimensionsStatus": "user agreed arithmetic midpoint of existing 42x40x21 and 86x81x39 cm; not manufacturer measurements",
+  "shellMassGrams": {
+    "value": 23.047619047619047,
+    "status": "estimate by projected area, not manufacturer data"
+  },
+  "proportionalVolumeLitres": 46.095238095238095,
+  "topRibbonCm": 61
+}

@@ -1,0 +1,176 @@
+{
+  "errors": [],
+  "cases": [
+    {
+      "preset": 7,
+      "height": 0.05,
+      "length": 0.61,
+      "unchanged": true,
+      "finite": true,
+      "mass": 0.03126322105526924,
+      "buoyancy": 0.5527935,
+      "peakExtensionMm": 0.0008658794475868703,
+      "endpointError": 0,
+      "maxWeightStepMm": 33.33335509935782,
+      "speedMmS": 0,
+      "allProducts": [
+        {
+          "kind": "foilStar",
+          "sizeCm": 64
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "preset": 11,
+      "height": 0.55,
+      "length": 0.61,
+      "unchanged": true,
+      "finite": true,
+      "mass": 0.03126322105526924,
+      "buoyancy": 0.5527935,
+      "peakExtensionMm": 4.8475228053845854e-05,
+      "endpointError": 0,
+      "maxWeightStepMm": 33.33335509935782,
+      "speedMmS": 0,
+      "allProducts": [
+        {
+          "kind": "foilStar",
+          "sizeCm": 64
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "preset": 13,
+      "height": 0.55,
+      "length": 0.61,
+      "unchanged": true,
+      "finite": true,
+      "mass": 0.03126322105526924,
+      "buoyancy": 0.5527935,
+      "peakExtensionMm": 0.0009387475273792134,
+      "endpointError": 0,
+      "maxWeightStepMm": 33.33335509935782,
+      "speedMmS": 0,
+      "allProducts": [
+        {
+          "kind": "foilStar",
+          "sizeCm": 64
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "preset": 15,
+      "height": 0.55,
+      "length": 0.61,
+      "unchanged": true,
+      "finite": true,
+      "mass": 0.03126322105526924,
+      "buoyancy": 0.5527935,
+      "peakExtensionMm": 0.2782163370019797,
+      "endpointError": 0,
+      "maxWeightStepMm": 33.33335509935782,
+      "speedMmS": 0,
+      "allProducts": [
+        {
+          "kind": "foilStar",
+          "sizeCm": 64
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "spec": {
+    "big": {
+      "dimensions": [
+        0.6399999856948853,
+        0.6050000190734863,
+        0.30000001192092896
+      ],
+      "gas": 0.046,
+      "mass": 0.03126321904761904,
+      "hulls": 20
+    },
+    "cacheSeparated": true,
+    "small": {
+      "dimensions": [
+        0.42,
+        0.4,
+        0.21
+      ],
+      "gas": 0.014,
+      "mass": 0.0125004
+    },
+    "heart": {
+      "dimensions": [
+        0.37,
+        0.36,
+        0.2
+      ]
+    }
+  },
+  "reset": {
+    "productsSame": true,
+    "topLength": 0.61
+  },
+  "restrictions": {
+    "rejected": true,
+    "bodyUnchanged": true
+  },
+  "switchSizes": {
+    "small": {
+      "size": 42,
+      "length": 0.58,
+      "vertices": 0.41999998688697815
+    },
+    "big": {
+      "size": 64,
+      "length": 0.61
+    },
+    "colorKeepsBody": true
+  },
+  "saveRestore": true,
+  "legacy36Unchanged": true,
+  "mobileEditor": true,
+  "large36Preserved": true
+}
