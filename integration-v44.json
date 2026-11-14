@@ -1,0 +1,276 @@
+{
+  "version": "v44",
+  "target": "MRMSMV/Test/main/index.html",
+  "protectedLegacySha256": {
+    "v16": "4ed81f9f46093c7ee3a07f8db8eed0009a082ba46ec20c5b2d7bd152dd2a6a75",
+    "v17": "839376c440df773315b9b99f6d622b00dc1eadad60e45cefce6649263a0c7666",
+    "v18": "4bf671a006ac6a4aea1c4ba5b85906607c69a11cf2e25e27fb7f21e209f96610",
+    "v19": "8d7a3a0ef3271cd6fb9acba2f95f864f1a2ee2c3a311fb857c7bcddecf58adc6"
+  },
+  "largeTopRibbonCm": {
+    "60": 57,
+    "91.5": 58.6
+  },
+  "additionalInterBalloonJoints": false,
+  "sha256": {
+    "candysky-rapier-lab-1-v44-panorama-walls.html": "3a22b92e4f804c20ea0f36fc1b5093abb5bf2cddaab3940e6055275fd07ab455",
+    "test-report-v44.json": "8a15a4d20963621241b980791ee4f0bb0bc1ebfbb4312e2a73dafb1b705d27c2",
+    "foil-baseline-check-v44.json": "918da6b6f79428933582cec2e399dafd57b7ff7ee5de84fa35e38303ffdc8232",
+    "technical-spec.md": "6c2c6b6000b41b4b82a4efd604621e3f475f42915d449dfcb47c1bd4a1b7aa3c",
+    "changelog.md": "d4abeabdfbd70bcf20ae1a4ab7231ab35970bf096a692ca164593b629171f045",
+    "instructions.md": "d8b556352659dcce28e78788c21d4366a72ffd71a2f7e169bc3bc76d02a82047",
+    "README.md": "192cf32c1db565614d264672d57957efbb781d48b0eeb738c37047ac348f1a99",
+    "approved/walls/wall-source.json": "1f4b935425749aef9b4d71210f077165a8052d3b3c7a9c35af450c137c275d36"
+  },
+  "roomMetres": [
+    5,
+    5,
+    3
+  ],
+  "cristalRendering": "alpha-blended thin shells, angle-dependent opacity and highlights; no screen-space transmission",
+  "foilTierPlacement": {
+    "finalSideLengthCm": {
+      "star": 36,
+      "heart": 27
+    },
+    "topLengthCm": {
+      "star": 58,
+      "heart": 51,
+      "largeStar36": 64,
+      "mediumStar30": 61,
+      "mediumHeart30": 56,
+      "largeHeart36": 59
+    },
+    "probe": "exact Compound of 20 approved convex sectors",
+    "entrySideLengthCm": {
+      "star": 48,
+      "heart": 45
+    },
+    "entryTopLengthCm": {
+      "star": 70,
+      "heart": 63,
+      "largeStar36": 75,
+      "mediumStar30": 75
+    },
+    "reelRateMPerSecond": 0.12,
+    "extraSolverIterationsDuringEntry": 16,
+    "savedInProgress": true,
+    "additionalInterBalloonJoints": false,
+    "largeStarExtraSolverIterations": 32,
+    "mediumStarExtraSolverIterations": 32,
+    "newHeartExtraSolverIterations": 32
+  },
+  "starAlignmentReference": "lower ray tips versus lower latex body surface, approximate at rest; no pose lock",
+  "largeStar": {
+    "brand": "Grabo",
+    "sku": "362S01WH",
+    "url": "https://www.grabo-balloons.com/en/362s01wh-balloon-star-36inc-satin-white-white",
+    "nominalInches": 36,
+    "inflatedCm": {
+      "width": 86,
+      "height": 81,
+      "depth": 39
+    },
+    "heliumLitres": 94,
+    "shellMassGrams": {
+      "value": 41.464285714285715,
+      "status": "estimate, not manufacturer data",
+      "formula": "10g * (86*81)/(42*40)"
+    },
+    "model": "approved star contour scaled independently along x/y/z",
+    "topRibbonCm": 64
+  },
+  "mediumStar": {
+    "brand": "Agura",
+    "nominalInches": 30,
+    "url": "https://sharlar.ru/optovaya-torgovlya/torgovye-marki/vozdushnye-shary-agura/",
+    "sourceType": "retailer description",
+    "flatCm": [
+      76,
+      76
+    ],
+    "heliumLitres": 47,
+    "estimatedInflatedCm": [
+      64,
+      60.5,
+      30
+    ],
+    "inflatedDimensionsStatus": "user agreed arithmetic midpoint of existing 42x40x21 and 86x81x39 cm; not manufacturer measurements",
+    "shellMassGrams": {
+      "value": 23.047619047619047,
+      "status": "estimate by projected area, not manufacturer data"
+    },
+    "proportionalVolumeLitres": 46.095238095238095,
+    "topRibbonCm": 61
+  },
+  "heartSizes": {
+    "medium": {
+      "brand": "Agura",
+      "nominalInches": 30,
+      "url": "https://sharlar.ru/optovaya-torgovlya/torgovye-marki/vozdushnye-shary-agura/",
+      "sourceType": "retailer description",
+      "flatCm": [
+        76,
+        76
+      ],
+      "heliumLitres": 53,
+      "estimatedInflatedCm": [
+        61,
+        60,
+        33
+      ],
+      "inflatedDimensionsStatus": "user agreed estimate by scaling current small heart to 59L; not manufacturer measurements",
+      "shellMassGrams": {
+        "value": 27.47747747747748,
+        "status": "estimate by area"
+      },
+      "proportionalVolumeLitres": 58.939189189189186,
+      "topRibbonCm": 56,
+      "note": "Old geometric scaling estimate retained; does not validate corrected gas volume or 3D dimensions"
+    },
+    "large": {
+      "brand": "Grabo",
+      "sku": "360S01WH",
+      "nominalInches": 36,
+      "url": "https://www.grabo-balloons.com/en/360s01wh-balloon-heart-36inc-satin-white-white",
+      "sourceType": "manufacturer",
+      "inflatedCm": [
+        75,
+        70,
+        41
+      ],
+      "heliumLitres": 111,
+      "shellMassGrams": {
+        "value": 39.414414414414416,
+        "status": "estimate by area, not manufacturer data"
+      },
+      "topRibbonCm": 59
+    }
+  },
+  "heliumCorrection": {
+    "basis": "User supplied rashod_geliya.xlsx; original PDF not supplied or verified",
+    "workbookSourceClaim": "ОПТШАР.РФ; 1 portion = 14 L",
+    "sheet": "Замеры по моделям",
+    "heart30": {
+      "row": 32,
+      "pdfPage": 12,
+      "brand": "Agura",
+      "nominalInches": 30,
+      "measuredSpanCm": 62,
+      "axis": "not specified",
+      "heliumLitres": 53,
+      "previousLitres": 59,
+      "dimensionsUnchangedCm": [
+        61,
+        60,
+        33
+      ],
+      "dimensionsStatus": "prior agreed estimate; not validated by single span"
+    },
+    "star30": {
+      "row": 52,
+      "pdfPages": [
+        26,
+        29
+      ],
+      "brand": "Agura",
+      "nominalInches": 30,
+      "measuredSpanCm": 66,
+      "axis": "not specified",
+      "heliumLitres": 47,
+      "previousLitres": 46,
+      "dimensionsUnchangedCm": [
+        64,
+        60.5,
+        30
+      ],
+      "dimensionsStatus": "prior agreed estimate; not validated by single span"
+    },
+    "scope": "Only heart/star 30; user excluded small shapes and digits",
+    "geometryChanged": false
+  },
+  "foilChrome": {
+    "approvedPreview": "chrome-fountains-scene-v4.png",
+    "gold": "#ffbf40",
+    "silver": "#ffffff",
+    "red": "#e51d2b",
+    "foilFinish": "chrome",
+    "metalness": 1,
+    "bodyRoughness": {
+      "goldSilver": 0.24,
+      "red": 0.25
+    },
+    "detailRoughness": {
+      "goldSilver": 0.3,
+      "red": 0.31
+    },
+    "clearcoat": 0.16,
+    "clearcoatRoughness": 0.14,
+    "bumpScale": {
+      "goldSilver": 0.005,
+      "red": 0.0035
+    },
+    "envMapIntensity": {
+      "goldSilver": 1.05,
+      "red": 1.1
+    },
+    "sharedReflectionMap": true,
+    "sceneLightingUnchanged": true
+  },
+  "neighborReflections": {
+    "rollbackBuild": "v42",
+    "mapsPerChromeFigure": 1,
+    "cacheKey": "balloon id",
+    "probePoint": "own visual bounding box center",
+    "excludedDuringCapture": "owner only",
+    "singleReflectionBounce": true,
+    "helperLightCardsUnchanged": true,
+    "facePx": {
+      "mobile": 64,
+      "desktop": 256
+    },
+    "globalQueueIntervalMs": {
+      "mobile": 500,
+      "desktop": 160
+    },
+    "maxCapturesPerPass": 1,
+    "idleSkip": true,
+    "latencyNote": "N dirty maps need approximately N queue intervals; mobile FPS not measured",
+    "cleanup": "own map on non-chrome replacement; all fountain maps on fountain deletion",
+    "realIphoneTested": false
+  },
+  "panorama": {
+    "source": "User supplied CandySky_Wall_6000x1200.png",
+    "sourcePx": [
+      6000,
+      1200
+    ],
+    "sourceSha256": "de74fbbd0db02aa861058cd660301c7ab038944d1c4b0ff0560db3921de564fc",
+    "sourceBytes": 9826452,
+    "deliveryFormat": "WebP quality 92; same complete layout, no crop or stretch",
+    "deliverySha256": "075b5b07b0bfff76bbba6db9fc95d5dc581be59e991dfa596a3510cfa4c9ddfc",
+    "deliveryBytes": 1036540,
+    "mapping": "left 0..2000, center 2000..4000, right 4000..6000; each full image height 1200",
+    "roomMetres": [
+      5,
+      5,
+      3
+    ],
+    "wallMetres": [
+      5,
+      3
+    ],
+    "runtimeTextures": {
+      "desktop": [
+        2000,
+        1200
+      ],
+      "mobile": [
+        1000,
+        600
+      ]
+    },
+    "sourceArchive": "PNG/WebP kept in local full archive; delivered texture embedded in HTML"
+  },
+  "legacyCeilingMigration": "old validated room <=3.2m; adapt copied high fountains by reducing lower height and rebuilding positions; source unchanged"
+}

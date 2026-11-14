@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#fffaf8">
-<title>CandySky — Rapier Lab 1.9 · несколько фонтанов · v47</title>
+<title>CandySky — Rapier Lab 1.9 · несколько фонтанов · v45</title>
 <style>
 :root{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#26313a;background:#fffaf8;color-scheme:light}
 *{box-sizing:border-box}
@@ -144,11 +144,6 @@ button:hover{background:#faf4f3}button.primary{background:#f4d4d2;border-color:#
 @media(prefers-reduced-motion:reduce){.panel,.panel-toggle,.panel-backdrop{transition:none!important}}
 
 .balloon-slots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin:10px 0}.balloon-slots button{font-size:10px;padding:5px;min-height:38px}.balloon-slots button[aria-pressed="true"]{background:#f8dfe6}#balloonEditor{display:grid;gap:9px}#balloonEditor label{display:flex;justify-content:space-between;align-items:center;gap:9px}#balloonEditor select{min-height:38px;max-width:65%;border:1px solid #e8dee0;border-radius:9px;background:white}#editorStatus{color:#88505c}
-
-#photoButton{position:fixed;left:14px;bottom:calc(110px + env(safe-area-inset-bottom));z-index:30;padding:12px 17px;border-radius:18px;background:#fff;color:#30383e;box-shadow:0 8px 28px #30272b18;border:1px solid #fff;font-weight:700;cursor:pointer}#photoButton:disabled{opacity:.55;cursor:wait}
-#photoDialog{padding:18px;border:1px solid #ffffff33;border-radius:22px;max-width:min(1100px,94vw);width:94vw;max-height:94dvh;box-sizing:border-box;background:#262b30;color:#fff}#photoDialog::backdrop{background:#14171bec}#photoDialog[open]{display:flex;flex-direction:column;gap:12px}#photoDialog h2{margin:0;font-size:18px}#photoDialog p{margin:0;color:#d9dce0;line-height:1.45}#photoView{min-height:0;display:flex;justify-content:center}#photoImage,#photoCanvas{max-height:68dvh;max-width:100%;width:100%;object-fit:contain;min-height:0}#photoDialog [hidden]{display:none!important}#photoProgress{width:100%;accent-color:#b995a5}#photoActions{display:flex;gap:10px;flex-wrap:wrap}#photoActions a,#photoActions button{border:0;border-radius:12px;padding:12px 16px;background:#fff;color:#30383e;text-decoration:none;font:inherit;font-weight:600;cursor:pointer}#photoActions a{background:#ead1dc}#photoActions button:disabled{opacity:.5;cursor:wait}#photoHint{font-size:12px;color:#b9bdc3!important}
-@media(max-width:750px){#photoButton{bottom:calc(90px + env(safe-area-inset-bottom))}#photoDialog{padding:14px;width:94vw}#photoImage,#photoCanvas{max-height:62dvh}}
-
 </style>
 <style>
 .library-grid{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:stretch}
@@ -168,7 +163,7 @@ button:hover{background:#faf4f3}button.primary{background:#f4d4d2;border-color:#
 <body>
 <div class="app" id="app">
  <canvas id="view" aria-label="Единая 3D-сцена нескольких фонтанов CandySky"></canvas>
- <header class="topbar"><div class="brand"><strong>CandySky · Фонтаны · v47</strong><small>Несколько композиций · высота сцены 3 м</small></div><div class="state" id="status"><i></i><span id="statusText">Загрузка движка</span></div></header>
+ <header class="topbar"><div class="brand"><strong>CandySky · Фонтаны · v45</strong><small>Несколько композиций · высота сцены 3 м</small></div><div class="state" id="status"><i></i><span id="statusText">Загрузка движка</span></div></header>
  <div class="panel-backdrop" id="panelBackdrop" aria-hidden="true"></div>
  <button type="button" class="panel-toggle" id="panelToggle" aria-controls="labPanel" aria-expanded="false" aria-label="Открыть управление фонтанами"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16M9 4v6M15 14v6"/></svg><span>Управление</span><span class="panel-toggle-count" id="panelToggleCount">0</span></button>
  <section class="panel" id="labPanel" aria-label="Управление фонтанами" aria-hidden="true" inert>
@@ -206,23 +201,11 @@ button:hover{background:#faf4f3}button.primary{background:#f4d4d2;border-color:#
  <div class="tip">Выбери 7, 11, 13 или 15 шаров и добавляй несколько фонтанов. Касание грузика выбирает фонтан. Все шары и грузы существуют в одной физической сцене Rapier.</div>
  <div class="load" id="loading"><h2>Загрузка CandySky 3D</h2><p id="loadText">Подключаю Three.js и Rapier…</p><button id="retry" hidden>Повторить</button><button id="copyError" hidden>Скопировать ошибку</button></div>
 </div>
-
-<button id="photoButton" type="button" disabled aria-haspopup="dialog">Фото</button>
-<dialog id="photoDialog" aria-labelledby="photoTitle" aria-describedby="photoMessage">
- <h2 id="photoTitle">Фото композиции · проба</h2>
- <p id="photoMessage" role="status" aria-live="polite"></p>
- <progress id="photoProgress" max="100" aria-label="Ход создания кадра"></progress>
- <div id="photoView" hidden></div>
- <div id="photoActions"><button id="photoBack" type="button" autofocus>Вернуться в 3D</button><button id="photoStop" type="button" hidden disabled>Завершить сейчас</button><a id="photoDownload" download="CandySky-photo.png" hidden>Скачать PNG</a></div>
- <p id="photoHint">Расчёт идёт на вашем устройстве. Изображение постепенно очищается от шума.</p>
-</dialog>
-<script type="importmap">{"imports":{"three":"./vendor/browser-photo/three.module.js"}}</script>
-
 <script type="module">
-// CandySky v47: единый экспериментальный мир для нескольких независимых фонтанов.
+// CandySky v45: единый экспериментальный мир для нескольких независимых фонтанов.
 // Оригинальные v16 / v17 / v18 / v19 остаются неизменными файлами.
 // Реальная физика Rapier + XPBD локально, библиотеки тестово загружаются с CDN (не production/offline).
-const THREE_SOURCES=[['Test · Three.js 0.164.1','./vendor/browser-photo/three.module.js'],['jsDelivr · Three.js 0.164.1','https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js']];
+const THREE_SOURCES=[['jsDelivr · Three.js 0.164.1','https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js']];
 const RAPIER_SOURCES=[['jsDelivr · Rapier 0.21.0 (WASM внутри)','https://cdn.jsdelivr.net/npm/@dimforge/rapier3d-compat@0.21.0/dist/rapier.mjs']];
 let lastLoadReport='',loadAttempt=0;
 const describeError=err=>String(err?.message||err||'Ошибка без описания');
@@ -1121,7 +1104,7 @@ function setupButtons(){setupBalloonEditor();
 
 
 async function readPreviousDraft(name='candysky-3d-multifountain-v23-drafts'){return new Promise((resolve,reject)=>{const req=indexedDB.open(name,1);req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains('scenes'))req.result.createObjectStore('scenes')};req.onerror=()=>reject(req.error);req.onsuccess=()=>{const db=req.result,tx=db.transaction('scenes','readonly'),read=tx.objectStore('scenes').get('current');let result;read.onsuccess=()=>{result=read.result};tx.oncomplete=()=>{db.close();resolve(result)};tx.onabort=()=>{db.close();reject(tx.error)}}})}
-const DRAFT_DB='candysky-3d-multifountain-v47-drafts',DRAFT_STORE='scenes',DRAFT_SCHEMA=3;
+const DRAFT_DB='candysky-3d-multifountain-v45-drafts',DRAFT_STORE='scenes',DRAFT_SCHEMA=3;
 let draftSaveTimer=null,dbPromise=null,restoringDraft=false,draftWritesBlocked=false;
 function openDraftDb(){if(!('indexedDB' in window))return Promise.reject(Error('IndexedDB недоступен'));
  if(!dbPromise)dbPromise=new Promise((resolve,reject)=>{const req=indexedDB.open(DRAFT_DB,1);
@@ -1189,70 +1172,22 @@ async function restoreDraft(preloaded=null){if(!ready||testing||restoringDraft)r
  draftWritesBlocked=false;renderControls();metrics();el('draftStatus').textContent='Сцена восстановлена · '+s.createdAt+(s.roomAdjustedFountains?.length?' · высокие фонтаны пересобраны под потолок 3 м':'');msg('Восстановлено '+fountains.length+' фонтана из локального черновика.');return true;
  }catch(err){draftWritesBlocked=true;el('draftStatus').textContent='Ошибка восстановления: '+String(err.message||err)+'. Исходный черновик сохранён. Автосохранение выключено до нажатия «Сохранить сцену». ';console.warn(err);return false}finally{restoringDraft=false}
 }
-async function initialize(){if(booting||ready)return;booting=true;lastLoadReport='CandySky v47 / '+new Date().toISOString()+'\n'+location.href+'\n';
+async function initialize(){if(booting||ready)return;booting=true;lastLoadReport='CandySky v45 / '+new Date().toISOString()+'\n'+location.href+'\n';
  el('loading').hidden=false;el('retry').hidden=true;el('copyError').hidden=true;
  try{el('loadText').textContent='Подготавливаю утверждённые модели…';await loadDigitModels();el('loadText').textContent='Загружаю Three.js…';THREE=await loadThree();el('loadText').textContent='Загружаю Rapier WASM…';RAPIER=await loadRapier();
   createScene();el('loadText').textContent='Подготавливаю оформление комнаты…';await setupRoomWallTextures();await setupRoomFloorTexture();if(!pointersBound){setupPointer();pointersBound=true}if(!controlsBound){setupButtons();controlsBound=true}
   ready=true;try{
-   let saved=await draftRecord('get');if(!saved){try{saved=await readPreviousDraft('candysky-3d-multifountain-v45-drafts')||await readPreviousDraft('candysky-3d-multifountain-v44-drafts')||await readPreviousDraft('candysky-3d-multifountain-v43-drafts')||await readPreviousDraft('candysky-3d-multifountain-v42-drafts')||await readPreviousDraft('candysky-3d-multifountain-v41-drafts')||await readPreviousDraft('candysky-3d-multifountain-v40-drafts')||await readPreviousDraft('candysky-3d-multifountain-v39-drafts')||await readPreviousDraft('candysky-3d-multifountain-v38-drafts')||await readPreviousDraft('candysky-3d-multifountain-v37-drafts')||await readPreviousDraft('candysky-3d-multifountain-v36-drafts')||await readPreviousDraft('candysky-3d-multifountain-v35-drafts')||await readPreviousDraft('candysky-3d-multifountain-v34-drafts')||await readPreviousDraft('candysky-3d-multifountain-v33-drafts')||await readPreviousDraft('candysky-3d-multifountain-v32-drafts')||await readPreviousDraft('candysky-3d-multifountain-v31-drafts')||await readPreviousDraft('candysky-3d-multifountain-v30-drafts')||await readPreviousDraft('candysky-3d-multifountain-v29-drafts')||await readPreviousDraft('candysky-3d-multifountain-v28-drafts')||await readPreviousDraft('candysky-3d-multifountain-v27-drafts')||await readPreviousDraft('candysky-3d-multifountain-v26-drafts')||await readPreviousDraft('candysky-3d-multifountain-v25-drafts')||await readPreviousDraft()||await readPreviousDraft('candysky-3d-multifountain-v21-drafts')}catch(err){console.warn('Предыдущий черновик недоступен',err)}}
+   let saved=await draftRecord('get');if(!saved){try{saved=await readPreviousDraft('candysky-3d-multifountain-v44-drafts')||await readPreviousDraft('candysky-3d-multifountain-v43-drafts')||await readPreviousDraft('candysky-3d-multifountain-v42-drafts')||await readPreviousDraft('candysky-3d-multifountain-v41-drafts')||await readPreviousDraft('candysky-3d-multifountain-v40-drafts')||await readPreviousDraft('candysky-3d-multifountain-v39-drafts')||await readPreviousDraft('candysky-3d-multifountain-v38-drafts')||await readPreviousDraft('candysky-3d-multifountain-v37-drafts')||await readPreviousDraft('candysky-3d-multifountain-v36-drafts')||await readPreviousDraft('candysky-3d-multifountain-v35-drafts')||await readPreviousDraft('candysky-3d-multifountain-v34-drafts')||await readPreviousDraft('candysky-3d-multifountain-v33-drafts')||await readPreviousDraft('candysky-3d-multifountain-v32-drafts')||await readPreviousDraft('candysky-3d-multifountain-v31-drafts')||await readPreviousDraft('candysky-3d-multifountain-v30-drafts')||await readPreviousDraft('candysky-3d-multifountain-v29-drafts')||await readPreviousDraft('candysky-3d-multifountain-v28-drafts')||await readPreviousDraft('candysky-3d-multifountain-v27-drafts')||await readPreviousDraft('candysky-3d-multifountain-v26-drafts')||await readPreviousDraft('candysky-3d-multifountain-v25-drafts')||await readPreviousDraft()||await readPreviousDraft('candysky-3d-multifountain-v21-drafts')}catch(err){console.warn('Предыдущий черновик недоступен',err)}}
    if(saved){const restored=await restoreDraft(saved);if(!restored&&!fountains.length)addFountain(7,{x:0,z:0})}
    else addFountain(7,{x:0,z:0});
   }catch(err){draftWritesBlocked=true;el('draftStatus').textContent='Черновик недоступен: '+String(err.message||err)+'. Автосохранение выключено до нажатия «Сохранить сцену». ';if(!fountains.length)addFountain(7,{x:0,z:0})}
-  renderControls();el('offlineStatus').textContent='Тестовый v47: Three.js/Rapier с jsDelivr. Офлайн не готов.';
-  el('loading').hidden=true;el('photoButton').disabled=false;cancelAnimationFrame(frameReq);lastFrame=0;animate(0);msg('Общая сцена готова: '+fountains.length+' фонтан(ов).');
+  renderControls();el('offlineStatus').textContent='Тестовый v45: Three.js/Rapier с jsDelivr. Офлайн не готов.';
+  el('loading').hidden=true;cancelAnimationFrame(frameReq);lastFrame=0;animate(0);msg('Общая сцена готова: '+fountains.length+' фонтан(ов).');
  }catch(err){ready=false;lastLoadReport+='\nОшибка: '+String(err.message||err);el('loadText').textContent='Запуск не удался: '+String(err.message||err)+'; нужен интернет для CDN.';el('retry').hidden=false;el('copyError').hidden=false;msg('Не удалось запустить Rapier',true);console.error(err)}finally{booting=false}
 }
 el('retry').addEventListener('click',initialize);
 el('copyError').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(lastLoadReport)}catch{el('loadText').textContent=lastLoadReport}});
 window.__candyMultiDiagnostics=()=>({ready,fountains:fountains.map(f=>({id:f.id,type:f.presetKey,balloons:f.balloons.length,junctions:Object.keys(f.junctions).length,connections:f.segments.length+f.balloons.length,height:f.height,targetHeight:f.targetHeight,weight:f.weight.body?.translation(),products:f.balloons.map(b=>b.product||null),positions:f.balloons.map(b=>b.body.translation()),lengths:f.segments.map(s=>s.length).concat(f.balloons.map(b=>b.length))})),totalBalloons:balloons.length,totalSegments:segments.length,totalJoints:segments.length+balloons.length,oneWorld:!!world,elapsed,overlap:ready?overlapMetric():null,paused});
-const BROWSER_PHOTO={desktopSide:960,mobileSide:720,desktopSamples:128,mobileSamples:64};
-let browserPhoto=null,photoModule=null,lastPhotoAudit=null,photoLoadAttempt=0;
-const photoYield=()=>new Promise(r=>setTimeout(r,0));
-function photoStatus(text,percent=null){if(el('photoMessage').textContent!==text)el('photoMessage').textContent=text;const p=el('photoProgress');if(percent===null)p.removeAttribute('value');else p.value=percent}
-function closeBrowserPhoto(){
- const s=browserPhoto;if(!s)return;browserPhoto=null;s.closed=true;cancelAnimationFrame(s.raf);s.engine?.dispose();s.engine=null;if(s.url)URL.revokeObjectURL(s.url);el('photoView').replaceChildren();el('photoDownload').removeAttribute('href');el('photoDialog').close();paused=s.wasPaused;lastFrame=0;accumulator=0;cancelAnimationFrame(frameReq);frameReq=requestAnimationFrame(animate);el('photoButton').disabled=false;el('photoButton').focus({preventScroll:true});
-}
-function photoFail(s,e){
- if(browserPhoto!==s||s.closed)return;s.stage='error';cancelAnimationFrame(s.raf);s.engine?.dispose();s.engine=null;el('photoProgress').hidden=true;el('photoStop').hidden=true;el('photoDownload').hidden=true;el('photoView').hidden=true;photoStatus(e.message||'Не удалось создать кадр. Можно вернуться в 3D.');
-}
-async function finishBrowserPhoto(s){
- if(browserPhoto!==s||s.closed||s.stage==='finishing')return;s.stage='finishing';cancelAnimationFrame(s.raf);el('photoStop').disabled=true;
- try{
-  photoStatus('Убираем остаточный шум…');await photoYield();if(browserPhoto!==s||s.closed)return;
-  s.engine.finish();lastPhotoAudit={...s.engine.audit,samples:s.engine.samples,seconds:(performance.now()-s.started)/1000};
-  const blob=await new Promise((resolve,reject)=>s.canvas.toBlob(b=>b?resolve(b):reject(Error('Не удалось сохранить кадр')),'image/png'));
-  if(browserPhoto!==s||s.closed)return;s.url=URL.createObjectURL(blob);const image=new Image();image.alt='Готовый рендер текущей композиции';image.id='photoImage';image.src=s.url;s.stage='done';s.engine.dispose();s.engine=null;el('photoView').replaceChildren(image);el('photoView').hidden=false;el('photoProgress').hidden=true;el('photoStop').hidden=true;el('photoDownload').href=s.url;el('photoDownload').hidden=false;photoStatus(lastPhotoAudit.samples<s.target?'Кадр готов · досрочное завершение':'Кадр готов');
- }catch(e){photoFail(s,e)}
-}
-async function startBrowserPhoto(){
- if(!ready||testing||browserPhoto)return;setPanelOpen(false);const s={wasPaused:paused,closed:false,stage:'preparing',engine:null,url:null,raf:0,started:performance.now(),finishAt:null};browserPhoto=s;paused=true;cancelAnimationFrame(frameReq);el('photoButton').disabled=true;
- el('photoView').hidden=true;el('photoDownload').hidden=true;el('photoProgress').hidden=false;el('photoStop').hidden=true;el('photoStop').disabled=true;el('photoDialog').showModal();photoStatus('Подготавливаем пробный рендер…');
- try{
-  await photoYield();if(browserPhoto!==s)return;
-  if(!photoModule){const url='./vendor/browser-photo/engine-v47.js'+(photoLoadAttempt?'?retry='+photoLoadAttempt:'');photoLoadAttempt++;photoModule=import(url).catch(e=>{photoModule=null;throw Error('Не удалось загрузить рендер. Проверьте соединение и попробуйте ещё раз.')})}
-  const module=await photoModule;if(browserPhoto!==s||s.closed)return;
-  syncBody();for(const b of balloons)drawRibbon(b);for(const seg of segments)drawRibbon(seg);scene.updateMatrixWorld(true);
-  const mobile=foilReflectionMobile(),rect=el('view').getBoundingClientRect(),limit=mobile?BROWSER_PHOTO.mobileSide:BROWSER_PHOTO.desktopSide,scale=Math.min(1,limit/Math.max(rect.width,rect.height)),width=Math.max(16,Math.round(rect.width*scale)),height=Math.max(16,Math.round(rect.height*scale));
-  s.target=mobile?BROWSER_PHOTO.mobileSamples:BROWSER_PHOTO.desktopSamples;s.canvas=document.createElement('canvas');s.canvas.id='photoCanvas';s.canvas.setAttribute('aria-label','Расчёт изображения композиции');el('photoView').replaceChildren(s.canvas);
-  s.canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();if(browserPhoto===s&&s.stage!=='done'&&s.stage!=='finishing'&&s.stage!=='error'&&!s.closed)photoFail(s,Error('Устройство остановило расчёт изображения. Вернитесь в 3D и попробуйте ещё раз.'))});
-  s.engine=await module.createPhotoEngine({sourceScene:scene,sourceCamera:camera,canvas:s.canvas,width,height,mobile,isCancelled:()=>browserPhoto!==s||s.closed,onStage:t=>{if(browserPhoto===s)photoStatus(t)}});
-  if(browserPhoto!==s||s.closed){s.engine.dispose();s.engine=null;return}s.stage='rendering';el('photoStop').hidden=false;
-  const tick=()=>{
-   if(browserPhoto!==s||s.closed)return;
-   try{
-    if(s.engine.samples>=(s.finishAt??s.target)){finishBrowserPhoto(s);return}
-    if(!document.hidden){const samples=s.engine.step();s.samples=samples;el('photoStop').disabled=samples<1;if(samples>=1)el('photoView').hidden=false;const percent=Math.min(100,Math.floor(samples/s.target*100));photoStatus(samples<.01?'Подготавливаем расчёт на устройстве…':'Рассчитываем свет… '+percent+'%',percent);if(samples>=(s.finishAt??s.target)){finishBrowserPhoto(s);return}}
-    s.raf=requestAnimationFrame(tick);
-   }catch(e){photoFail(s,e)}
-  };s.raf=requestAnimationFrame(tick);
- }catch(e){if(e.name!=='AbortError')photoFail(s,e)}
-}
-function setupBrowserPhoto(){
- el('photoButton').addEventListener('click',startBrowserPhoto);el('photoBack').addEventListener('click',closeBrowserPhoto);el('photoDialog').addEventListener('cancel',e=>{e.preventDefault();closeBrowserPhoto()});el('photoStop').addEventListener('click',()=>{const s=browserPhoto;if(s?.engine&&s.samples>=1){s.finishAt=Math.ceil(s.samples);el('photoStop').disabled=true}});
-}
-setupBrowserPhoto();
-window.__candyPhotoDiagnostics=()=>({stage:browserPhoto?.stage||'closed',samples:browserPhoto?.samples||0,target:browserPhoto?.target||0,last:lastPhotoAudit});
-
 initialize();
 
 </script>

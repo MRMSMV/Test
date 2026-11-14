@@ -3,10 +3,10 @@
   "branch": "main",
   "keepLatestBuilds": 2,
   "retainedBuilds": [
-    "v47",
-    "v45"
+    "v45",
+    "v44"
   ],
-  "indexBuild": "v47",
+  "indexBuild": "v45",
   "gitHistoryRewrite": false,
   "localArchivesUnchanged": true,
   "preservedModelSources": [
@@ -602,10 +602,104 @@
     {
       "path": "v44-panorama-room.png",
       "sha": "18a5ef42e3a4f3f923489fc35b73ecf9aa947db0"
+    },
+    {
+      "path": "browser-photo/README.md",
+      "sha": "c27fed0fb186451625440982408a04026f512c5f"
+    },
+    {
+      "path": "browser-photo/build.mjs",
+      "sha": "7b60c6a6f34f5c72b3c1e5a1ae5fc877445ec55b"
+    },
+    {
+      "path": "browser-photo/engine-source.js",
+      "sha": "d3a40a3fd44b0eeb0ff1fa8d554e0be4fbddf8dd"
+    },
+    {
+      "path": "browser-photo/package-lock.json",
+      "sha": "4a65db5d687e2fc9d1a4a8dc5041e629c6eab8d7"
+    },
+    {
+      "path": "browser-photo/package.json",
+      "sha": "403940d19211204a716eca43bb668f9c0f46f838"
+    },
+    {
+      "path": "browser-photo/photo-ui.js",
+      "sha": "31a91e4d57e4d73683115a04fae7305e88137ad8"
+    },
+    {
+      "path": "browser-photo/postprocess.js",
+      "sha": "8330f804662732bb2a5e5ea5779761716c092465"
+    },
+    {
+      "path": "candysky-rapier-lab-1-v47-browser-photo.html",
+      "sha": "e0cd3c14ecbbe7226a35a63cd6a3cf43bb3401be"
+    },
+    {
+      "path": "foil-baseline-check-v47.json",
+      "sha": "21b47aeb5dd6027f6c736eebc3a84d68eec59da3"
+    },
+    {
+      "path": "integration-v47.json",
+      "sha": "c2a0c4f96d89d01f7750b6d9255b03bb6e5ec74b"
+    },
+    {
+      "path": "test-report-v47.json",
+      "sha": "408466a5e52387e32dfa342fb1e8ccba38c51c82"
+    },
+    {
+      "path": "vendor/browser-photo/THIRD-PARTY-LICENSES.txt",
+      "sha": "65cd50fbfe77d4f796a9cf4806ac6d6cae307e33"
+    },
+    {
+      "path": "vendor/browser-photo/engine-v47.js",
+      "sha": "2216d040d09c3209b085649413dd29b19da4892a"
+    },
+    {
+      "path": "vendor/browser-photo/three.module.js",
+      "sha": "8c431f672f563341a36539c163edbfaa6bfa0b6f"
     }
   ],
   "retainedHtmlSha256": {
-    "candysky-rapier-lab-1-v47-browser-photo.html": "8e47b06c7aa1629d5edec8748c51c5382e0a4ed7a2443e204c36897ec489457a",
-    "candysky-rapier-lab-1-v45-dark-oak-floor.html": "65d3ba2ddc5e0ecb34d2eda57056d6ef56fb64f73629231450b9bffd676f5161"
-  }
+    "candysky-rapier-lab-1-v45-dark-oak-floor.html": "65d3ba2ddc5e0ecb34d2eda57056d6ef56fb64f73629231450b9bffd676f5161",
+    "candysky-rapier-lab-1-v44-panorama-walls.html": "3a22b92e4f804c20ea0f36fc1b5093abb5bf2cddaab3940e6055275fd07ab455"
+  },
+  "rollbackFrom": "v47",
+  "rejectedBuilds": [
+    "v47"
+  ],
+  "restoredPaths": [
+    {
+      "path": "candysky-rapier-lab-1-v44-panorama-walls.html",
+      "sha": "644751cb3f1c4814bab7b076f3302510651d9127"
+    },
+    {
+      "path": "foil-baseline-check-v44.json",
+      "sha": "21b47aeb5dd6027f6c736eebc3a84d68eec59da3"
+    },
+    {
+      "path": "integration-v44.json",
+      "sha": "15c3997a5168b6363c5db990052b37443ffde99f"
+    },
+    {
+      "path": "test-report-v44.json",
+      "sha": "e9b8755e7effd81bd6c9307b23f10eabdfb3518b"
+    },
+    {
+      "path": "v44-panorama-close.png",
+      "sha": "9f152e63965a0a2a82015a3d495d7b124743ee88"
+    },
+    {
+      "path": "v44-panorama-fountain.png",
+      "sha": "a24e4068a770ee854fed2e8835594ba57bfef593"
+    },
+    {
+      "path": "v44-panorama-mobile.png",
+      "sha": "036b23c83a3f3af7ff1e0a8f2ac8a40819d1f2fe"
+    },
+    {
+      "path": "v44-panorama-room.png",
+      "sha": "18a5ef42e3a4f3f923489fc35b73ecf9aa947db0"
+    }
+  ]
 }
