@@ -1,0 +1,54 @@
+{
+  "version": "v35",
+  "target": "MRMSMV/Test/main/index.html",
+  "protectedLegacySha256": {
+    "v16": "4ed81f9f46093c7ee3a07f8db8eed0009a082ba46ec20c5b2d7bd152dd2a6a75",
+    "v17": "839376c440df773315b9b99f6d622b00dc1eadad60e45cefce6649263a0c7666",
+    "v18": "4bf671a006ac6a4aea1c4ba5b85906607c69a11cf2e25e27fb7f21e209f96610",
+    "v19": "8d7a3a0ef3271cd6fb9acba2f95f864f1a2ee2c3a311fb857c7bcddecf58adc6"
+  },
+  "largeTopRibbonCm": {
+    "60": 57,
+    "91.5": 58.6
+  },
+  "additionalInterBalloonJoints": false,
+  "sha256": {
+    "candysky-rapier-lab-1-v35-top-star-level.html": "648f826942452222a4704b53ba02abd635343ae0fbb35b959bfb34462869cd62",
+    "test-report-v35.json": "98b710133b7ddf3b1f4f7a109d6d345df489096720a022c89a73b0c85a4363c7",
+    "technical-spec.md": "faf8b89d988291cfa0462f0ef4b73b685954c6bc110794232766a5559a555205",
+    "changelog.md": "3056f56174428cb602820e77becbac82d60621d3d1b4d238b4ebb08aeb872e7e",
+    "instructions.md": "6897d85f7352cfc8585fc9809290e7c2b29deb116e4eed12ce0408863053d5c2",
+    "README.md": "12c4fea8a9626a982a80dbec99a1c1eaf8b46b475d530bea5a89868b6abb51c1"
+  },
+  "roomMetres": [
+    5,
+    5,
+    3.2
+  ],
+  "cristalRendering": "alpha-blended thin shells, angle-dependent opacity and highlights; no screen-space transmission",
+  "foilTierPlacement": {
+    "finalSideLengthCm": {
+      "star": 36,
+      "heart": 27
+    },
+    "topLengthCm": {
+      "star": 58,
+      "heart": 51
+    },
+    "probe": "exact Compound of 20 approved convex sectors",
+    "entrySideLengthCm": {
+      "star": 48,
+      "heart": 45
+    },
+    "entryTopLengthCm": {
+      "star": 70,
+      "heart": 63
+    },
+    "reelRateMPerSecond": 0.12,
+    "extraSolverIterationsDuringEntry": 16,
+    "savedInProgress": true,
+    "additionalInterBalloonJoints": false,
+    "topStarCasesTested": 6
+  },
+  "starAlignmentReference": "lower ray tips versus lower latex body surface, approximate at rest; no pose lock"
+}

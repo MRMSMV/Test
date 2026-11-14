@@ -1,0 +1,373 @@
+{
+  "errors": [],
+  "cases": [
+    {
+      "preset": 7,
+      "mixed": false,
+      "unchanged": true,
+      "clean": true,
+      "length": 0.58,
+      "target": null,
+      "product": {
+        "kind": "foilStar",
+        "sizeCm": 42
+      },
+      "finite": true,
+      "info": "№1 · Верхний · Звезда · 42×40×21 см · лента 58 см",
+      "sideLengths": [
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        }
+      ]
+    },
+    {
+      "preset": 11,
+      "mixed": false,
+      "unchanged": true,
+      "clean": true,
+      "length": 0.58,
+      "target": null,
+      "product": {
+        "kind": "foilStar",
+        "sizeCm": 42
+      },
+      "finite": true,
+      "info": "№1 · Верхний · Звезда · 42×40×21 см · лента 58 см",
+      "sideLengths": [
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        }
+      ]
+    },
+    {
+      "preset": 13,
+      "mixed": false,
+      "unchanged": true,
+      "clean": true,
+      "length": 0.58,
+      "target": null,
+      "product": {
+        "kind": "foilStar",
+        "sizeCm": 42
+      },
+      "finite": true,
+      "info": "№1 · Верхний · Звезда · 42×40×21 см · лента 58 см",
+      "sideLengths": [
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        }
+      ]
+    },
+    {
+      "preset": 15,
+      "mixed": false,
+      "unchanged": true,
+      "clean": true,
+      "length": 0.58,
+      "target": null,
+      "product": {
+        "kind": "foilStar",
+        "sizeCm": 42
+      },
+      "finite": true,
+      "info": "№1 · Верхний · Звезда · 42×40×21 см · лента 58 см",
+      "sideLengths": [
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        }
+      ]
+    },
+    {
+      "preset": 7,
+      "mixed": true,
+      "unchanged": true,
+      "clean": true,
+      "length": 0.58,
+      "target": null,
+      "product": {
+        "kind": "foilStar",
+        "sizeCm": 42
+      },
+      "finite": true,
+      "info": "№1 · Верхний · Звезда · 42×40×21 см · лента 58 см",
+      "sideLengths": [
+        {
+          "kind": "foilStar",
+          "length": 0.36
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "foilHeart",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        }
+      ]
+    },
+    {
+      "preset": 15,
+      "mixed": true,
+      "unchanged": true,
+      "clean": true,
+      "length": 0.58,
+      "target": null,
+      "product": {
+        "kind": "foilStar",
+        "sizeCm": 42
+      },
+      "finite": true,
+      "info": "№1 · Верхний · Звезда · 42×40×21 см · лента 58 см",
+      "sideLengths": [
+        {
+          "kind": "foilStar",
+          "length": 0.36
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "foilHeart",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "foilStar",
+          "length": 0.36
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "foilHeart",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        },
+        {
+          "kind": "latex",
+          "length": 0.27
+        }
+      ]
+    }
+  ],
+  "rules": {
+    "starTop": 0.58,
+    "starSide": 0.36,
+    "heartTop": 0.51,
+    "heartSide": 0.27,
+    "latex60": 0.57,
+    "latex915": 0.586,
+    "digit": 0.51
+  },
+  "legacy54": {
+    "length": 0.58,
+    "target": null,
+    "product": {
+      "kind": "foilStar",
+      "sizeCm": 42
+    },
+    "finite": true,
+    "info": "№1 · Верхний · Звезда · 42×40×21 см · лента 58 см"
+  },
+  "sourceUnchanged": true,
+  "legacy51": true,
+  "legacy63Resumes": true,
+  "saveRestore": true,
+  "mobileEditor": true
+}
