@@ -1,0 +1,43 @@
+{
+  "medium": {
+    "brand": "Agura",
+    "nominalInches": 30,
+    "url": "https://sharlar.ru/optovaya-torgovlya/torgovye-marki/vozdushnye-shary-agura/",
+    "sourceType": "retailer description",
+    "flatCm": [
+      76,
+      76
+    ],
+    "heliumLitres": 59,
+    "estimatedInflatedCm": [
+      61,
+      60,
+      33
+    ],
+    "inflatedDimensionsStatus": "user agreed estimate by scaling current small heart to 59L; not manufacturer measurements",
+    "shellMassGrams": {
+      "value": 27.47747747747748,
+      "status": "estimate by area"
+    },
+    "proportionalVolumeLitres": 58.939189189189186,
+    "topRibbonCm": 56
+  },
+  "large": {
+    "brand": "Grabo",
+    "sku": "360S01WH",
+    "nominalInches": 36,
+    "url": "https://www.grabo-balloons.com/en/360s01wh-balloon-heart-36inc-satin-white-white",
+    "sourceType": "manufacturer",
+    "inflatedCm": [
+      75,
+      70,
+      41
+    ],
+    "heliumLitres": 111,
+    "shellMassGrams": {
+      "value": 39.414414414414416,
+      "status": "estimate by area, not manufacturer data"
+    },
+    "topRibbonCm": 59
+  }
+}

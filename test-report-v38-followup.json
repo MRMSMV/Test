@@ -4,12 +4,12 @@
   "spec": {
     "big": {
       "dimensions": [
-        0.8600000143051147,
-        0.8100000023841858,
-        0.38999998569488525
+        0.75,
+        0.699999988079071,
+        0.4099999964237213
       ],
-      "gas": 0.094,
-      "mass": 0.05825268571428571,
+      "gas": 0.111,
+      "mass": 0.05923901441441441,
       "hulls": 20
     },
     "cacheSeparated": true,
@@ -34,9 +34,9 @@
     "productsRestored": true,
     "pending": {
       "length": 0.75,
-      "target": 0.64
+      "target": 0.59
     },
-    "finalLength": 0.64,
+    "finalLength": 0.59,
     "finished": true,
     "solverIterations": 32,
     "finite": true,
