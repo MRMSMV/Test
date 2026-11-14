@@ -3,10 +3,10 @@
   "branch": "main",
   "keepLatestBuilds": 2,
   "retainedBuilds": [
-    "v39",
-    "v38"
+    "v40",
+    "v39"
   ],
-  "indexBuild": "v39",
+  "indexBuild": "v40",
   "gitHistoryRewrite": false,
   "localArchivesUnchanged": true,
   "preservedModelSources": [
@@ -394,10 +394,66 @@
     {
       "path": "v37-star-sizes.png",
       "sha": "24edd44a30e90951b80a7a501cc5e71e67a020a4"
+    },
+    {
+      "path": "candysky-rapier-lab-1-v38-heart-sizes.html",
+      "sha": "1831f4a022ada5af3e9e79b855ddc5f7e986d28b"
+    },
+    {
+      "path": "foil-baseline-check-v38.json",
+      "sha": "7c54ac074109e6158dce1e6664764dffd419146c"
+    },
+    {
+      "path": "integration-v38.json",
+      "sha": "c082fdbfd47afcabd041955dca01089a5bc4bf61"
+    },
+    {
+      "path": "test-report-v38-61.json",
+      "sha": "817050de9e25e8dd49b0bbb3f6de1de420b98a23"
+    },
+    {
+      "path": "test-report-v38-75.json",
+      "sha": "e9399c89154cf3282c564102d7d38dfa0e9434bd"
+    },
+    {
+      "path": "test-report-v38-followup.json",
+      "sha": "c93d3d9b770def184738537f2b72cf1b14a4be8c"
+    },
+    {
+      "path": "v38-heart-61-15.png",
+      "sha": "a29b209103d63a85b100bd0c60687d202a13bb8b"
+    },
+    {
+      "path": "v38-heart-61-7.png",
+      "sha": "1ad09439fadfb679cfab007f02b57a3062908ec0"
+    },
+    {
+      "path": "v38-heart-61-front.png",
+      "sha": "378152f9a6b5d958f499e8870f1f836e5f1e3d2d"
+    },
+    {
+      "path": "v38-heart-61-mobile.png",
+      "sha": "f0ad11f1e545092907c34597b2348ba4c36b935c"
+    },
+    {
+      "path": "v38-heart-75-15.png",
+      "sha": "25f6c76e2f8b8f4df7f5fa262f9f8948654b93f6"
+    },
+    {
+      "path": "v38-heart-75-7.png",
+      "sha": "72e1eba4c76b645533cb6926bc3a68562ab2b862"
+    },
+    {
+      "path": "v38-heart-75-front.png",
+      "sha": "03040e2ceb9307086a0fc82de45200ff4ba67718"
+    },
+    {
+      "path": "v38-heart-75-mobile.png",
+      "sha": "77f7421a973861052c79fb9bdfcd260868e463ca"
     }
   ],
   "retainedHtmlSha256": {
-    "candysky-rapier-lab-1-v39-helium-correction.html": "90eb7ad7527202b900b92689d98fe5c589ef454c7b29af2deb2d4e86cf680e83",
-    "candysky-rapier-lab-1-v38-heart-sizes.html": "827efaadee6d36a2ad06a01960587c1f786e221a0acbc6d97a9631fd437e8412"
+    "candysky-rapier-lab-1-v40-foil-chrome.html": "3034ea92e65db723acb97fc6230bc6298972d12f74f7e607c21e0f97b171c723",
+    "candysky-rapier-lab-1-v39-helium-correction.html": "90eb7ad7527202b900b92689d98fe5c589ef454c7b29af2deb2d4e86cf680e83"
   }
 }

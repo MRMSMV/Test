@@ -1,0 +1,151 @@
+{
+  "old": [
+    {
+      "kind": "foilStar",
+      "size": 42,
+      "positions": "2c0757cfce2fb5584e769291de3818e924665fed47398e90aa2739dbc3184957",
+      "normals": "2705578d1a13fb6d1d52918368366d736fa7a25592edd7134723d595472fb428",
+      "indices": "d1846c62f26c42be049e93efbe15f824b6ec61b882702c82b7c138dcf87c46f7",
+      "seam": "8662ff076d05350c128d550498fe27280a6f013d3d5c06644b444b4e0dc58cdd",
+      "tie": -0.14883288597246974,
+      "shellMass": 0.01,
+      "volume": 0.014,
+      "mass": 0.0125004
+    },
+    {
+      "kind": "foilStar",
+      "size": 64,
+      "positions": "217e1666c485c7467c0ebf08e9beb049f988521259506f03e47ea01a845d699f",
+      "normals": "79d648d91068e2b7a37034664ece401188bc61e598f121e6034ffb0c3276097d",
+      "indices": "d1846c62f26c42be049e93efbe15f824b6ec61b882702c82b7c138dcf87c46f7",
+      "seam": "f3213d466c47371ff364b7017e5105fda3b1d01dc5539337d69bef5e40dd639e",
+      "tie": -0.21962270686246943,
+      "shellMass": 0.023047619047619046,
+      "volume": 0.047,
+      "mass": 0.03144181904761904
+    },
+    {
+      "kind": "foilStar",
+      "size": 86,
+      "positions": "82e7b70e6852e2e956a4892984eeaa7d1945f71992158549b094474bf4602b4b",
+      "normals": "fe66b876376e452787fd389681d0b7c7609f1409b86d951218008fe47ce42529",
+      "indices": "d1846c62f26c42be049e93efbe15f824b6ec61b882702c82b7c138dcf87c46f7",
+      "seam": "507b98ec5282837044edad6f25daebf4a319fc33074f0882db626ab0707425d6",
+      "tie": -0.29046189746511997,
+      "shellMass": 0.04146428571428571,
+      "volume": 0.094,
+      "mass": 0.05825268571428571
+    },
+    {
+      "kind": "foilHeart",
+      "size": 37,
+      "positions": "e7893d2ea1cb94202886314780b43b53ff218f0ac9f5f014c4f71546c19a3f2b",
+      "normals": "f755298e9754f8659694acc32f4949f7206d98eb587d660bd68ace20e0dd6624",
+      "indices": "d1846c62f26c42be049e93efbe15f824b6ec61b882702c82b7c138dcf87c46f7",
+      "seam": "5913907596370181406b3a33a81aa9f8cdc515c31531afa3beabd8e3db73a8b2",
+      "tie": -0.192,
+      "shellMass": 0.01,
+      "volume": 0.013,
+      "mass": 0.0123218
+    },
+    {
+      "kind": "foilHeart",
+      "size": 61,
+      "positions": "17ca32efb3d867d3fd52d5683e63ded03f9164b3880661e9d46bd88532a9bb39",
+      "normals": "36a7f2532478e4ca9b97b1b5daae8e447a537d844755edbe9ef956b619c0cc5b",
+      "indices": "d1846c62f26c42be049e93efbe15f824b6ec61b882702c82b7c138dcf87c46f7",
+      "seam": "790c2902e5ecdba23ebcfe0ea118c53f83c1c724acffd7d6d42a495e9eb43cd6",
+      "tie": -0.312,
+      "shellMass": 0.02747747747747748,
+      "volume": 0.053,
+      "mass": 0.036943277477477485
+    },
+    {
+      "kind": "foilHeart",
+      "size": 75,
+      "positions": "690e3988e29c76b70acecaa20186f6a6a679040ea1dc71fae892bf10425ec8a0",
+      "normals": "376eff38b88d84e202d75c5ef5bdcfe68125400da718d28a7bdbee05b9010fed",
+      "indices": "d1846c62f26c42be049e93efbe15f824b6ec61b882702c82b7c138dcf87c46f7",
+      "seam": "90d14c413abdc7c5f2c5d657a8df4f8a58fbf0ec16151d2f369f913992810916",
+      "tie": -0.362,
+      "shellMass": 0.039414414414414414,
+      "volume": 0.111,
+      "mass": 0.05923901441441441
+    }
+  ],
+  "new": [
+    {
+      "kind": "foilStar",
+      "size": 42,
+      "positions": "2c0757cfce2fb5584e769291de3818e924665fed47398e90aa2739dbc3184957",
+      "normals": "2705578d1a13fb6d1d52918368366d736fa7a25592edd7134723d595472fb428",
+      "indices": "d1846c62f26c42be049e93efbe15f824b6ec61b882702c82b7c138dcf87c46f7",
+      "seam": "8662ff076d05350c128d550498fe27280a6f013d3d5c06644b444b4e0dc58cdd",
+      "tie": -0.14883288597246974,
+      "shellMass": 0.01,
+      "volume": 0.014,
+      "mass": 0.0125004
+    },
+    {
+      "kind": "foilStar",
+      "size": 64,
+      "positions": "217e1666c485c7467c0ebf08e9beb049f988521259506f03e47ea01a845d699f",
+      "normals": "79d648d91068e2b7a37034664ece401188bc61e598f121e6034ffb0c3276097d",
+      "indices": "d1846c62f26c42be049e93efbe15f824b6ec61b882702c82b7c138dcf87c46f7",
+      "seam": "f3213d466c47371ff364b7017e5105fda3b1d01dc5539337d69bef5e40dd639e",
+      "tie": -0.21962270686246943,
+      "shellMass": 0.023047619047619046,
+      "volume": 0.047,
+      "mass": 0.03144181904761904
+    },
+    {
+      "kind": "foilStar",
+      "size": 86,
+      "positions": "82e7b70e6852e2e956a4892984eeaa7d1945f71992158549b094474bf4602b4b",
+      "normals": "fe66b876376e452787fd389681d0b7c7609f1409b86d951218008fe47ce42529",
+      "indices": "d1846c62f26c42be049e93efbe15f824b6ec61b882702c82b7c138dcf87c46f7",
+      "seam": "507b98ec5282837044edad6f25daebf4a319fc33074f0882db626ab0707425d6",
+      "tie": -0.29046189746511997,
+      "shellMass": 0.04146428571428571,
+      "volume": 0.094,
+      "mass": 0.05825268571428571
+    },
+    {
+      "kind": "foilHeart",
+      "size": 37,
+      "positions": "e7893d2ea1cb94202886314780b43b53ff218f0ac9f5f014c4f71546c19a3f2b",
+      "normals": "f755298e9754f8659694acc32f4949f7206d98eb587d660bd68ace20e0dd6624",
+      "indices": "d1846c62f26c42be049e93efbe15f824b6ec61b882702c82b7c138dcf87c46f7",
+      "seam": "5913907596370181406b3a33a81aa9f8cdc515c31531afa3beabd8e3db73a8b2",
+      "tie": -0.192,
+      "shellMass": 0.01,
+      "volume": 0.013,
+      "mass": 0.0123218
+    },
+    {
+      "kind": "foilHeart",
+      "size": 61,
+      "positions": "17ca32efb3d867d3fd52d5683e63ded03f9164b3880661e9d46bd88532a9bb39",
+      "normals": "36a7f2532478e4ca9b97b1b5daae8e447a537d844755edbe9ef956b619c0cc5b",
+      "indices": "d1846c62f26c42be049e93efbe15f824b6ec61b882702c82b7c138dcf87c46f7",
+      "seam": "790c2902e5ecdba23ebcfe0ea118c53f83c1c724acffd7d6d42a495e9eb43cd6",
+      "tie": -0.312,
+      "shellMass": 0.02747747747747748,
+      "volume": 0.053,
+      "mass": 0.036943277477477485
+    },
+    {
+      "kind": "foilHeart",
+      "size": 75,
+      "positions": "690e3988e29c76b70acecaa20186f6a6a679040ea1dc71fae892bf10425ec8a0",
+      "normals": "376eff38b88d84e202d75c5ef5bdcfe68125400da718d28a7bdbee05b9010fed",
+      "indices": "d1846c62f26c42be049e93efbe15f824b6ec61b882702c82b7c138dcf87c46f7",
+      "seam": "90d14c413abdc7c5f2c5d657a8df4f8a58fbf0ec16151d2f369f913992810916",
+      "tie": -0.362,
+      "shellMass": 0.039414414414414414,
+      "volume": 0.111,
+      "mass": 0.05923901441441441
+    }
+  ],
+  "passed": true
+}

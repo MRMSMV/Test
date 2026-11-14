@@ -1,0 +1,28 @@
+{
+  "approvedPreview": "chrome-fountains-scene-v4.png",
+  "gold": "#ffbf40",
+  "silver": "#ffffff",
+  "red": "#e51d2b",
+  "foilFinish": "chrome",
+  "metalness": 1,
+  "bodyRoughness": {
+    "goldSilver": 0.24,
+    "red": 0.25
+  },
+  "detailRoughness": {
+    "goldSilver": 0.3,
+    "red": 0.31
+  },
+  "clearcoat": 0.16,
+  "clearcoatRoughness": 0.14,
+  "bumpScale": {
+    "goldSilver": 0.005,
+    "red": 0.0035
+  },
+  "envMapIntensity": {
+    "goldSilver": 1.05,
+    "red": 1.1
+  },
+  "sharedReflectionMap": true,
+  "sceneLightingUnchanged": true
+}

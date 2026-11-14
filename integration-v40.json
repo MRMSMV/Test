@@ -1,5 +1,5 @@
 {
-  "version": "v38",
+  "version": "v40",
   "target": "MRMSMV/Test/main/index.html",
   "protectedLegacySha256": {
     "v16": "4ed81f9f46093c7ee3a07f8db8eed0009a082ba46ec20c5b2d7bd152dd2a6a75",
@@ -13,15 +13,13 @@
   },
   "additionalInterBalloonJoints": false,
   "sha256": {
-    "candysky-rapier-lab-1-v38-heart-sizes.html": "827efaadee6d36a2ad06a01960587c1f786e221a0acbc6d97a9631fd437e8412",
-    "test-report-v38-61.json": "4de07ab0519348cb4690644de5f38075a20ccca171aa334e1a47e7ea1197d3ab",
-    "test-report-v38-75.json": "3287d3c2204969e84fbdb95a811348399462d8dc5ec29641cb93c3a915277d1e",
-    "test-report-v38-followup.json": "4cd6c96968f7ea66d92bd22cd903877847e4e99039fc35c5273f2a88f3187238",
-    "foil-baseline-check-v38.json": "7505bee16ca2adeb95b72bcdaf55591575c05c2bad79a76e5d87ca84621e6ffe",
-    "technical-spec.md": "2d9600314c588d42e20c60f1b4ed3a1374e562cf146ecff1857bd3ee26290959",
-    "changelog.md": "2fc15f0c1f8d5665558e47fb0caed3ffdbd63b0d653119ea0f2dda66d8fd72a3",
-    "instructions.md": "54508c52730f249bb45d2e76571e7cc38247bd0e69cc6810dfa853f439429885",
-    "README.md": "4845e55e970237bf584da3b19581e918245ef6c8c17e961f819425e14051afd1"
+    "candysky-rapier-lab-1-v40-foil-chrome.html": "3034ea92e65db723acb97fc6230bc6298972d12f74f7e607c21e0f97b171c723",
+    "test-report-v40.json": "75d9610fd9c00e4fb8c30891dc9a119820d8b344c875c8cc62215ac16795788f",
+    "foil-baseline-check-v40.json": "918da6b6f79428933582cec2e399dafd57b7ff7ee5de84fa35e38303ffdc8232",
+    "technical-spec.md": "7eb66af6ed9ebc20d712df817b4af7cad0a8f3559892ee12d07102ab1e903d47",
+    "changelog.md": "7c5cbd6f6a14700d59abbc69f2d07641e4b0e72b7c97faa49569744df7e030fe",
+    "instructions.md": "02524ce226ff4adbb6f091c1dee58c866bbc502b75e9f84454048d27dcd0044c",
+    "README.md": "26d23d674543c8f36f92bb5c7fdf1d512d3a404f84cd10c03d1bfb6e6b73a764"
   },
   "roomMetres": [
     5,
@@ -90,7 +88,7 @@
       76,
       76
     ],
-    "heliumLitres": 46,
+    "heliumLitres": 47,
     "estimatedInflatedCm": [
       64,
       60.5,
@@ -114,7 +112,7 @@
         76,
         76
       ],
-      "heliumLitres": 59,
+      "heliumLitres": 53,
       "estimatedInflatedCm": [
         61,
         60,
@@ -126,7 +124,8 @@
         "status": "estimate by area"
       },
       "proportionalVolumeLitres": 58.939189189189186,
-      "topRibbonCm": 56
+      "topRibbonCm": 56,
+      "note": "Old geometric scaling estimate retained; does not validate corrected gas volume or 3D dimensions"
     },
     "large": {
       "brand": "Grabo",
@@ -146,5 +145,75 @@
       },
       "topRibbonCm": 59
     }
+  },
+  "heliumCorrection": {
+    "basis": "User supplied rashod_geliya.xlsx; original PDF not supplied or verified",
+    "workbookSourceClaim": "ОПТШАР.РФ; 1 portion = 14 L",
+    "sheet": "Замеры по моделям",
+    "heart30": {
+      "row": 32,
+      "pdfPage": 12,
+      "brand": "Agura",
+      "nominalInches": 30,
+      "measuredSpanCm": 62,
+      "axis": "not specified",
+      "heliumLitres": 53,
+      "previousLitres": 59,
+      "dimensionsUnchangedCm": [
+        61,
+        60,
+        33
+      ],
+      "dimensionsStatus": "prior agreed estimate; not validated by single span"
+    },
+    "star30": {
+      "row": 52,
+      "pdfPages": [
+        26,
+        29
+      ],
+      "brand": "Agura",
+      "nominalInches": 30,
+      "measuredSpanCm": 66,
+      "axis": "not specified",
+      "heliumLitres": 47,
+      "previousLitres": 46,
+      "dimensionsUnchangedCm": [
+        64,
+        60.5,
+        30
+      ],
+      "dimensionsStatus": "prior agreed estimate; not validated by single span"
+    },
+    "scope": "Only heart/star 30; user excluded small shapes and digits",
+    "geometryChanged": false
+  },
+  "foilChrome": {
+    "approvedPreview": "chrome-fountains-scene-v4.png",
+    "gold": "#ffbf40",
+    "silver": "#ffffff",
+    "red": "#e51d2b",
+    "foilFinish": "chrome",
+    "metalness": 1,
+    "bodyRoughness": {
+      "goldSilver": 0.24,
+      "red": 0.25
+    },
+    "detailRoughness": {
+      "goldSilver": 0.3,
+      "red": 0.31
+    },
+    "clearcoat": 0.16,
+    "clearcoatRoughness": 0.14,
+    "bumpScale": {
+      "goldSilver": 0.005,
+      "red": 0.0035
+    },
+    "envMapIntensity": {
+      "goldSilver": 1.05,
+      "red": 1.1
+    },
+    "sharedReflectionMap": true,
+    "sceneLightingUnchanged": true
   }
 }
