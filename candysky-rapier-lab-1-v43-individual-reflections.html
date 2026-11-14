@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#fffaf8">
-<title>CandySky — Rapier Lab 1.9 · несколько фонтанов · v41</title>
+<title>CandySky — Rapier Lab 1.9 · несколько фонтанов · v43</title>
 <style>
 :root{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#26313a;background:#fffaf8;color-scheme:light}
 *{box-sizing:border-box}
@@ -163,7 +163,7 @@ button:hover{background:#faf4f3}button.primary{background:#f4d4d2;border-color:#
 <body>
 <div class="app" id="app">
  <canvas id="view" aria-label="Единая 3D-сцена нескольких фонтанов CandySky"></canvas>
- <header class="topbar"><div class="brand"><strong>CandySky · Фонтаны · v41</strong><small>Несколько композиций · высота сцены 3,2 м</small></div><div class="state" id="status"><i></i><span id="statusText">Загрузка движка</span></div></header>
+ <header class="topbar"><div class="brand"><strong>CandySky · Фонтаны · v43</strong><small>Несколько композиций · высота сцены 3,2 м</small></div><div class="state" id="status"><i></i><span id="statusText">Загрузка движка</span></div></header>
  <div class="panel-backdrop" id="panelBackdrop" aria-hidden="true"></div>
  <button type="button" class="panel-toggle" id="panelToggle" aria-controls="labPanel" aria-expanded="false" aria-label="Открыть управление фонтанами"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16M9 4v6M15 14v6"/></svg><span>Управление</span><span class="panel-toggle-count" id="panelToggleCount">0</span></button>
  <section class="panel" id="labPanel" aria-label="Управление фонтанами" aria-hidden="true" inert>
@@ -202,7 +202,7 @@ button:hover{background:#faf4f3}button.primary{background:#f4d4d2;border-color:#
  <div class="load" id="loading"><h2>Загрузка CandySky 3D</h2><p id="loadText">Подключаю Three.js и Rapier…</p><button id="retry" hidden>Повторить</button><button id="copyError" hidden>Скопировать ошибку</button></div>
 </div>
 <script type="module">
-// CandySky v41: единый экспериментальный мир для нескольких независимых фонтанов.
+// CandySky v43: единый экспериментальный мир для нескольких независимых фонтанов.
 // Оригинальные v16 / v17 / v18 / v19 остаются неизменными файлами.
 // Реальная физика Rapier + XPBD локально, библиотеки тестово загружаются с CDN (не production/offline).
 const THREE_SOURCES=[['jsDelivr · Three.js 0.164.1','https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js']];
@@ -319,29 +319,31 @@ const foilReflectionStates=new Map();
 let foilReflectionCards=null,foilReflectionNext=0,foilReflectionCursor=0;
 const foilReflectionMobile=()=>window.matchMedia('(pointer:coarse)').matches||innerWidth<=750;
 function releaseFoilReflection(id){const state=foilReflectionStates.get(id);if(!state)return;scene.remove(state.camera);state.target.texture.dispose();state.target.dispose();foilReflectionStates.delete(id)}
+function releaseFountainFoilReflections(id){for(const [key,state]of foilReflectionStates)if(state.fountainId===id)releaseFoilReflection(key)}
 function getFoilReflectionCards(){
  if(foilReflectionCards)return foilReflectionCards;
  foilReflectionCards=[];for(const [offset,size,color,power]of [[[-1.4,.7,2.1],[1,2],0xffffff,2.8],[[1.7,.3,1.6],[.65,2],0xffffff,2.1],[[0,1.3,1.6],[2,.35],0x30343b,1],[[0,1.5,0],[2,1],0xffffff,2.4]]){const mesh=new THREE.Mesh(new THREE.PlaneGeometry(...size),new THREE.MeshBasicMaterial({color,side:THREE.DoubleSide}));mesh.material.color.multiplyScalar(power);mesh.visible=false;scene.add(mesh);foilReflectionCards.push({mesh,offset:new THREE.Vector3(...offset)})}return foilReflectionCards;
 }
 function updateFoilReflections(now){
  if(document.hidden||now<foilReflectionNext)return;
- foilReflectionNext=now+(foilReflectionMobile()?250:160);
- const active=fountains.map(f=>({f,chrome:f.balloons.filter(b=>b.product?.foilFinish==='chrome'&&b.visual)})).filter(item=>item.chrome.length);
- for(const id of [...foilReflectionStates.keys()])if(!active.some(item=>item.f.id===id))releaseFoilReflection(id);
+ foilReflectionNext=now+(foilReflectionMobile()?500:160);
+ const active=balloons.filter(b=>b.product?.foilFinish==='chrome'&&b.visual);
+ for(const id of [...foilReflectionStates.keys()])if(!active.some(b=>b.id===id))releaseFoilReflection(id);
  if(!active.length){if(foilReflectionCards){for(const {mesh}of foilReflectionCards){scene.remove(mesh);mesh.geometry.dispose();mesh.material.dispose()}foilReflectionCards=null}return}
+ // A recreated visual reuses only its own cached map, never a neighbour's map.
+ for(const b of active){const cached=foilReflectionStates.get(b.id);if(cached?.captures)b.visual.traverse(o=>{if(o.isMesh)o.material.envMap=cached.target.texture})}
  const signature=balloons.map(b=>{const p=b.body.translation(),q=b.body.rotation(),product=b.product;return [b.id,b.color,product?.kind,product?.sizeCm,product?.digit,product?.foilFinish,...[p.x,p.y,p.z].map(v=>Math.round(v*1000)),...[q.x,q.y,q.z,q.w].map(v=>Math.round(v*100))].join(',')}).join(';');
- let item=null;for(let i=0;i<active.length;i++){const index=(foilReflectionCursor+i)%active.length,candidate=active[index],state=foilReflectionStates.get(candidate.f.id);if(!state||state.signature!==signature){item=candidate;foilReflectionCursor=(index+1)%active.length;break}}
- if(!item){for(const entry of active){const cached=foilReflectionStates.get(entry.f.id);if(cached?.captures)for(const b of entry.chrome)b.visual.traverse(o=>{if(o.isMesh)o.material.envMap=cached.target.texture})}return}
- let state=foilReflectionStates.get(item.f.id);if(!state){const size=foilReflectionMobile()?128:256,target=new THREE.WebGLCubeRenderTarget(size,{type:THREE.HalfFloatType,generateMipmaps:true,minFilter:THREE.LinearMipmapLinearFilter}),cube=new THREE.CubeCamera(.02,15,target);scene.add(cube);state={target,camera:cube,signature:null,captures:0,size};foilReflectionStates.set(item.f.id,state)}
- if(state.retryAfter&&now<state.retryAfter)return;
- const owner=item.chrome[0],center=new THREE.Box3().setFromObject(owner.visual).getCenter(new THREE.Vector3()),cards=getFoilReflectionCards(),backup=[],seen=new Set(),wasVisible=owner.visual.visible;
- // A single reflection bounce: neighbours use their approved static environment during capture.
- for(const b of balloons)if(b.product?.foilFinish==='chrome'&&b.visual)b.visual.traverse(o=>{if(o.isMesh&&!seen.has(o.material)){seen.add(o.material);backup.push([o.material,o.material.envMap]);o.material.envMap=getFoilChromeEnvironment()}});
+ let owner=null;for(let i=0;i<active.length;i++){const index=(foilReflectionCursor+i)%active.length,candidate=active[index],cached=foilReflectionStates.get(candidate.id);if(cached?.retryAfter&&now<cached.retryAfter)continue;if(!cached||cached.signature!==signature){owner=candidate;foilReflectionCursor=(index+1)%active.length;break}}
+ if(!owner)return;
+ let state=foilReflectionStates.get(owner.id);if(!state){const size=foilReflectionMobile()?64:256,target=new THREE.WebGLCubeRenderTarget(size,{type:THREE.HalfFloatType,generateMipmaps:true,minFilter:THREE.LinearMipmapLinearFilter}),cube=new THREE.CubeCamera(.02,15,target);scene.add(cube);state={target,camera:cube,signature:null,captures:0,size,fountainId:owner.fountainId};foilReflectionStates.set(owner.id,state)}
+ const center=new THREE.Box3().setFromObject(owner.visual).getCenter(new THREE.Vector3()),cards=getFoilReflectionCards(),backup=[],seen=new Set(),wasVisible=owner.visual.visible;
+ // Single reflection bounce: every other chrome figure remains visible with its static environment.
+ for(const b of active)b.visual.traverse(o=>{if(o.isMesh&&!seen.has(o.material)){seen.add(o.material);backup.push([o.material,o.material.envMap]);o.material.envMap=getFoilChromeEnvironment()}});
  let ok=false;const start=performance.now();
  try{owner.visual.visible=false;for(const {mesh,offset}of cards){mesh.position.copy(center).add(offset);mesh.lookAt(center);mesh.visible=true}state.camera.position.copy(center);scene.updateMatrixWorld(true);state.camera.update(renderer,scene);state.target.texture.needsPMREMUpdate=true;ok=true}
  catch(error){state.retryAfter=now+5000;state.lastError=String(error?.message||error)}
  finally{owner.visual.visible=wasVisible;for(const {mesh}of cards)mesh.visible=false;for(const [material,env]of backup)material.envMap=env}
- if(ok){for(const b of item.chrome)b.visual.traverse(o=>{if(o.isMesh)o.material.envMap=state.target.texture});state.signature=signature;state.captures++;state.ownerId=owner.id;state.center=center.toArray();state.lastCaptureCpuMs=performance.now()-start;state.retryAfter=0;delete state.lastError}
+ if(ok){owner.visual.traverse(o=>{if(o.isMesh)o.material.envMap=state.target.texture});state.signature=signature;state.captures++;state.ownerId=owner.id;state.center=center.toArray();state.lastCaptureCpuMs=performance.now()-start;state.retryAfter=0;delete state.lastError}
 }
 function updateEditorColors(){
  const select=el('productColor'),family=el('productKind').value==='latex'?'latex':'foil',previous=select.value,same=select.dataset.family===family;
@@ -791,7 +793,7 @@ function addFountain(type,coords=null,{height=null,colors=null,positions=null,id
  selectedFountainId=fid;selectedId=f.balloons[0]?.id||null;
  renderControls();metrics();requestDraftSave();return f;
 }
-function removeFountain(f,announce=true){if(!f||!fountains.includes(f))return;releaseFoilReflection(f.id);
+function removeFountain(f,announce=true){if(!f||!fountains.includes(f))return;releaseFountainFoilReflections(f.id);
  for(const seg of f.segments){if(seg.joint){world.removeImpulseJoint(seg.joint,true);seg.joint=null}
   if(seg.ribbon?.mesh){scene.remove(seg.ribbon.mesh);seg.ribbon.mesh.geometry.dispose();seg.ribbon.mesh.material.dispose()}}
  segments=segments.filter(seg=>seg.fountainId!==f.id);
@@ -840,6 +842,7 @@ function createBalloonPhysics(b){
  initializeRibbon(b);syncBalloon(b);delete b.spawn;
 }
 function createBalloonVisual(b,spec){
+ if(b.product?.foilFinish!=='chrome')releaseFoilReflection(b.id);
  b.visual=new THREE.Group();
  if(spec.kind==='latex')createLatexVisual(b,spec);
  else{const material=new THREE.MeshPhysicalMaterial({color:b.color,roughness:.22,metalness:.65,clearcoat:.16,clearcoatRoughness:.45,specularIntensity:.58});
@@ -1080,7 +1083,7 @@ function setupButtons(){setupBalloonEditor();
 
 
 async function readPreviousDraft(name='candysky-3d-multifountain-v23-drafts'){return new Promise((resolve,reject)=>{const req=indexedDB.open(name,1);req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains('scenes'))req.result.createObjectStore('scenes')};req.onerror=()=>reject(req.error);req.onsuccess=()=>{const db=req.result,tx=db.transaction('scenes','readonly'),read=tx.objectStore('scenes').get('current');let result;read.onsuccess=()=>{result=read.result};tx.oncomplete=()=>{db.close();resolve(result)};tx.onabort=()=>{db.close();reject(tx.error)}}})}
-const DRAFT_DB='candysky-3d-multifountain-v41-drafts',DRAFT_STORE='scenes',DRAFT_SCHEMA=3;
+const DRAFT_DB='candysky-3d-multifountain-v43-drafts',DRAFT_STORE='scenes',DRAFT_SCHEMA=3;
 let draftSaveTimer=null,dbPromise=null,restoringDraft=false,draftWritesBlocked=false;
 function openDraftDb(){if(!('indexedDB' in window))return Promise.reject(Error('IndexedDB недоступен'));
  if(!dbPromise)dbPromise=new Promise((resolve,reject)=>{const req=indexedDB.open(DRAFT_DB,1);
@@ -1141,16 +1144,16 @@ async function restoreDraft(preloaded=null){if(!ready||testing||restoringDraft)r
  draftWritesBlocked=false;renderControls();metrics();el('draftStatus').textContent='Сцена восстановлена · '+s.createdAt;msg('Восстановлено '+fountains.length+' фонтана из локального черновика.');return true;
  }catch(err){draftWritesBlocked=true;el('draftStatus').textContent='Ошибка восстановления: '+String(err.message||err)+'. Исходный черновик сохранён. Автосохранение выключено до нажатия «Сохранить сцену». ';console.warn(err);return false}finally{restoringDraft=false}
 }
-async function initialize(){if(booting||ready)return;booting=true;lastLoadReport='CandySky v41 / '+new Date().toISOString()+'\n'+location.href+'\n';
+async function initialize(){if(booting||ready)return;booting=true;lastLoadReport='CandySky v43 / '+new Date().toISOString()+'\n'+location.href+'\n';
  el('loading').hidden=false;el('retry').hidden=true;el('copyError').hidden=true;
  try{el('loadText').textContent='Подготавливаю утверждённые модели…';await loadDigitModels();el('loadText').textContent='Загружаю Three.js…';THREE=await loadThree();el('loadText').textContent='Загружаю Rapier WASM…';RAPIER=await loadRapier();
   createScene();if(!pointersBound){setupPointer();pointersBound=true}if(!controlsBound){setupButtons();controlsBound=true}
   ready=true;try{
-   let saved=await draftRecord('get');if(!saved){try{saved=await readPreviousDraft('candysky-3d-multifountain-v40-drafts')||await readPreviousDraft('candysky-3d-multifountain-v39-drafts')||await readPreviousDraft('candysky-3d-multifountain-v38-drafts')||await readPreviousDraft('candysky-3d-multifountain-v37-drafts')||await readPreviousDraft('candysky-3d-multifountain-v36-drafts')||await readPreviousDraft('candysky-3d-multifountain-v35-drafts')||await readPreviousDraft('candysky-3d-multifountain-v34-drafts')||await readPreviousDraft('candysky-3d-multifountain-v33-drafts')||await readPreviousDraft('candysky-3d-multifountain-v32-drafts')||await readPreviousDraft('candysky-3d-multifountain-v31-drafts')||await readPreviousDraft('candysky-3d-multifountain-v30-drafts')||await readPreviousDraft('candysky-3d-multifountain-v29-drafts')||await readPreviousDraft('candysky-3d-multifountain-v28-drafts')||await readPreviousDraft('candysky-3d-multifountain-v27-drafts')||await readPreviousDraft('candysky-3d-multifountain-v26-drafts')||await readPreviousDraft('candysky-3d-multifountain-v25-drafts')||await readPreviousDraft()||await readPreviousDraft('candysky-3d-multifountain-v21-drafts')}catch(err){console.warn('Предыдущий черновик недоступен',err)}}
+   let saved=await draftRecord('get');if(!saved){try{saved=await readPreviousDraft('candysky-3d-multifountain-v42-drafts')||await readPreviousDraft('candysky-3d-multifountain-v41-drafts')||await readPreviousDraft('candysky-3d-multifountain-v40-drafts')||await readPreviousDraft('candysky-3d-multifountain-v39-drafts')||await readPreviousDraft('candysky-3d-multifountain-v38-drafts')||await readPreviousDraft('candysky-3d-multifountain-v37-drafts')||await readPreviousDraft('candysky-3d-multifountain-v36-drafts')||await readPreviousDraft('candysky-3d-multifountain-v35-drafts')||await readPreviousDraft('candysky-3d-multifountain-v34-drafts')||await readPreviousDraft('candysky-3d-multifountain-v33-drafts')||await readPreviousDraft('candysky-3d-multifountain-v32-drafts')||await readPreviousDraft('candysky-3d-multifountain-v31-drafts')||await readPreviousDraft('candysky-3d-multifountain-v30-drafts')||await readPreviousDraft('candysky-3d-multifountain-v29-drafts')||await readPreviousDraft('candysky-3d-multifountain-v28-drafts')||await readPreviousDraft('candysky-3d-multifountain-v27-drafts')||await readPreviousDraft('candysky-3d-multifountain-v26-drafts')||await readPreviousDraft('candysky-3d-multifountain-v25-drafts')||await readPreviousDraft()||await readPreviousDraft('candysky-3d-multifountain-v21-drafts')}catch(err){console.warn('Предыдущий черновик недоступен',err)}}
    if(saved){const restored=await restoreDraft(saved);if(!restored&&!fountains.length)addFountain(7,{x:0,z:0})}
    else addFountain(7,{x:0,z:0});
   }catch(err){draftWritesBlocked=true;el('draftStatus').textContent='Черновик недоступен: '+String(err.message||err)+'. Автосохранение выключено до нажатия «Сохранить сцену». ';if(!fountains.length)addFountain(7,{x:0,z:0})}
-  renderControls();el('offlineStatus').textContent='Тестовый v41: Three.js/Rapier с jsDelivr. Офлайн не готов.';
+  renderControls();el('offlineStatus').textContent='Тестовый v43: Three.js/Rapier с jsDelivr. Офлайн не готов.';
   el('loading').hidden=true;cancelAnimationFrame(frameReq);lastFrame=0;animate(0);msg('Общая сцена готова: '+fountains.length+' фонтан(ов).');
  }catch(err){ready=false;lastLoadReport+='\nОшибка: '+String(err.message||err);el('loadText').textContent='Запуск не удался: '+String(err.message||err)+'; нужен интернет для CDN.';el('retry').hidden=false;el('copyError').hidden=false;msg('Не удалось запустить Rapier',true);console.error(err)}finally{booting=false}
 }

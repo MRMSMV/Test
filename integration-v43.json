@@ -1,5 +1,5 @@
 {
-  "version": "v41",
+  "version": "v43",
   "target": "MRMSMV/Test/main/index.html",
   "protectedLegacySha256": {
     "v16": "4ed81f9f46093c7ee3a07f8db8eed0009a082ba46ec20c5b2d7bd152dd2a6a75",
@@ -13,13 +13,13 @@
   },
   "additionalInterBalloonJoints": false,
   "sha256": {
-    "candysky-rapier-lab-1-v41-neighbor-reflections.html": "cef557d5ea8d577e7ba99eedbfbe8f22e72de382270f9413a666741b51516a36",
-    "test-report-v41.json": "74c2d28be408866354249403c407eefd89483ee4fa225cd5b9851b041e66c96a",
-    "foil-baseline-check-v41.json": "918da6b6f79428933582cec2e399dafd57b7ff7ee5de84fa35e38303ffdc8232",
-    "technical-spec.md": "e67dd54ee6c21083ead510b4cf0e99f2a86b744004f71519962373c9f182e458",
-    "changelog.md": "cbb5a1a89692a9f45c52c5c605c6c07625e5ef12f905648557bd9fac103bc91a",
-    "instructions.md": "5f5f824ddd67eed6bcbc8d9829bcad15ef79fd81026960142e2d9bb7dce10c10",
-    "README.md": "4a87790f1f6cd073640f9e6d09ecbc1ee212454a29a1bb2e9433f7ba6ffa0a54"
+    "candysky-rapier-lab-1-v43-individual-reflections.html": "125aa54f87ff7e31d762350a95f5abedd86d859f2591b6c40c0e5f046567f815",
+    "test-report-v43.json": "3eb74ee132f928920bf5f68f353d99329978676729f103a7e60fd0dc002fa315",
+    "foil-baseline-check-v43.json": "918da6b6f79428933582cec2e399dafd57b7ff7ee5de84fa35e38303ffdc8232",
+    "technical-spec.md": "d1ac2a0238b90d1201a1699ee7da307875eb58bd5e4eea7602336590170d1594",
+    "changelog.md": "669d2d77d01c0360cf04b2bf5d0cd4df9bd0c465ac9003f68d8bdcbc308f5e41",
+    "instructions.md": "ee65b5d1a2078fd3f8c5dcad7ea6133d976adcd67d577dbc9874b065329efda4",
+    "README.md": "fb3cd1985141cbaf80b25933c2c26e1499b97a363211944c1351d5132544aec6"
   },
   "roomMetres": [
     5,
@@ -217,30 +217,25 @@
     "sceneLightingUnchanged": true
   },
   "neighborReflections": {
-    "status": "user authorized experiment in Test",
-    "rollbackBuild": "v40",
-    "room": {
-      "background": "#686e75",
-      "floor": "#7d8187",
-      "gridOpacity": 0.18
-    },
-    "mapsPerFountain": 1,
-    "owner": "first chrome balloon, top if chrome",
-    "faceSize": {
-      "desktop": 256,
-      "mobile": 128
-    },
-    "checkIntervalMs": {
-      "desktop": 160,
-      "mobile": 250
-    },
-    "maxCapturesPerCheck": 1,
-    "idleSkip": true,
+    "rollbackBuild": "v42",
+    "mapsPerChromeFigure": 1,
+    "cacheKey": "balloon id",
+    "probePoint": "own visual bounding box center",
+    "excludedDuringCapture": "owner only",
     "singleReflectionBounce": true,
-    "selfExcluded": "probe owner only; shared map approximate for other receivers",
-    "lightCards": "only visible during capture",
-    "onFailure": "retry after 5 seconds; static fallback",
-    "onRemoval": "texture/camera/target disposed",
-    "realIphoneFpsMeasured": false
+    "helperLightCardsUnchanged": true,
+    "facePx": {
+      "mobile": 64,
+      "desktop": 256
+    },
+    "globalQueueIntervalMs": {
+      "mobile": 500,
+      "desktop": 160
+    },
+    "maxCapturesPerPass": 1,
+    "idleSkip": true,
+    "latencyNote": "N dirty maps need approximately N queue intervals; mobile FPS not measured",
+    "cleanup": "own map on non-chrome replacement; all fountain maps on fountain deletion",
+    "realIphoneTested": false
   }
 }

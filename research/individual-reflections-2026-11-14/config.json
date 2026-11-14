@@ -1,0 +1,22 @@
+{
+  "rollbackBuild": "v42",
+  "mapsPerChromeFigure": 1,
+  "cacheKey": "balloon id",
+  "probePoint": "own visual bounding box center",
+  "excludedDuringCapture": "owner only",
+  "singleReflectionBounce": true,
+  "helperLightCardsUnchanged": true,
+  "facePx": {
+    "mobile": 64,
+    "desktop": 256
+  },
+  "globalQueueIntervalMs": {
+    "mobile": 500,
+    "desktop": 160
+  },
+  "maxCapturesPerPass": 1,
+  "idleSkip": true,
+  "latencyNote": "N dirty maps need approximately N queue intervals; mobile FPS not measured",
+  "cleanup": "own map on non-chrome replacement; all fountain maps on fountain deletion",
+  "realIphoneTested": false
+}

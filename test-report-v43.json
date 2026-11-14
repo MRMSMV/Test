@@ -1,0 +1,122 @@
+{
+  "errors": [],
+  "individualMaps": {
+    "states": [
+      {
+        "key": 8,
+        "owner": 8,
+        "fountainId": 2,
+        "captures": 1,
+        "size": 256,
+        "error": null,
+        "centerError": 0,
+        "assigned": true
+      },
+      {
+        "key": 9,
+        "owner": 9,
+        "fountainId": 2,
+        "captures": 1,
+        "size": 256,
+        "error": null,
+        "centerError": 0,
+        "assigned": true
+      },
+      {
+        "key": 10,
+        "owner": 10,
+        "fountainId": 2,
+        "captures": 1,
+        "size": 256,
+        "error": null,
+        "centerError": 0,
+        "assigned": true
+      }
+    ],
+    "targetsUnique": 3,
+    "allVisible": true,
+    "cardsVisible": false
+  },
+  "idleSkipped": true,
+  "captureVisibility": [
+    {
+      "key": 8,
+      "ownerHidden": true,
+      "othersVisible": true,
+      "singleBounce": true
+    },
+    {
+      "key": 9,
+      "ownerHidden": true,
+      "othersVisible": true,
+      "singleBounce": true
+    },
+    {
+      "key": 10,
+      "ownerHidden": true,
+      "othersVisible": true,
+      "singleBounce": true
+    }
+  ],
+  "recreatedVisualOwnMap": true,
+  "removedFinish": {
+    "disposed": true,
+    "remaining": 2,
+    "removed": true
+  },
+  "deletedFountain": {
+    "expected": 2,
+    "disposed": 2,
+    "states": [
+      {
+        "key": 15,
+        "owner": 15,
+        "fountainId": 3,
+        "captures": 1,
+        "size": 256,
+        "error": null,
+        "centerError": 0,
+        "assigned": true
+      }
+    ]
+  },
+  "saveRestore": true,
+  "legacy42Unchanged": true,
+  "mobile64px500ms": {
+    "states": [
+      {
+        "key": 8,
+        "owner": 8,
+        "fountainId": 4,
+        "captures": 2,
+        "size": 64,
+        "error": null,
+        "centerError": 0,
+        "assigned": true
+      },
+      {
+        "key": 9,
+        "owner": 9,
+        "fountainId": 4,
+        "captures": 1,
+        "size": 64,
+        "error": null,
+        "centerError": 0,
+        "assigned": true
+      },
+      {
+        "key": 10,
+        "owner": 10,
+        "fountainId": 4,
+        "captures": 1,
+        "size": 64,
+        "error": null,
+        "centerError": 0,
+        "assigned": true
+      }
+    ],
+    "targetsUnique": 3,
+    "allVisible": true,
+    "cardsVisible": false
+  }
+}
