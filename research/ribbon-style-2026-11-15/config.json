@@ -1,0 +1,28 @@
+{
+  "ribbonWidthM": 0.005,
+  "visualJunctionRadiusM": 0.004,
+  "physicalSensorRadiusM": 0.008,
+  "setting": "fountain.ribbonStyle",
+  "colors": {
+    "white": "#ffffff",
+    "pink": "#e9a2b8",
+    "red": "#cf2235",
+    "gold": "#d8ac42",
+    "silver": "#e4e7eb",
+    "black": "#202026"
+  },
+  "metallicColors": [
+    "gold",
+    "silver"
+  ],
+  "metalness": 0.45,
+  "appliesTo": [
+    "balloon ribbons",
+    "connectors",
+    "junction visuals",
+    "weight band/knot/tails"
+  ],
+  "balloonColorsIndependent": true,
+  "legacyMixedColorsPreservedUntilSelection": true,
+  "newReflectionCameras": false
+}

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#fffaf8">
-<title>CandySky — Rapier Lab 1.9 · несколько фонтанов · v48</title>
+<title>CandySky — Rapier Lab 1.9 · несколько фонтанов · v50</title>
 <style>
 :root{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#26313a;background:#fffaf8;color-scheme:light}
 *{box-sizing:border-box}
@@ -163,7 +163,7 @@ button:hover{background:#faf4f3}button.primary{background:#f4d4d2;border-color:#
 <body>
 <div class="app" id="app">
  <canvas id="view" aria-label="Единая 3D-сцена нескольких фонтанов CandySky"></canvas>
- <header class="topbar"><div class="brand"><strong>CandySky · Фонтаны · v48</strong><small>Несколько композиций · высота сцены 3 м</small></div><div class="state" id="status"><i></i><span id="statusText">Загрузка движка</span></div></header>
+ <header class="topbar"><div class="brand"><strong>CandySky · Фонтаны · v50</strong><small>Несколько композиций · высота сцены 3 м</small></div><div class="state" id="status"><i></i><span id="statusText">Загрузка движка</span></div></header>
  <div class="panel-backdrop" id="panelBackdrop" aria-hidden="true"></div>
  <button type="button" class="panel-toggle" id="panelToggle" aria-controls="labPanel" aria-expanded="false" aria-label="Открыть управление фонтанами"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16M9 4v6M15 14v6"/></svg><span>Управление</span><span class="panel-toggle-count" id="panelToggleCount">0</span></button>
  <section class="panel" id="labPanel" aria-label="Управление фонтанами" aria-hidden="true" inert>
@@ -180,6 +180,7 @@ button:hover{background:#faf4f3}button.primary{background:#f4d4d2;border-color:#
   <div class="actions"><button id="deleteFountain" type="button">Удалить выбранный</button><button id="resetFountain" type="button">Сбросить выбранный</button></div>
   <div class="fountain-summary" id="fountainSummary">Выбери фонтан для редактирования. Каждый имеет независимый грузик и свой граф лент.</div>
   <div><div class="labelrow"><label for="fountainHeight">Нижняя лента выбранного</label><output id="fountainHeightOut">—</output></div><input id="fountainHeight" type="range" min="5" max="85" step="1" value="55" aria-label="Высота выбранного фонтана в сантиметрах"><p class="blurb" id="heightHint">Остальные ленты не изменяются.</p><p class="blurb" id="fountainActual">Фактическое расстояние —</p></div>
+  <div class="fountain-summary" id="ribbonStylePanel"><div class="labelrow"><label for="ribbonColor">Цвет лент и узлов</label><select id="ribbonColor" aria-label="Цвет лент выбранной композиции" style="max-width:50%;min-height:40px;border:1px solid #e8dee0;border-radius:9px;background:white"></select></div><p class="blurb" id="ribbonStyleHint">Ленты шириной 5 мм. Перехват и узлы — в цвет ленты.</p></div>
   <div class="actions"><button class="primary" id="gust" type="button">Порыв воздуха</button><button id="pause" type="button">Пауза</button></div>
   <div class="fountain-summary" id="balloonEditor">
    <strong>Заменить отдельный шар</strong><p>Утверждённые модели. Высоты и масса — расчётные.</p>
@@ -206,7 +207,7 @@ button:hover{background:#faf4f3}button.primary{background:#f4d4d2;border-color:#
  <div class="load" id="loading"><h2>Загрузка CandySky 3D</h2><p id="loadText">Подключаю Three.js и Rapier…</p><button id="retry" hidden>Повторить</button><button id="copyError" hidden>Скопировать ошибку</button></div>
 </div>
 <script type="module">
-// CandySky v48: единый экспериментальный мир для нескольких независимых фонтанов.
+// CandySky v50: единый экспериментальный мир для нескольких независимых фонтанов.
 // Оригинальные v16 / v17 / v18 / v19 остаются неизменными файлами.
 // Реальная физика Rapier + XPBD локально, библиотеки тестово загружаются с CDN (не production/offline).
 const THREE_SOURCES=[['jsDelivr · Three.js 0.164.1','https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js']];
@@ -227,11 +228,12 @@ const loadRapier=()=>loadLibrary('Rapier',RAPIER_SOURCES,async m=>{
  if(typeof lib?.World!=='function'||typeof lib?.JointData?.rope!=='function')throw Error('Некорректный API Rapier / JointData.rope');return lib;
 });
 
+const WEIGHT_BODY_Y=.02736,WEIGHT_TIE_Y=.03078,WEIGHT_ANCHOR_Y=WEIGHT_BODY_Y+WEIGHT_TIE_Y;
 const LENGTH_MIN=.10,LENGTH_MAX=1.80,DT=1/60,ROOM_HALF=2.5,ROOM_HEIGHT=3.0;
 const AIR_DENSITY=1.225,GRAVITY=9.81,RIBBON_AIR_DAMPING=8.5,RIBBON_BEND_COMPLIANCE=.00012,RIBBON_WIND_DECAY=2.8;
 const FOUNTAIN_BALLOON_FRICTION=0,FOUNTAIN_LINEAR_DAMPING=1.0,FOUNTAIN_ANGULAR_DAMPING=1.8;
 const BALLOON_FRICTION=.08,MAX_FOUNTAINS=4,MAX_LOOSE=40,COLORS=[0xf0bbc8,0xa5daca,0xf3cf84,0xb9b1e9,0xa8d1ed,0xf0b7a4,0xd6a8d6,0xb9d2ac];
-const LATEX_PROFILE=[[0,0],[.025,.153],[.083,.291],[.183,.418],[.327,.488],[.435,.500],[.548,.484],[.657,.423],[.774,.328],[.870,.215],[.957,.100],[1,.044]];
+const LATEX_PROFILE=[[0,0],[.025,WEIGHT_ANCHOR_Y],[.083,.291],[.183,.418],[.327,.488],[.435,.500],[.548,.484],[.657,.423],[.774,.328],[.870,.215],[.957,.100],[1,.044]];
 // Test products: illustrative physical estimates, not commercial SKUs.
 const PRODUCT_RULES={latex:{topOnly:false},foilDigit:{topOnly:true},foilStar:{topOnly:false},foilHeart:{topOnly:false}};
 // Agura-inspired contours. Dimensions and gas volumes: agreed Grabo references.
@@ -331,23 +333,23 @@ function getFoilReflectionCards(){
 function updateFoilReflections(now){
  if(document.hidden||now<foilReflectionNext)return;
  foilReflectionNext=now+(foilReflectionMobile()?500:160);
- const active=balloons.filter(b=>b.product?.foilFinish==='chrome'&&b.visual);
+ const active=[...balloons.filter(b=>b.product?.foilFinish==='chrome'&&b.visual),...weights.filter(w=>w.visual).map(w=>({id:'weight:'+w.id,fountainId:w.fountainId,visual:w.visual,weight:w}))];
  for(const id of [...foilReflectionStates.keys()])if(!active.some(b=>b.id===id))releaseFoilReflection(id);
  if(!active.length){if(foilReflectionCards){for(const {mesh}of foilReflectionCards){scene.remove(mesh);mesh.geometry.dispose();mesh.material.dispose()}foilReflectionCards=null}return}
  // A recreated visual reuses only its own cached map, never a neighbour's map.
- for(const b of active){const cached=foilReflectionStates.get(b.id);if(cached?.captures)b.visual.traverse(o=>{if(o.isMesh)o.material.envMap=cached.target.texture})}
- const signature=balloons.map(b=>{const p=b.body.translation(),q=b.body.rotation(),product=b.product;return [b.id,b.color,product?.kind,product?.sizeCm,product?.digit,product?.foilFinish,...[p.x,p.y,p.z].map(v=>Math.round(v*1000)),...[q.x,q.y,q.z,q.w].map(v=>Math.round(v*100))].join(',')}).join(';');
+ for(const b of active){const cached=foilReflectionStates.get(b.id);if(cached?.captures)b.visual.traverse(o=>{if(o.isMesh&&(!b.weight||o.material.metalness===1))o.material.envMap=cached.target.texture})}
+ const signature=balloons.map(b=>{const p=b.body.translation(),q=b.body.rotation(),product=b.product;return [b.id,b.color,product?.kind,product?.sizeCm,product?.digit,product?.foilFinish,...[p.x,p.y,p.z].map(v=>Math.round(v*1000)),...[q.x,q.y,q.z,q.w].map(v=>Math.round(v*100))].join(',')}).join(';')+'|weights:'+weights.map(w=>{const p=w.body.translation();return [w.id,p.x.toFixed(3),p.y.toFixed(3),p.z.toFixed(3)].join(',')}).join(';');
  let owner=null;for(let i=0;i<active.length;i++){const index=(foilReflectionCursor+i)%active.length,candidate=active[index],cached=foilReflectionStates.get(candidate.id);if(cached?.retryAfter&&now<cached.retryAfter)continue;if(!cached||cached.signature!==signature){owner=candidate;foilReflectionCursor=(index+1)%active.length;break}}
  if(!owner)return;
- let state=foilReflectionStates.get(owner.id);if(!state){const size=foilReflectionMobile()?64:256,target=new THREE.WebGLCubeRenderTarget(size,{type:THREE.HalfFloatType,generateMipmaps:true,minFilter:THREE.LinearMipmapLinearFilter}),cube=new THREE.CubeCamera(.02,15,target);scene.add(cube);state={target,camera:cube,signature:null,captures:0,size,fountainId:owner.fountainId};foilReflectionStates.set(owner.id,state)}
- const center=new THREE.Box3().setFromObject(owner.visual).getCenter(new THREE.Vector3()),cards=getFoilReflectionCards(),backup=[],seen=new Set(),wasVisible=owner.visual.visible;
+ let state=foilReflectionStates.get(owner.id);if(!state){const size=foilReflectionMobile()?64:owner.weight?128:256,target=new THREE.WebGLCubeRenderTarget(size,{type:THREE.HalfFloatType,generateMipmaps:true,minFilter:THREE.LinearMipmapLinearFilter}),cube=new THREE.CubeCamera(.02,15,target);scene.add(cube);state={target,camera:cube,signature:null,captures:0,size,fountainId:owner.fountainId};foilReflectionStates.set(owner.id,state)}
+ const center=owner.weight?vec(owner.weight.body.translation()).add(new THREE.Vector3(0,.01264,0)):new THREE.Box3().setFromObject(owner.visual).getCenter(new THREE.Vector3()),cards=getFoilReflectionCards(),backup=[],seen=new Set(),wasVisible=owner.visual.visible;
  // Single reflection bounce: every other chrome figure remains visible with its static environment.
- for(const b of active)b.visual.traverse(o=>{if(o.isMesh&&!seen.has(o.material)){seen.add(o.material);backup.push([o.material,o.material.envMap]);o.material.envMap=getFoilChromeEnvironment()}});
+ for(const b of active)b.visual.traverse(o=>{if(o.isMesh&&(!b.weight||o.material.metalness===1)&&!seen.has(o.material)){seen.add(o.material);backup.push([o.material,o.material.envMap]);o.material.envMap=getFoilChromeEnvironment()}});
  let ok=false;const start=performance.now();
  try{owner.visual.visible=false;for(const {mesh,offset}of cards){mesh.position.copy(center).add(offset);mesh.lookAt(center);mesh.visible=true}state.camera.position.copy(center);scene.updateMatrixWorld(true);state.camera.update(renderer,scene);state.target.texture.needsPMREMUpdate=true;ok=true}
  catch(error){state.retryAfter=now+5000;state.lastError=String(error?.message||error)}
  finally{owner.visual.visible=wasVisible;for(const {mesh}of cards)mesh.visible=false;for(const [material,env]of backup)material.envMap=env}
- if(ok){owner.visual.traverse(o=>{if(o.isMesh)o.material.envMap=state.target.texture});state.signature=signature;state.captures++;state.ownerId=owner.id;state.center=center.toArray();state.lastCaptureCpuMs=performance.now()-start;state.retryAfter=0;delete state.lastError}
+ if(ok){owner.visual.traverse(o=>{if(o.isMesh&&(!owner.weight||o.material.metalness===1))o.material.envMap=state.target.texture});state.signature=signature;state.captures++;state.ownerId=owner.id;state.center=center.toArray();state.lastCaptureCpuMs=performance.now()-start;state.retryAfter=0;delete state.lastError}
 }
 function updateEditorColors(){
  const select=el('productColor'),family=el('productKind').value==='latex'?'latex':'foil',previous=select.value,same=select.dataset.family===family;
@@ -614,7 +616,7 @@ async function replaceBalloonProduct(b,product,color){
  await ensureProductAssets(product);if(!balloons.includes(b)||restoringDraft||testing)return false;
  const nextLength=balloonRibbonLength(b,product);
  if(productSpec(b.product).geometry===spec.geometry&&Math.abs(nextLength-(b.placementTarget??b.length))<.000001){
-  disposeBalloonVisual(b);b.product={...product};b.color=color;createBalloonVisual(b,spec);syncBalloon(b);b.ribbon.mesh.material.color.setHex(color);renderBalloonEditor();requestDraftSave();el('editorStatus').textContent='Обновлён '+slotLabel(b)+': '+productLabel(b)+'.';el('useTopSlot').hidden=true;return true;
+  disposeBalloonVisual(b);b.product={...product};b.color=color;createBalloonVisual(b,spec);syncBalloon(b);applyRibbonMaterial(b.ribbon.mesh.material,getFountain(b.fountainId)?.ribbonStyle,color);renderBalloonEditor();requestDraftSave();el('editorStatus').textContent='Обновлён '+slotLabel(b)+': '+productLabel(b)+'.';el('useTopSlot').hidden=true;return true;
  }
  const start=fitReplacement(b,spec,nextLength),p=b.body.translation(),q=b.body.rotation(),v=b.body.linvel(),w=b.body.angvel();
  const backup={length:b.length,product:b.product?{...b.product}:null,color:b.color,position:{x:p.x,y:p.y,z:p.z,...(Number.isFinite(b.placementTarget)?{placementLength:b.length}:{})},q:{x:q.x,y:q.y,z:q.z,w:q.w},v:{...v},w:{...w}};
@@ -634,13 +636,13 @@ function setupBalloonEditor(){
 
 
 let looseAdding=false;
-function looseMaxLength(product,mode){const s=productSpec(product);return mode==='ceiling'?Math.max(.05,Math.min(2.3,ROOM_HEIGHT-s.top+s.tie-.08)):Math.max(.05,Math.min(2.3,ROOM_HEIGHT-.153-s.top+s.tie-.025))}
+function looseMaxLength(product,mode){const s=productSpec(product);return mode==='ceiling'?Math.max(.05,Math.min(2.3,ROOM_HEIGHT-s.top+s.tie-.08)):Math.max(.05,Math.min(2.3,ROOM_HEIGHT-WEIGHT_ANCHOR_Y-s.top+s.tie-.025))}
 function loosePosition(product,mode,length,preferred=null,ignore=null){
  const spec=productSpec(product),box=spec.geometry.boundingBox,poses=[],shapes=spec.kind==='latex'?spec.parts.map(p=>({shape:new RAPIER.Ball(p.r+.006),offset:p})):spec.hulls.map(v=>({shape:new RAPIER.ConvexPolyhedron(v),offset:{x:0,y:0,z:0}}));
  if(preferred)poses.push(preferred);
  for(let z=-1.9;z<=1.91;z+=.38)for(let x=-1.9;x<=1.91;x+=.38)poses.push({x,z});
  poses.sort((a,b)=>((a.x-(preferred?.x||0))**2+(a.z-(preferred?.z||0))**2)-((b.x-(preferred?.x||0))**2+(b.z-(preferred?.z||0))**2));
- for(const p of poses){const y=mode==='ceiling'?ROOM_HEIGHT-spec.top-.04:.153+length-spec.tie;
+ for(const p of poses){const y=mode==='ceiling'?ROOM_HEIGHT-spec.top-.04:WEIGHT_ANCHOR_Y+length-spec.tie;
   const candidate={x:p.x,y,z:p.z};if(p.x+box.min.x< -2.47||p.x+box.max.x>2.47||p.z+box.min.z< -2.47||p.z+box.max.z>2.47||y+box.max.y>ROOM_HEIGHT-.015)continue;
   if(mode==='single'&&fountains.some(f=>f!==getFountain(ignore?.fountainId)&&f.mode!=='ceiling'&&Math.hypot(f.weight.x-p.x,f.weight.z-p.z)<.35))continue;
   // Real collider queries avoid overlapping existing bodies of any shape.
@@ -663,6 +665,43 @@ async function replaceLooseProduct(b,product,color){
 function setupLooseButtons(){for(const [id,mode]of [['addSingle','single'],['addCeiling','ceiling']])el(id).addEventListener('click',async()=>{
  if(!ready||testing||looseAdding)return;looseAdding=true;el('addSingle').disabled=el('addCeiling').disabled=true;let added=0;try{const count=mode==='ceiling'?Number(el('ceilingCount').value):1;if(!Number.isInteger(count)||count<1||count>20)throw Error('Выбери от 1 до 20 шаров.');const product=editorProduct(),color=Number(el('productColor').value);for(let i=0;i<count;i++){await addLoose(mode,product,color);added++}msg('Добавлено: '+added+(mode==='ceiling'?' под потолок.':' с грузиком.'))}catch(e){msg((added?'Добавлено '+added+'. ':'')+e.message,true)}finally{looseAdding=false;renderControls()}
  });}
+
+
+const RIBBON_STYLES=Object.freeze({
+ white:{label:'Белый',color:0xffffff,metalness:0,roughness:.68},
+ pink:{label:'Розовый',color:0xe9a2b8,metalness:0,roughness:.64},
+ red:{label:'Красный',color:0xcf2235,metalness:0,roughness:.60},
+ gold:{label:'Золотистый',color:0xd8ac42,metalness:.45,roughness:.42},
+ silver:{label:'Серебристый',color:0xe4e7eb,metalness:.45,roughness:.42},
+ black:{label:'Чёрный',color:0x202026,metalness:0,roughness:.66}
+});
+function applyRibbonMaterial(material,key,fallback=null){
+ const style=RIBBON_STYLES[key];if(!style){if(fallback!==null)material.color.setHex(fallback);return}
+ material.color.setHex(style.color);material.metalness=style.metalness;material.roughness=style.roughness;
+ material.envMap=style.metalness?getFoilChromeEnvironment():null;material.envMapIntensity=.85;material.needsUpdate=true;
+}
+function applyCompositionRibbonStyle(f){
+ if(!f||!RIBBON_STYLES[f.ribbonStyle])return;
+ for(const b of f.balloons)applyRibbonMaterial(b.ribbon.mesh.material,f.ribbonStyle);
+ for(const seg of f.segments)applyRibbonMaterial(seg.ribbon.mesh.material,f.ribbonStyle);
+ for(const j of Object.values(f.junctions))applyRibbonMaterial(j.mesh.material,f.ribbonStyle);
+ const seen=new Set();f.weight.visual?.traverse(o=>{if(o.isMesh&&o.material.userData.ribbonAccent&&!seen.has(o.material)){seen.add(o.material);applyRibbonMaterial(o.material,f.ribbonStyle)}});
+ // Only vertex strip width and visual node radius change; bodies, sensor radii and rope lengths stay as in v50.
+ for(const b of f.balloons){b.ribbon.frozen=false;drawRibbon(b)}for(const seg of f.segments)drawRibbon(seg);
+}
+function setCompositionRibbonStyle(f,key){
+ if(!f||!Object.hasOwn(RIBBON_STYLES,key))throw Error('Неизвестный цвет лент');f.ribbonStyle=key;applyCompositionRibbonStyle(f);renderRibbonStyleControls();requestDraftSave();
+}
+function renderRibbonStyleControls(){
+ const f=selectedFountain(),select=el('ribbonColor');select.disabled=!ready||testing||!f;select.value=f?.ribbonStyle||'';
+ const legacy=select.querySelector('[value=""]');if(legacy)legacy.disabled=!!f?.ribbonStyle;
+ el('ribbonStyleHint').textContent=f?.mode==='ceiling'?'Свободная лента шириной 5 мм. Цвет относится только к этому шару.':'Все ленты шириной 5 мм, точки узлов, перехват и хвостики грузика — одного цвета.';
+}
+function setupRibbonStyleControls(){
+ const select=el('ribbonColor'),legacy=document.createElement('option');legacy.value='';legacy.textContent='Текущие цвета';select.append(legacy);
+ for(const [key,style] of Object.entries(RIBBON_STYLES)){const o=document.createElement('option');o.value=key;o.textContent=style.label;select.append(o)}
+ select.addEventListener('change',()=>{if(!ready||testing)return;try{setCompositionRibbonStyle(selectedFountain(),select.value)}catch(e){msg(e.message,true)}});
+}
 
 const PRESETS=Object.freeze({
  1:{name:'Одиночный шар',lowerMin:.05,lowerMax:2.3,lowerDefault:1.2,tiers:[]},
@@ -691,8 +730,8 @@ const activeWeight=()=>selectedFountain()?.weight||null;
 function msg(s,problem=false){el('log').textContent=s;el('quickline').textContent=s.replace(/\s*\n\s*/g,' · ');el('quickline').classList.toggle('error',problem);el('statusText').textContent=problem?'Ошибка':ready?(paused?'Пауза':'Rapier активен'):'Загрузка';el('status').className='state'+(problem?' bad':ready?' ok':'')}
 const junctionPoint=(f,key)=>f?.junctions[key]?.body?vec(f.junctions[key].body.translation()):null;
 function getRing(b){const f=getFountain(b.fountainId);if(!f)return null;
- if(b.role==='connector'){if(b.fromKey!=='weight')return junctionPoint(f,b.fromKey);const p=f.weight.body.translation();return new THREE.Vector3(p.x,p.y+.081,p.z)}
- if(b.placementMode==='ceiling')return null;if(b.placementMode==='single'){const p=f.weight.body.translation();return new THREE.Vector3(p.x,p.y+.081,p.z)}return junctionPoint(f,b.junctionKey);
+ if(b.role==='connector'){if(b.fromKey!=='weight')return junctionPoint(f,b.fromKey);const p=f.weight.body.translation();return new THREE.Vector3(p.x,p.y+WEIGHT_TIE_Y,p.z)}
+ if(b.placementMode==='ceiling')return null;if(b.placementMode==='single'){const p=f.weight.body.translation();return new THREE.Vector3(p.x,p.y+WEIGHT_TIE_Y,p.z)}return junctionPoint(f,b.junctionKey);
 }
 function getTie(b){if(b.role==='connector')return junctionPoint(getFountain(b.fountainId),b.toKey);
  const p=b.body.translation(),q=b.body.rotation();return new THREE.Vector3(b.tieX||0,b.tieY??tieY,0).applyQuaternion(new THREE.Quaternion(q.x,q.y,q.z,q.w)).add(vec(p))}
@@ -781,31 +820,31 @@ function createJunction(f,key,y,x,z){
  if(typeof desc.setAdditionalSolverIterations==='function')desc.setAdditionalSolverIterations(12);
  const body=world.createRigidBody(desc);
  world.createCollider(RAPIER.ColliderDesc.ball(.008).setMass(.0015).setSensor(true),body);
- const mesh=new THREE.Mesh(new THREE.SphereGeometry(.012,12,9),new THREE.MeshStandardMaterial({color:0x9e798e,roughness:.55}));
+ const mesh=new THREE.Mesh(new THREE.SphereGeometry(.004,12,9),new THREE.MeshStandardMaterial({color:0x9e798e,roughness:.55}));
  mesh.position.set(x,y,z);scene.add(mesh);f.junctions[key]={key,body,mesh};
 }
 function createConnector(f,fromKey,toKey,length){
  const child=f.junctions[toKey].body,parent=fromKey==='weight'?f.weight.body:f.junctions[fromKey].body;
- const parentAnchor=fromKey==='weight'?{x:0,y:.081,z:0}:{x:0,y:0,z:0};
+ const parentAnchor=fromKey==='weight'?{x:0,y:WEIGHT_TIE_Y,z:0}:{x:0,y:0,z:0};
  const mesh=new THREE.Mesh(new THREE.BufferGeometry(),new THREE.MeshStandardMaterial({color:0xc89aaa,roughness:.72,metalness:0,side:THREE.DoubleSide}));mesh.frustumCulled=false;scene.add(mesh);
  const segment={role:'connector',fromKey,toKey,fountainId:f.id,weightId:f.weight.id,length,ribbon:newRibbonData(mesh)};
  segment.joint=world.createImpulseJoint(RAPIER.JointData.rope(length,{x:0,y:0,z:0},parentAnchor),child,parent,true);
  f.segments.push(segment);segments.push(segment);initializeRibbon(segment);return segment;
 }
-function createFountainJunctions(f){if(f.mode)return;const p=f.weight.body.translation(),baseY=p.y+.081;
+function createFountainJunctions(f){if(f.mode)return;const p=f.weight.body.translation(),baseY=p.y+WEIGHT_TIE_Y;
  const keys=f.preset.tiers.map(t=>t.key).reverse(); // снизу вверх; порядок/длины эталонов сохранены
  keys.forEach((key,i)=>createJunction(f,key,baseY+f.height+i*MIDDLE_LENGTH,f.weight.x,f.weight.z));
  createConnector(f,'weight',keys[0],f.height);
  for(let i=1;i<keys.length;i++)createConnector(f,keys[i-1],keys[i],MIDDLE_LENGTH);
 }
-function reelFountain(f){if(f.mode){const b=f.balloons[0];if(b&&Math.abs(b.length-f.targetHeight)>.000001){b.length+=Math.sign(f.targetHeight-b.length)*Math.min(.015,Math.abs(f.targetHeight-b.length));f.height=b.length;if(b.joint){if(typeof b.joint.setLimits==="function")b.joint.setLimits(0,b.length);else{world.removeImpulseJoint(b.joint,true);b.joint=world.createImpulseJoint(RAPIER.JointData.rope(b.length,{x:b.tieX||0,y:b.tieY,z:0},{x:0,y:.081,z:0}),b.body,f.weight.body,true)}}b.ribbon.segmentLength=b.length/(b.ribbon.nodes.length-1);b.body.wakeUp()}return}if(Math.abs(f.targetHeight-f.height)<.000001)return;
+function reelFountain(f){if(f.mode){const b=f.balloons[0];if(b&&Math.abs(b.length-f.targetHeight)>.000001){b.length+=Math.sign(f.targetHeight-b.length)*Math.min(.015,Math.abs(f.targetHeight-b.length));f.height=b.length;if(b.joint){if(typeof b.joint.setLimits==="function")b.joint.setLimits(0,b.length);else{world.removeImpulseJoint(b.joint,true);b.joint=world.createImpulseJoint(RAPIER.JointData.rope(b.length,{x:b.tieX||0,y:b.tieY,z:0},{x:0,y:WEIGHT_TIE_Y,z:0}),b.body,f.weight.body,true)}}b.ribbon.segmentLength=b.length/(b.ribbon.nodes.length-1);b.body.wakeUp()}return}if(Math.abs(f.targetHeight-f.height)<.000001)return;
  const segment=f.segments[0],diff=f.targetHeight-f.height;
  f.height+=Math.sign(diff)*Math.min(.015,Math.abs(diff));
  if(typeof segment.joint?.setLimits==='function')segment.joint.setLimits(0,f.height);
  else{
   if(segment.joint)world.removeImpulseJoint(segment.joint,true);
   const lower=f.junctions[segment.toKey].body,parent=f.weight.body;
-  segment.joint=world.createImpulseJoint(RAPIER.JointData.rope(f.height,{x:0,y:0,z:0},{x:0,y:.081,z:0}),lower,parent,true);
+  segment.joint=world.createImpulseJoint(RAPIER.JointData.rope(f.height,{x:0,y:0,z:0},{x:0,y:WEIGHT_TIE_Y,z:0}),lower,parent,true);
  }
  segment.length=f.height;segment.ribbon.segmentLength=f.height/(segment.ribbon.nodes.length-1);
  for(const j of Object.values(f.junctions))j.body.wakeUp();
@@ -815,7 +854,7 @@ function fountainMetadata(f,index){const tiers=f.preset.tiers;
  let cursor=1;for(const tier of tiers){if(index<cursor+tier.count)return {length:SIDE_LENGTH,junctionKey:tier.key,fountainRole:tier.key,fountainSlot:index-cursor,fountainTierCount:tier.count};cursor+=tier.count}
  throw Error('Ошибка топологии фонтана '+f.presetKey+' при шаре '+index);
 }
-function spawnPosition(b){if(b.placementMode){if(b.spawn)return b.spawn;const f=getFountain(b.fountainId),spec=productSpec(b.product);return {x:f.weight.x,y:b.placementMode==='ceiling'?Math.max(.5,ROOM_HEIGHT-spec.top-.35):.153+b.length-spec.tie,z:f.weight.z}}const f=getFountain(b.fountainId),j=junctionPoint(f,b.junctionKey),top=b.fountainRole==='top';
+function spawnPosition(b){if(b.placementMode){if(b.spawn)return b.spawn;const f=getFountain(b.fountainId),spec=productSpec(b.product);return {x:f.weight.x,y:b.placementMode==='ceiling'?Math.max(.5,ROOM_HEIGHT-spec.top-.35):WEIGHT_ANCHOR_Y+b.length-spec.tie,z:f.weight.z}}const f=getFountain(b.fountainId),j=junctionPoint(f,b.junctionKey),top=b.fountainRole==='top';
  if(b.spawn&&[b.spawn.x,b.spawn.y,b.spawn.z].every(Number.isFinite))return b.spawn;
  if(top)return {x:j.x,y:Math.min(ROOM_HEIGHT-(b.topY??topY)-.015,j.y+b.length-.009-(b.tieY??tieY)),z:j.z};
  const tier=f.preset.tiers.find(t=>t.key===b.junctionKey);
@@ -827,7 +866,7 @@ function placeForNextFountain(){const candidates=[{x:-1.15,z:0},{x:1.15,z:0},{x:
  const ordered=candidates.map(p=>({...p,score:score(p)})).sort((a,b)=>b.score-a.score);
  return ordered[0];
 }
-function addFountain(type,coords=null,{height=null,colors=null,positions=null,id=null,products=null,restorePlacement=false,mode=null}={}){
+function addFountain(type,coords=null,{height=null,colors=null,positions=null,id=null,products=null,restorePlacement=false,mode=null,ribbonStyle=null}={}){
  if(!PRESETS[type])throw Error('Неизвестный фонтан: '+type);
  if((!mode&&fountains.filter(f=>!f.mode).length>=MAX_FOUNTAINS)||(mode&&fountains.filter(f=>f.mode).length>=MAX_LOOSE))throw Error(mode?'Пока максимум '+MAX_LOOSE+' отдельных шаров.':'Пока максимум '+MAX_FOUNTAINS+' фонтана в общей сцене.');
  const pos=coords||placeForNextFountain(),preset=PRESETS[type];
@@ -835,7 +874,7 @@ function addFountain(type,coords=null,{height=null,colors=null,positions=null,id
  if(!restorePlacement&&mode!=='ceiling'&&fountains.some(f=>f.mode!=='ceiling'&&Math.hypot(f.weight.x-pos.x,f.weight.z-pos.z)<.60))throw Error('Между грузиками недостаточно места');
  const fid=id===null?nextFountainId++:id;nextFountainId=Math.max(nextFountainId,fid+1);
  const weight={id:nextWeightId++,fountainId:fid,x:pos.x,z:pos.z};
- const f={mode,id:fid,presetKey:Number(type),preset,weight,junctions:{},segments:[],balloons:[],height:height===null?preset.lowerDefault:THREE.MathUtils.clamp(height,preset.lowerMin,preset.lowerMax),targetHeight:0};f.targetHeight=f.height;
+ const f={mode,ribbonStyle,id:fid,presetKey:Number(type),preset,weight,junctions:{},segments:[],balloons:[],height:height===null?preset.lowerDefault:THREE.MathUtils.clamp(height,preset.lowerMin,preset.lowerMax),targetHeight:0};f.targetHeight=f.height;
  fountains.push(f);if(mode!=='ceiling')weights.push(weight);
  try{
   if(mode!=='ceiling')createWeightPhysics(weight);createFountainJunctions(f);
@@ -849,7 +888,7 @@ function addFountain(type,coords=null,{height=null,colors=null,positions=null,id
   const start=fitReplacement(top,productSpec(top.product));top.body.setTranslation(start,true);top.body.setRotation(start.rotation,true);initializeRibbon(top);syncBalloon(top);
  }
  }catch(error){removeFountain(f,false);throw error}
- selectedFountainId=fid;selectedId=f.balloons[0]?.id||null;
+ applyCompositionRibbonStyle(f);selectedFountainId=fid;selectedId=f.balloons[0]?.id||null;
  renderControls();metrics();requestDraftSave();return f;
 }
 function removeFountain(f,announce=true){if(!f||!fountains.includes(f))return;releaseFountainFoilReflections(f.id);
@@ -865,7 +904,7 @@ function removeFountain(f,announce=true){if(!f||!fountains.includes(f))return;re
 }
 function resetSelectedFountain(){if(!ready||testing)return;const f=selectedFountain();if(!f)return;
  const {x,z}=f.weight,kind=f.presetKey,id=f.id,colors=f.balloons.map(b=>b.color),products=f.balloons.map(b=>b.product||null),height=f.targetHeight;
- removeFountain(f,false);addFountain(kind,{x,z},{id,height,colors,products,mode:f.mode,restorePlacement:true});renderControls();requestDraftSave();msg('Сброшен только фонтан №'+id+'. Остальные не пересоздавались.')
+ removeFountain(f,false);addFountain(kind,{x,z},{id,height,colors,products,mode:f.mode,ribbonStyle:f.ribbonStyle,restorePlacement:true});renderControls();requestDraftSave();msg('Сброшен только фонтан №'+id+'. Остальные не пересоздавались.')
 }
 function changeFountainHeight(target){const f=selectedFountain();if(!ready||testing||!f)return;
  f.targetHeight=THREE.MathUtils.clamp(target,f.preset.lowerMin,f.mode?looseMaxLength(f.balloons[0].product,f.mode):f.preset.lowerMax);
@@ -897,8 +936,8 @@ function createBalloonPhysics(b){
  createBalloonVisual(b,spec);
  b.ribbon=newRibbonData(new THREE.Mesh(new THREE.BufferGeometry(),new THREE.MeshStandardMaterial({color:b.color,roughness:.72,metalness:0,side:THREE.DoubleSide})));
  b.ribbon.mesh.frustumCulled=false;scene.add(b.ribbon.mesh);
- b.joint=null;if(b.junctionKey){const j=getFountain(b.fountainId)?.junctions[b.junctionKey];if(j?.body)b.joint=world.createImpulseJoint(RAPIER.JointData.rope(b.length,{x:b.tieX||0,y:b.tieY??tieY,z:0},{x:0,y:0,z:0}),b.body,j.body,true)}else if(b.weightId!==null){const w=getWeight(b.weightId);if(w?.body)b.joint=world.createImpulseJoint(RAPIER.JointData.rope(b.length,{x:b.tieX||0,y:b.tieY??tieY,z:0},{x:0,y:.081,z:0}),b.body,w.body,true)}
- initializeRibbon(b);syncBalloon(b);delete b.spawn;
+ b.joint=null;if(b.junctionKey){const j=getFountain(b.fountainId)?.junctions[b.junctionKey];if(j?.body)b.joint=world.createImpulseJoint(RAPIER.JointData.rope(b.length,{x:b.tieX||0,y:b.tieY??tieY,z:0},{x:0,y:0,z:0}),b.body,j.body,true)}else if(b.weightId!==null){const w=getWeight(b.weightId);if(w?.body)b.joint=world.createImpulseJoint(RAPIER.JointData.rope(b.length,{x:b.tieX||0,y:b.tieY??tieY,z:0},{x:0,y:WEIGHT_TIE_Y,z:0}),b.body,w.body,true)}
+ applyRibbonMaterial(b.ribbon.mesh.material,getFountain(b.fountainId)?.ribbonStyle,b.color);initializeRibbon(b);syncBalloon(b);delete b.spawn;
 }
 function createBalloonVisual(b,spec){
  if(b.product?.foilFinish!=='chrome')releaseFoilReflection(b.id);
@@ -916,16 +955,61 @@ function disposeBalloon(b){
  disposeBalloonVisual(b);
  if(b.ribbon?.mesh){scene.remove(b.ribbon.mesh);b.ribbon.mesh.geometry.dispose();b.ribbon.mesh.material.dispose();b.ribbon.mesh=null}
 }
+// Approved silver foil wrapper: about 8 cm wide and 10 cm tall.
+function buildFoilWeightTemplate(w){
+ const group=new THREE.Group();group.name='silver-wrapped-balloon-weight';
+ const silver=new THREE.MeshPhysicalMaterial({color:0xffffff,metalness:1,roughness:.22,envMap:getFoilChromeEnvironment(),envMapIntensity:1.12,clearcoat:.12,clearcoatRoughness:.23,side:THREE.DoubleSide});
+ const pink=new THREE.MeshStandardMaterial({color:0xdca6b9,roughness:.55,metalness:.08,side:THREE.DoubleSide});
+ pink.userData.ribbonAccent=true;
+ const tri=x=>2/Math.PI*Math.asin(Math.sin(x));
+ function surface(rows,cols,position,material,name){
+  const vertices=[],uv=[],indices=[];for(let j=0;j<=rows;j++)for(let i=0;i<=cols;i++){const t=j/rows,a=i/cols*Math.PI*2;vertices.push(...position(t,a));uv.push(i/cols,t)}
+  for(let j=0;j<rows;j++)for(let i=0;i<cols;i++){const a=j*(cols+1)+i,b=a+1,c=a+cols+1,d=c+1;indices.push(a,c,b,b,c,d)}
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(vertices,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));g.setIndex(indices);g.computeVertexNormals();
+  const detailed=g.toNonIndexed(),normals=detailed.attributes.normal,points=detailed.attributes.position,v0=new THREE.Vector3(),v1=new THREE.Vector3(),v2=new THREE.Vector3(),face=new THREE.Vector3(),n=new THREE.Vector3();
+  for(let i=0;i<points.count;i+=3){v0.fromBufferAttribute(points,i);v1.fromBufferAttribute(points,i+1).sub(v0);v2.fromBufferAttribute(points,i+2).sub(v0);face.crossVectors(v1,v2).normalize();for(let k=0;k<3;k++){n.fromBufferAttribute(normals,i+k).lerp(face,.34).normalize();normals.setXYZ(i+k,n.x,n.y,n.z)}}g.dispose();
+  const mesh=new THREE.Mesh(detailed,material);mesh.name=name;mesh.userData={picker:'weight',weightId:w.id};group.add(mesh);return mesh;
+ }
+ const profile=[[-.070,.067],[-.067,.092],[-.055,.111],[-.033,.122],[-.006,.124],[.018,.116],[.039,.098],[.056,.067],[.071,.038],[.084,.029]];
+ function radius(y){for(let i=1;i<profile.length;i++)if(y<=profile[i][0]){const a=profile[i-1],b=profile[i],t=(y-a[0])/(b[0]-a[0]);return a[1]*(1-t)+b[1]*t}return profile.at(-1)[1]}
+ surface(22,96,(t,a)=>{
+  const y=-.070+t*.154,base=radius(y),envelope=Math.sin(Math.PI*t)**.7;
+  const broad=tri(a*13+.9*Math.sin(t*5))* .0055;
+  const pinch=tri(a*23-t*11)*.0027+tri(a*37+t*13)*.0012;
+  const diagonal=tri(a*8+t*23)*tri(a*17-t*5)*.0018;
+  const r=base+envelope*(broad+pinch+diagonal),yy=y+envelope*.0016*Math.sin(a*15+t*27);
+  return [r*Math.cos(a),yy,r*Math.sin(a)];
+ },silver,'crumpled-foil-base');
+ surface(9,144,(t,a)=>{
+  const pleat=tri(a*15+.2*Math.sin(a*3)),lobes=Math.sin(a*7+.7),r=.028+t*(.066+.015*pleat+.008*lobes);
+  const rim=.019*Math.sin(a*9+.3)+.010*tri(a*19+1.1),y=.083+.085*t+rim*t*t+.006*Math.sin(a*15)*t;
+  return [r*Math.cos(a),y,r*Math.sin(a)];
+ },silver,'gathered-foil-fan');
+ const band=new THREE.Mesh(new THREE.CylinderGeometry(.0315,.032,.010,64,1,true),pink);band.position.y=.081;band.name='pink-neck-tie';group.add(band);
+ const knot=new THREE.Mesh(new THREE.SphereGeometry(.007,14,10),pink);knot.position.set(0,.081,.032);knot.scale.set(1.2,.65,.6);group.add(knot);
+ for(const sign of [-1,1]){const tail=new THREE.Mesh(new THREE.PlaneGeometry(.005,.028),pink);tail.position.set(sign*.010,.064,.032);tail.rotation.z=sign*.28;tail.rotation.x=.12;group.add(tail)}
+ // A light contact decal under the wrapper in the normal real-time scene.
+ const canvas=document.createElement('canvas');canvas.width=canvas.height=96;const ctx=canvas.getContext('2d'),gradient=ctx.createRadialGradient(48,48,12,48,48,47);gradient.addColorStop(0,'rgba(0,0,0,.6)');gradient.addColorStop(.5,'rgba(0,0,0,.32)');gradient.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=gradient;ctx.fillRect(0,0,96,96);
+ const shadow=new THREE.Mesh(new THREE.PlaneGeometry(.32,.32),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(canvas),transparent:true,depthWrite:false,opacity:.55}));shadow.rotation.x=-Math.PI/2;shadow.position.y=-.0705;shadow.userData.contactShadow=true;group.add(shadow);
+ group.traverse(o=>{if(o.isMesh&&!o.userData.contactShadow){o.userData.picker='weight';o.userData.weightId=w.id}});return group;
+}
+
+let foilWeightTemplate=null;
+function createFoilWeightVisual(w){
+ if(!foilWeightTemplate)foilWeightTemplate=buildFoilWeightTemplate({id:0});
+ const group=foilWeightTemplate.clone(true),materials=new Map();group.scale.set(.32,.38,.32);
+ group.traverse(o=>{if(!o.isMesh)return;const original=o.material;if(!materials.has(original))materials.set(original,original.clone());o.material=materials.get(original);if(!o.userData.contactShadow){o.userData.picker='weight';o.userData.weightId=w.id}else o.raycast=()=>{}});return group;
+}
+
 function createWeightPhysics(w){
- w.body=world.createRigidBody(RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(w.x,.072,w.z));
- world.createCollider(RAPIER.ColliderDesc.cylinder(.0575,.13).setFriction(.8),w.body);
- w.visual=new THREE.Group();const base=new THREE.Mesh(weightGeometry,weightMaterial);base.userData={picker:'weight',weightId:w.id};w.visual.add(base);
- const ring=new THREE.Mesh(ringGeometry,ringMaterial);ring.rotation.x=Math.PI/2;ring.position.y=.081;ring.userData={picker:'weight',weightId:w.id};w.visual.add(ring);
- scene.add(w.visual);w.visual.position.set(w.x,.072,w.z);
+ w.body=world.createRigidBody(RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(w.x,WEIGHT_BODY_Y,w.z));
+ world.createCollider(RAPIER.ColliderDesc.cylinder(.02185,.0416).setFriction(.8),w.body);
+ w.visual=createFoilWeightVisual(w);
+ scene.add(w.visual);w.visual.position.set(w.x,WEIGHT_BODY_Y,w.z);
 }
 function disposeWeight(w){
  if(w.body){world.removeRigidBody(w.body);w.body=null}
- if(w.visual){scene.remove(w.visual);w.visual=null}
+ releaseFoilReflection('weight:'+w.id);if(w.visual){scene.remove(w.visual);const materials=new Set();w.visual.traverse(o=>{if(o.isMesh)materials.add(o.material)});for(const m of materials)m.dispose();w.visual=null}
 }
 
 function initializeRibbon(b){
@@ -994,7 +1078,7 @@ function simulateRibbon(b){
 function drawRibbon(b){
  const r=b.ribbon;if(!r?.mesh||r.nodes.length<2||r.frozen)return;
  const positions=r.mesh.geometry.attributes.position,nodes=r.nodes,last=nodes.length-1;
- const tangent=new THREE.Vector3(),side=r.baseSide.clone(),beforeSide=new THREE.Vector3(),fallback=new THREE.Vector3(),width=.014;
+ const tangent=new THREE.Vector3(),side=r.baseSide.clone(),beforeSide=new THREE.Vector3(),fallback=new THREE.Vector3(),width=.005;
  for(let i=0;i<=last;i++){
   const p=nodes[i],before=nodes[Math.max(0,i-1)],after=nodes[Math.min(last,i+1)];tangent.subVectors(after,before).normalize();
   beforeSide.copy(side);side.addScaledVector(tangent,-side.dot(tangent));
@@ -1014,7 +1098,7 @@ function syncBody(){for(const w of weights)if(w.body&&w.visual){const p=w.body.t
 }
 function selectWeight(id){const f=fountains.find(f=>f.weight.id===id);if(!f)return;selectedFountainId=f.id;selectedId=f.balloons[0]?.id||null;renderControls();metrics()}
 function selectBalloon(id){const b=balloons.find(x=>x.id===id);if(!b)return;selectedId=id;selectedFountainId=b.fountainId;renderControls();metrics()}
-function renderControls(){renderBalloonEditor();updateTopRibbonHint();const f=selectedFountain(),p=f?.preset;
+function renderControls(){renderRibbonStyleControls();renderBalloonEditor();updateTopRibbonHint();const f=selectedFountain(),p=f?.preset;
  el('compositionInfo').textContent=fountains.filter(f=>!f.mode).length+' фонтан(ов) · '+balloons.length+' шар(ов) · '+segments.length+' лент';
  el('panelToggleCount').textContent=String(fountains.length);
  el('addFountain').disabled=!ready||testing||fountains.filter(f=>!f.mode).length>=MAX_FOUNTAINS;
@@ -1042,7 +1126,7 @@ function queueWeightMove(w,goal){const top=getFountain(w.fountainId)?.balloons[0
 function moveWeights(){
  if(drag?.kind==='weight'&&drag.goal){const w=getWeight(drag.id);if(w?.body)queueWeightMove(w,drag.goal)}
  for(const w of weights){if(!w.body||!w.moveTarget)continue;const target=w.moveTarget,p=w.body.translation(),dx=target.x-p.x,dz=target.z-p.z,distance=Math.hypot(dx,dz),scale=target.smooth&&distance>2*DT?2*DT/distance:1;
-  w.x=p.x+dx*scale;w.z=p.z+dz*scale;w.body.setNextKinematicTranslation({x:w.x,y:.072,z:w.z});
+  w.x=p.x+dx*scale;w.z=p.z+dz*scale;w.body.setNextKinematicTranslation({x:w.x,y:WEIGHT_BODY_Y,z:w.z});
   if(scale===1){delete w.moveTarget;if(drag?.id!==w.id||drag?.kind!=='weight')requestDraftSave()}
  }
 }
@@ -1109,7 +1193,7 @@ function setupPointer(){const canvas=el('view');
   const hit=hitTest(e);if(hit){
    const b=hit.balloon,w=hit.weight;if(b)selectBalloon(b.id);if(w)selectWeight(w.id);
    const p=hit.kind==='balloon'?vec(b.body.translation()):vec(w.body.translation());drag={kind:hit.kind,id:b?.id??w?.id??null,pointerId:e.pointerId,goal:p.clone()};pointerNdc(e);
-   if(hit.kind==='weight')dragPlane.setFromNormalAndCoplanarPoint(new THREE.Vector3(0,1,0),new THREE.Vector3(0,.072,0));
+   if(hit.kind==='weight')dragPlane.setFromNormalAndCoplanarPoint(new THREE.Vector3(0,1,0),new THREE.Vector3(0,WEIGHT_BODY_Y,0));
    else if(b?.placementMode==='ceiling')dragPlane.setFromNormalAndCoplanarPoint(new THREE.Vector3(0,1,0),p);else{const normal=new THREE.Vector3();camera.getWorldDirection(normal);dragPlane.setFromNormalAndCoplanarPoint(normal,p)}
    const point=new THREE.Vector3();raycaster.ray.intersectPlane(dragPlane,point);dragOffset.copy(p).sub(point);
    if(b)b.body.wakeUp();else balloons.filter(item=>item.weightId===w.id).forEach(item=>item.body.wakeUp());
@@ -1118,7 +1202,7 @@ function setupPointer(){const canvas=el('view');
  canvas.addEventListener('pointermove',e=>{
   if(touchPoints.has(e.pointerId))touchPoints.set(e.pointerId,{x:e.clientX,y:e.clientY});
   if(pinch&&touchPoints.size>=2){const pts=[...touchPoints.values()],gap=Math.max(5,Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y));orbit.distance=THREE.MathUtils.clamp(pinch.distance*pinch.gap/gap,2.0,9.5);updateCamera();return}
-  if(drag?.pointerId===e.pointerId){pointerNdc(e);const point=new THREE.Vector3();if(raycaster.ray.intersectPlane(dragPlane,point)){point.add(dragOffset);if(drag.kind==='weight'){point.y=.072;point.x=THREE.MathUtils.clamp(point.x,-2.3,2.3);point.z=THREE.MathUtils.clamp(point.z,-2.3,2.3)}else if(balloons.find(b=>b.id===drag.id)?.placementMode==='ceiling'){point.x=THREE.MathUtils.clamp(point.x,-2.3,2.3);point.z=THREE.MathUtils.clamp(point.z,-2.3,2.3);point.y=drag.goal.y}else clampTarget(point);drag.goal=point}}
+  if(drag?.pointerId===e.pointerId){pointerNdc(e);const point=new THREE.Vector3();if(raycaster.ray.intersectPlane(dragPlane,point)){point.add(dragOffset);if(drag.kind==='weight'){point.y=WEIGHT_BODY_Y;point.x=THREE.MathUtils.clamp(point.x,-2.3,2.3);point.z=THREE.MathUtils.clamp(point.z,-2.3,2.3)}else if(balloons.find(b=>b.id===drag.id)?.placementMode==='ceiling'){point.x=THREE.MathUtils.clamp(point.x,-2.3,2.3);point.z=THREE.MathUtils.clamp(point.z,-2.3,2.3);point.y=drag.goal.y}else clampTarget(point);drag.goal=point}}
   else if(orbitDrag?.id===e.pointerId){orbit.yaw=orbitDrag.yaw-(e.clientX-orbitDrag.x)*.007;orbit.pitch=THREE.MathUtils.clamp(orbitDrag.pitch+(e.clientY-orbitDrag.y)*.005,-.36,1.22);updateCamera()}
  });
  const release=e=>{touchPoints.delete(e.pointerId);if(touchPoints.size<2)pinch=null;if(drag?.pointerId===e.pointerId){if(drag.kind==='weight'&&drag.goal){const w=getWeight(drag.id);if(w?.body){if(e.type==='pointercancel'||paused)delete w.moveTarget;else queueWeightMove(w,drag.goal)}}const b=drag.kind==='balloon'?balloons.find(item=>item.id===drag.id):null;drag=null;if(b)b.body.wakeUp();requestDraftSave()}if(orbitDrag?.id===e.pointerId)orbitDrag=null};
@@ -1132,7 +1216,7 @@ function animate(now){frameReq=requestAnimationFrame(animate);if(!ready)return;
  if(!paused&&!testing){accumulator+=delta;let count=0;while(accumulator>=DT&&count<5){step();accumulator-=DT;count++}if(count===5)accumulator=0}
  syncBody();for(const b of balloons)drawRibbon(b);for(const seg of segments)drawRibbon(seg);if(now-lastMetrics>180){lastMetrics=now;metrics()}updateFoilReflections(now);renderer.render(scene,camera);
 }
-function setupButtons(){setupBalloonEditor();setupLooseButtons();
+function setupButtons(){setupBalloonEditor();setupLooseButtons();setupRibbonStyleControls();
  el('addFountain').addEventListener('click',()=>{if(!ready||testing)return;try{const kind=Number(el('presetSelect').value),f=addFountain(kind);msg('Добавлен фонтан №'+f.id+': '+kind+' шаров. Общая сцена: '+fountains.length+' фонтана, '+balloons.length+' шаров.')}catch(e){msg(String(e.message||e),true)}});
  el('fountainList').addEventListener('click',e=>{const btn=e.target.closest('[data-fountain-id]');if(!btn)return;const id=Number(btn.dataset.fountainId),f=getFountain(id);if(!f)return;selectedFountainId=id;selectedId=f.balloons[0]?.id;renderControls();metrics()});
  el('deleteFountain').addEventListener('click',()=>{const f=selectedFountain();if(!ready||testing||!f)return;if(!confirm('Удалить '+(f.mode?'шар':'фонтан')+' №'+f.id+'? Остальные сохранятся.'))return;removeFountain(f)});
@@ -1145,7 +1229,7 @@ function setupButtons(){setupBalloonEditor();setupLooseButtons();
 
 
 async function readPreviousDraft(name='candysky-3d-multifountain-v23-drafts'){return new Promise((resolve,reject)=>{const req=indexedDB.open(name,1);req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains('scenes'))req.result.createObjectStore('scenes')};req.onerror=()=>reject(req.error);req.onsuccess=()=>{const db=req.result,tx=db.transaction('scenes','readonly'),read=tx.objectStore('scenes').get('current');let result;read.onsuccess=()=>{result=read.result};tx.oncomplete=()=>{db.close();resolve(result)};tx.onabort=()=>{db.close();reject(tx.error)}}})}
-const DRAFT_DB='candysky-3d-multifountain-v48-drafts',DRAFT_STORE='scenes',DRAFT_SCHEMA=3;
+const DRAFT_DB='candysky-3d-multifountain-v50-drafts',DRAFT_STORE='scenes',DRAFT_SCHEMA=3;
 let draftSaveTimer=null,dbPromise=null,restoringDraft=false,draftWritesBlocked=false;
 function openDraftDb(){if(!('indexedDB' in window))return Promise.reject(Error('IndexedDB недоступен'));
  if(!dbPromise)dbPromise=new Promise((resolve,reject)=>{const req=indexedDB.open(DRAFT_DB,1);
@@ -1162,8 +1246,8 @@ async function draftRecord(mode,value){const db=await openDraftDb();return new P
  tx.onerror=()=>reject(tx.error||Error('Ошибка транзакции'));
  tx.onabort=()=>reject(tx.error||Error('Транзакция отменена'));
 })}
-function snapshotScene(){return {schema:DRAFT_SCHEMA,roomHeight:ROOM_HEIGHT,createdAt:new Date().toISOString(),nextFountainId,selectedFountainId,orbit:{...orbit},
- fountains:fountains.map(f=>({id:f.id,type:f.presetKey,height:f.targetHeight,...(f.mode?{mode:f.mode}:{}),weight:{x:f.weight.body?.translation().x??f.weight.x,z:f.weight.body?.translation().z??f.weight.z},
+function snapshotScene(){return {schema:DRAFT_SCHEMA,roomHeight:ROOM_HEIGHT,weightAnchorHeight:WEIGHT_ANCHOR_Y,createdAt:new Date().toISOString(),nextFountainId,selectedFountainId,orbit:{...orbit},
+ fountains:fountains.map(f=>({id:f.id,type:f.presetKey,height:f.targetHeight,...(f.ribbonStyle?{ribbonStyle:f.ribbonStyle}:{}),...(f.mode?{mode:f.mode}:{}),weight:{x:f.weight.body?.translation().x??f.weight.x,z:f.weight.body?.translation().z??f.weight.z},
   products:f.balloons.map(b=>b.product||null),colors:f.balloons.map(b=>b.color),positions:f.balloons.map(b=>{const p=b.body.translation(),q=b.body.rotation();return {x:p.x,y:p.y,z:p.z,rotation:{x:q.x,y:q.y,z:q.z,w:q.w},...(Number.isFinite(b.placementTarget)?{placementLength:b.length}:{})}})}))}}
 async function saveDraftNow(explicit=false){if(!ready||testing||restoringDraft||(draftWritesBlocked&&!explicit))return;if(draftSaveTimer){clearTimeout(draftSaveTimer);draftSaveTimer=null}
  try{await draftRecord('put',snapshotScene());draftWritesBlocked=false;el('draftStatus').textContent='Сцена сохранена на устройстве · '+new Date().toLocaleTimeString('ru-RU')}
@@ -1187,8 +1271,8 @@ function migrateSnapshot(raw){
 }
 function validateSnapshot(s){if(!s||![1,2,3].includes(s.schema)||!Array.isArray(s.fountains)||s.fountains.length>MAX_FOUNTAINS+MAX_LOOSE)throw Error('Неверный формат черновика');
  const isNum=n=>typeof n==='number'&&Number.isFinite(n);
- const savedRoomHeight=s.roomHeight??3.2;if(!isNum(savedRoomHeight)||savedRoomHeight<2.5||savedRoomHeight>3.2)throw Error('Неверная высота комнаты в черновике');
- const ids=new Set();for(const f of s.fountains){if(!Number.isSafeInteger(f.id)||f.id<1||ids.has(f.id)||!PRESETS[f.type]||!isNum(f.height)||(f.mode!==undefined&&!['single','ceiling'].includes(f.mode))||(f.type===1&&!f.mode)||(f.mode&&f.type!==1)||!f.weight||![f.weight.x,f.weight.z].every(isNum)||
+ if(s.weightAnchorHeight!==undefined&&(!isNum(s.weightAnchorHeight)||s.weightAnchorHeight<.02||s.weightAnchorHeight>.3))throw Error('Неверное крепление грузика');const savedRoomHeight=s.roomHeight??3.2;if(!isNum(savedRoomHeight)||savedRoomHeight<2.5||savedRoomHeight>3.2)throw Error('Неверная высота комнаты в черновике');
+ for(const f of s.fountains)if(f.ribbonStyle!==undefined&&!Object.hasOwn(RIBBON_STYLES,f.ribbonStyle))throw Error('Неизвестный цвет лент');const ids=new Set();for(const f of s.fountains){if(!Number.isSafeInteger(f.id)||f.id<1||ids.has(f.id)||!PRESETS[f.type]||!isNum(f.height)||(f.mode!==undefined&&!['single','ceiling'].includes(f.mode))||(f.type===1&&!f.mode)||(f.mode&&f.type!==1)||!f.weight||![f.weight.x,f.weight.z].every(isNum)||
  Math.abs(f.weight.x)>2.3||Math.abs(f.weight.z)>2.3||!Array.isArray(f.colors)||f.colors.length!==Number(f.type)||!f.colors.every(isNum)||!Array.isArray(f.positions)||f.positions.length!==Number(f.type)||!f.positions.every(p=>p&&[p.x,p.y,p.z].every(isNum)&&Math.abs(p.x)<=2.5&&Math.abs(p.z)<=2.5&&p.y>=0&&p.y<=savedRoomHeight))throw Error('Повреждённые данные фонтана');ids.add(f.id)}
  for(const f of s.fountains){for(let i=0;i<f.positions.length;i++){const p=f.positions[i];if(p.placementLength!==undefined&&(!isNum(p.placementLength)||p.placementLength<(i===0?TOP_LENGTH:SIDE_LENGTH)||p.placementLength>.75||!FOIL_SHAPES[f.products?.[i]?.kind]))throw Error('Повреждённая длина размещения фигуры');}
  for(const p of f.positions){if(p.rotation){const q=p.rotation,values=[q.x,q.y,q.z,q.w];if(!values.every(isNum)||Math.abs(Math.hypot(...values)-1)>.01)throw Error('Повреждённая ориентация шара')}}if(f.products!==undefined){if(!Array.isArray(f.products)||f.products.length!==Number(f.type))throw Error('Повреждённый состав шаров');f.products.forEach((p,i)=>{if(p){const spec=productSpec(p);if(i>0&&(PRODUCT_RULES[spec.kind].topOnly||spec.sizeCm>=61))throw Error('Неверная позиция товара')}})}}
@@ -1200,29 +1284,35 @@ function adaptSnapshotToRoom(s){
  for(const f of copy.fountains){let excess=0;for(let i=0;i<f.positions.length;i++){const pos=f.positions[i],spec=productSpec(f.products?.[i]||null),q=pos.rotation?new THREE.Quaternion(pos.rotation.x,pos.rotation.y,pos.rotation.z,pos.rotation.w):new THREE.Quaternion();const matrix=new THREE.Matrix4().compose(new THREE.Vector3(pos.x,pos.y,pos.z),q,new THREE.Vector3(1,1,1)),box=spec.geometry.boundingBox.clone().applyMatrix4(matrix);excess=Math.max(excess,box.max.y-(ROOM_HEIGHT-.015))}if(excess>.001){f.height=THREE.MathUtils.clamp(f.height-excess,PRESETS[f.type].lowerMin,PRESETS[f.type].lowerMax);f.rebuildPositions=true;copy.roomAdjustedFountains.push(f.id)}}
  return copy;
 }
-async function restoreDraft(preloaded=null){if(!ready||testing||restoringDraft)return false;clearTimeout(draftSaveTimer);draftSaveTimer=null;restoringDraft=true;try{const raw=preloaded??await draftRecord('get');if(!raw){el('draftStatus').textContent='Нет сохранённой сцены';return false}const s=adaptSnapshotToRoom(validateSnapshot(migrateSnapshot(raw)));if(!s){el('draftStatus').textContent='Нет сохранённой сцены';return false}
+function adaptSnapshotWeightAnchor(s){
+ const previous=s.weightAnchorHeight??.153,delta=WEIGHT_ANCHOR_Y-previous;if(Math.abs(delta)<1e-6)return s;
+ const copy=structuredClone(s);copy.weightAnchorHeight=WEIGHT_ANCHOR_Y;
+ for(const f of copy.fountains){if(f.mode==='ceiling'||f.rebuildPositions)continue;for(let i=0;i<f.positions.length;i++){const pos=f.positions[i],spec=productSpec(f.products?.[i]||null),q=pos.rotation?new THREE.Quaternion(pos.rotation.x,pos.rotation.y,pos.rotation.z,pos.rotation.w):new THREE.Quaternion(),box=spec.geometry.boundingBox.clone().applyMatrix4(new THREE.Matrix4().makeRotationFromQuaternion(q));pos.y=Math.max(pos.y+delta,.005-box.min.y)}}
+ return copy;
+}
+async function restoreDraft(preloaded=null){if(!ready||testing||restoringDraft)return false;clearTimeout(draftSaveTimer);draftSaveTimer=null;restoringDraft=true;try{const raw=preloaded??await draftRecord('get');if(!raw){el('draftStatus').textContent='Нет сохранённой сцены';return false}const s=adaptSnapshotWeightAnchor(adaptSnapshotToRoom(validateSnapshot(migrateSnapshot(raw))));if(!s){el('draftStatus').textContent='Нет сохранённой сцены';return false}
  await Promise.all(s.fountains.flatMap(f=>(f.products||[]).map(ensureProductAssets)));
  const backup=snapshotScene();try{
   for(const f of fountains.slice())removeFountain(f,false);
-  for(const saved of s.fountains)addFountain(saved.type,saved.weight,{height:saved.height,colors:saved.colors,products:saved.products,positions:saved.rebuildPositions?null:saved.positions,id:saved.id,mode:saved.mode,restorePlacement:true});
+  for(const saved of s.fountains)addFountain(saved.type,saved.weight,{height:saved.height,colors:saved.colors,products:saved.products,positions:saved.rebuildPositions?null:saved.positions,id:saved.id,mode:saved.mode,ribbonStyle:saved.ribbonStyle||null,restorePlacement:true});
   nextFountainId=Math.max(nextFountainId,s.nextFountainId||1);
   selectedFountainId=getFountain(s.selectedFountainId)?.id||fountains[0]?.id||null;
   selectedId=selectedFountain()?.balloons[0]?.id||null;
   if(s.orbit&&[s.orbit.yaw,s.orbit.pitch,s.orbit.distance].every(Number.isFinite)){orbit={yaw:s.orbit.yaw,pitch:THREE.MathUtils.clamp(s.orbit.pitch,-.36,1.22),distance:THREE.MathUtils.clamp(s.orbit.distance,2,9.5)};updateCamera()}
- }catch(error){for(const f of fountains.slice())removeFountain(f,false);for(const old of backup.fountains)addFountain(old.type,old.weight,{height:old.height,colors:old.colors,products:old.products,positions:old.positions,id:old.id,mode:old.mode,restorePlacement:true});throw error}
+ }catch(error){for(const f of fountains.slice())removeFountain(f,false);for(const old of backup.fountains)addFountain(old.type,old.weight,{height:old.height,colors:old.colors,products:old.products,positions:old.positions,id:old.id,mode:old.mode,ribbonStyle:old.ribbonStyle||null,restorePlacement:true});throw error}
  draftWritesBlocked=false;renderControls();metrics();el('draftStatus').textContent='Сцена восстановлена · '+s.createdAt+(s.roomAdjustedFountains?.length?' · высокие фонтаны пересобраны под потолок 3 м':'');msg('Восстановлено '+fountains.length+' фонтана из локального черновика.');return true;
  }catch(err){draftWritesBlocked=true;el('draftStatus').textContent='Ошибка восстановления: '+String(err.message||err)+'. Исходный черновик сохранён. Автосохранение выключено до нажатия «Сохранить сцену». ';console.warn(err);return false}finally{restoringDraft=false}
 }
-async function initialize(){if(booting||ready)return;booting=true;lastLoadReport='CandySky v48 / '+new Date().toISOString()+'\n'+location.href+'\n';
+async function initialize(){if(booting||ready)return;booting=true;lastLoadReport='CandySky v50 / '+new Date().toISOString()+'\n'+location.href+'\n';
  el('loading').hidden=false;el('retry').hidden=true;el('copyError').hidden=true;
  try{el('loadText').textContent='Подготавливаю утверждённые модели…';await loadDigitModels();el('loadText').textContent='Загружаю Three.js…';THREE=await loadThree();el('loadText').textContent='Загружаю Rapier WASM…';RAPIER=await loadRapier();
   createScene();el('loadText').textContent='Подготавливаю оформление комнаты…';await setupRoomWallTextures();await setupRoomFloorTexture();if(!pointersBound){setupPointer();pointersBound=true}if(!controlsBound){setupButtons();controlsBound=true}
   ready=true;try{
-   let saved=await draftRecord('get');if(!saved){try{saved=await readPreviousDraft('candysky-3d-multifountain-v45-drafts');if(!saved)saved=await readPreviousDraft('candysky-3d-multifountain-v44-drafts')||await readPreviousDraft('candysky-3d-multifountain-v43-drafts')||await readPreviousDraft('candysky-3d-multifountain-v42-drafts')||await readPreviousDraft('candysky-3d-multifountain-v41-drafts')||await readPreviousDraft('candysky-3d-multifountain-v40-drafts')||await readPreviousDraft('candysky-3d-multifountain-v39-drafts')||await readPreviousDraft('candysky-3d-multifountain-v38-drafts')||await readPreviousDraft('candysky-3d-multifountain-v37-drafts')||await readPreviousDraft('candysky-3d-multifountain-v36-drafts')||await readPreviousDraft('candysky-3d-multifountain-v35-drafts')||await readPreviousDraft('candysky-3d-multifountain-v34-drafts')||await readPreviousDraft('candysky-3d-multifountain-v33-drafts')||await readPreviousDraft('candysky-3d-multifountain-v32-drafts')||await readPreviousDraft('candysky-3d-multifountain-v31-drafts')||await readPreviousDraft('candysky-3d-multifountain-v30-drafts')||await readPreviousDraft('candysky-3d-multifountain-v29-drafts')||await readPreviousDraft('candysky-3d-multifountain-v28-drafts')||await readPreviousDraft('candysky-3d-multifountain-v27-drafts')||await readPreviousDraft('candysky-3d-multifountain-v26-drafts')||await readPreviousDraft('candysky-3d-multifountain-v25-drafts')||await readPreviousDraft()||await readPreviousDraft('candysky-3d-multifountain-v21-drafts')}catch(err){console.warn('Предыдущий черновик недоступен',err)}}
+   let saved=await draftRecord('get');if(!saved){try{saved=await readPreviousDraft('candysky-3d-multifountain-v49-drafts');if(!saved)saved=await readPreviousDraft('candysky-3d-multifountain-v48-drafts');if(!saved)saved=await readPreviousDraft('candysky-3d-multifountain-v45-drafts');if(!saved)saved=await readPreviousDraft('candysky-3d-multifountain-v44-drafts')||await readPreviousDraft('candysky-3d-multifountain-v43-drafts')||await readPreviousDraft('candysky-3d-multifountain-v42-drafts')||await readPreviousDraft('candysky-3d-multifountain-v41-drafts')||await readPreviousDraft('candysky-3d-multifountain-v40-drafts')||await readPreviousDraft('candysky-3d-multifountain-v39-drafts')||await readPreviousDraft('candysky-3d-multifountain-v38-drafts')||await readPreviousDraft('candysky-3d-multifountain-v37-drafts')||await readPreviousDraft('candysky-3d-multifountain-v36-drafts')||await readPreviousDraft('candysky-3d-multifountain-v35-drafts')||await readPreviousDraft('candysky-3d-multifountain-v34-drafts')||await readPreviousDraft('candysky-3d-multifountain-v33-drafts')||await readPreviousDraft('candysky-3d-multifountain-v32-drafts')||await readPreviousDraft('candysky-3d-multifountain-v31-drafts')||await readPreviousDraft('candysky-3d-multifountain-v30-drafts')||await readPreviousDraft('candysky-3d-multifountain-v29-drafts')||await readPreviousDraft('candysky-3d-multifountain-v28-drafts')||await readPreviousDraft('candysky-3d-multifountain-v27-drafts')||await readPreviousDraft('candysky-3d-multifountain-v26-drafts')||await readPreviousDraft('candysky-3d-multifountain-v25-drafts')||await readPreviousDraft()||await readPreviousDraft('candysky-3d-multifountain-v21-drafts')}catch(err){console.warn('Предыдущий черновик недоступен',err)}}
    if(saved){const restored=await restoreDraft(saved);if(!restored&&!fountains.length)addFountain(7,{x:0,z:0})}
    else addFountain(7,{x:0,z:0});
   }catch(err){draftWritesBlocked=true;el('draftStatus').textContent='Черновик недоступен: '+String(err.message||err)+'. Автосохранение выключено до нажатия «Сохранить сцену». ';if(!fountains.length)addFountain(7,{x:0,z:0})}
-  renderControls();el('offlineStatus').textContent='Тестовый v48: Three.js/Rapier с jsDelivr. Офлайн не готов.';
+  renderControls();el('offlineStatus').textContent='Тестовый v50: Three.js/Rapier с jsDelivr. Офлайн не готов.';
   el('loading').hidden=true;cancelAnimationFrame(frameReq);lastFrame=0;animate(0);msg('Общая сцена готова: '+fountains.length+' фонтан(ов).');
  }catch(err){ready=false;lastLoadReport+='\nОшибка: '+String(err.message||err);el('loadText').textContent='Запуск не удался: '+String(err.message||err)+'; нужен интернет для CDN.';el('retry').hidden=false;el('copyError').hidden=false;msg('Не удалось запустить Rapier',true);console.error(err)}finally{booting=false}
 }

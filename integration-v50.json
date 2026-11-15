@@ -1,0 +1,22 @@
+{
+  "version": "v50",
+  "base": "v49",
+  "rollback": "v49",
+  "scope": "public release payload",
+  "retainedBuilds": [
+    "v50",
+    "v49"
+  ],
+  "sha256": {
+    "candysky-rapier-lab-1-v50-ribbon-colors.html": "664436b3fa6fd383454792ee81b267a4f1b565cc031a0315d1d4c9b27fda9116",
+    "test-report-v50.json": "681f40899fbcb94bd546ec8d7fe94267e656f6cdbb6e8a9cfada957b963efb89",
+    "foil-baseline-check-v50.json": "918da6b6f79428933582cec2e399dafd57b7ff7ee5de84fa35e38303ffdc8232",
+    "research/ribbon-style-2026-11-15/config.json": "e20a572b7bc13ae9a56a46fcff5fcd91a8c2ba231e05e15b666a60543525fe2c",
+    "version-retention.json": "8eecd3174ad79c96e36d2167b7f5fab3b5e7d7c8b463e7cd6202a53c31da2aa9",
+    "v50-ribbon-colors.png": "8f6d44d0a75a8e385fe0f688d3dfb26bec530ab89f8e87e6d3931546291e119b",
+    "v50-ribbon-selector.png": "5e82130def0ead3e8a2a024364351574915d9e2523f204a1fb17e94f1b26993b",
+    "README.md": "2fea8a279fefc846130f7cc8cfdc5c24d56981baf7e0d552235620a528421b37"
+  },
+  "privateDocumentationIncluded": false,
+  "realIPhoneTested": false
+}
