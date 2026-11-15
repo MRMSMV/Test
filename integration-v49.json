@@ -1,0 +1,28 @@
+{
+  "version": "v49",
+  "base": "v48",
+  "rollback": "v48",
+  "retainedBuilds": [
+    "v49",
+    "v48"
+  ],
+  "sha256": {
+    "candysky-rapier-lab-1-v49-silver-foil-weight.html": "5681ac26ca23be092b66fff8ba16705e6c4a073df23b23166fb28cfc6609c189",
+    "test-report-v49.json": "c494e56658ce67779f2a092a45902356234ea53c431d3f4dcd8c99aa60347d8d",
+    "foil-baseline-check-v49.json": "918da6b6f79428933582cec2e399dafd57b7ff7ee5de84fa35e38303ffdc8232",
+    "README.md": "a83642b53f444d475ac3c66e0d42d09dcf130d3f5f705788391eeb397017d71f",
+    "backlog.md": "f204e3040e294f1a727ded2920e5a62a12e4148ee68a64b3e5909098163a876c",
+    "version-retention.json": "f46a5af203228c584dd416d9a89f55299776ebec797ebc9fa159921699e5b598",
+    "approved/foil-weight-2026-11-15/approval.json": "8a1acacee3efbc67891a8fd779952669f802a27f60f27aa45cfdd1d99876dcac",
+    "approved/foil-weight-2026-11-15/model.js": "db95f51cf96886347da5dca309a7837a8301f438aebcfdab77250a2ef1f0dd06"
+  },
+  "realIPhoneTested": false,
+  "protectedLegacySha256": {
+    "v16": "4ed81f9f46093c7ee3a07f8db8eed0009a082ba46ec20c5b2d7bd152dd2a6a75",
+    "v17": "839376c440df773315b9b99f6d622b00dc1eadad60e45cefce6649263a0c7666",
+    "v18": "4bf671a006ac6a4aea1c4ba5b85906607c69a11cf2e25e27fb7f21e209f96610",
+    "v19": "8d7a3a0ef3271cd6fb9acba2f95f864f1a2ee2c3a311fb857c7bcddecf58adc6"
+  },
+  "scope": "public release payload",
+  "documentationStatus": "Full internal documentation changes kept local after automatic publication review rejection; public README contains only this approved release description; public technical-spec/changelog/instructions unchanged."
+}

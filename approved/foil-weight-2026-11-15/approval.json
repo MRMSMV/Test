@@ -1,0 +1,28 @@
+{
+  "date": "2026-11-15",
+  "status": "appearance and small size approved by user",
+  "concept": "1: crumpled silver foil, pink gathered neck, open foil fan",
+  "dimensionsM": [
+    0.0824059247970581,
+    0.10334651485085487,
+    0.08166102886199952
+  ],
+  "bodyY": 0.02736,
+  "tieLocalY": 0.03078,
+  "anchorWorldY": 0.05814,
+  "collider": {
+    "shape": "cylinder",
+    "radius": 0.0416,
+    "halfHeight": 0.02185,
+    "body": "kinematicPositionBased"
+  },
+  "reflection": {
+    "mobileSize": 64,
+    "desktopSize": 128,
+    "queue": "shared with foil balloons; max one cube per existing 500/160 ms interval",
+    "ownerHidden": true
+  },
+  "massClaim": null,
+  "modelSha256": "db95f51cf96886347da5dca309a7837a8301f438aebcfdab77250a2ef1f0dd06",
+  "sourcePreview": "weight-foil-preview/silver-weight-small-fountain.png"
+}
