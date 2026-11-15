@@ -3,10 +3,10 @@
   "branch": "main",
   "keepLatestBuilds": 2,
   "retainedBuilds": [
-    "v50",
-    "v49"
+    "v51",
+    "v50"
   ],
-  "indexBuild": "v50",
+  "indexBuild": "v51",
   "gitHistoryRewrite": false,
   "localArchivesUnchanged": true,
   "preservedModelSources": [
@@ -702,8 +702,8 @@
       "sha": "18a5ef42e3a4f3f923489fc35b73ecf9aa947db0"
     }
   ],
-  "currentTask": "Утверждённые цвета лент и ширина 5 мм",
-  "rollbackBuild": "v49",
+  "currentTask": "Утверждённый матовый потолок Greige",
+  "rollbackBuild": "v50",
   "photoStatus": "deferred",
   "removedForV48": [
     "candysky-rapier-lab-1-v44-panorama-walls.html",
@@ -735,5 +735,14 @@
     "v48-mixed-scene.png",
     "v48-mixed-mobile.png",
     "v48-controls-mobile.png"
+  ],
+  "removedForV51": [
+    "candysky-rapier-lab-1-v49-silver-foil-weight.html",
+    "foil-baseline-check-v49.json",
+    "integration-v49.json",
+    "test-report-v49.json",
+    "v49-weight-close.png",
+    "v49-weight-fountain.png",
+    "v49-weight-mobile.png"
   ]
 }

@@ -1,0 +1,31 @@
+{
+  "source": "CandySky_Greige_Ceiling_2000x2000.png",
+  "sourceSize": [
+    2000,
+    2000
+  ],
+  "sourceBytes": 1901979,
+  "sourceSha256": "112b14e2aa69b7db0ed16297f976b816595251e4bdd3fc1dc93afd91076018e7",
+  "surfaceMeters": [
+    5,
+    5
+  ],
+  "heightMeters": 3,
+  "repeat": [
+    1,
+    1
+  ],
+  "roughness": 1,
+  "metalness": 0,
+  "desktopTextureSize": 2000,
+  "mobileTextureSize": 1000,
+  "maxTextureSizeRespected": true,
+  "viewFromInside": true,
+  "newPhysicalColliders": false,
+  "delivery": "external immutable WebP",
+  "assetPath": "assets/ceiling-greige-b152d0405a45.webp",
+  "embeddedInHtml": false,
+  "webPQuality": 92,
+  "webPBytes": 71396,
+  "webPSha256": "b152d0405a45e2d680ba0650b78a0dab8e233e90405f8c914c082216058c1a22"
+}

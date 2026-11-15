@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#fffaf8">
-<title>CandySky — Rapier Lab 1.9 · несколько фонтанов · v50</title>
+<title>CandySky — Rapier Lab 1.9 · несколько фонтанов · v51</title>
 <style>
 :root{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#26313a;background:#fffaf8;color-scheme:light}
 *{box-sizing:border-box}
@@ -163,7 +163,7 @@ button:hover{background:#faf4f3}button.primary{background:#f4d4d2;border-color:#
 <body>
 <div class="app" id="app">
  <canvas id="view" aria-label="Единая 3D-сцена нескольких фонтанов CandySky"></canvas>
- <header class="topbar"><div class="brand"><strong>CandySky · Фонтаны · v50</strong><small>Несколько композиций · высота сцены 3 м</small></div><div class="state" id="status"><i></i><span id="statusText">Загрузка движка</span></div></header>
+ <header class="topbar"><div class="brand"><strong>CandySky · Фонтаны · v51</strong><small>Несколько композиций · высота сцены 3 м</small></div><div class="state" id="status"><i></i><span id="statusText">Загрузка движка</span></div></header>
  <div class="panel-backdrop" id="panelBackdrop" aria-hidden="true"></div>
  <button type="button" class="panel-toggle" id="panelToggle" aria-controls="labPanel" aria-expanded="false" aria-label="Открыть управление фонтанами"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16M9 4v6M15 14v6"/></svg><span>Управление</span><span class="panel-toggle-count" id="panelToggleCount">0</span></button>
  <section class="panel" id="labPanel" aria-label="Управление фонтанами" aria-hidden="true" inert>
@@ -207,7 +207,7 @@ button:hover{background:#faf4f3}button.primary{background:#f4d4d2;border-color:#
  <div class="load" id="loading"><h2>Загрузка CandySky 3D</h2><p id="loadText">Подключаю Three.js и Rapier…</p><button id="retry" hidden>Повторить</button><button id="copyError" hidden>Скопировать ошибку</button></div>
 </div>
 <script type="module">
-// CandySky v50: единый экспериментальный мир для нескольких независимых фонтанов.
+// CandySky v51: единый экспериментальный мир для нескольких независимых фонтанов.
 // Оригинальные v16 / v17 / v18 / v19 остаются неизменными файлами.
 // Реальная физика Rapier + XPBD локально, библиотеки тестово загружаются с CDN (не production/offline).
 const THREE_SOURCES=[['jsDelivr · Three.js 0.164.1','https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js']];
@@ -346,7 +346,7 @@ function updateFoilReflections(now){
  // Single reflection bounce: every other chrome figure remains visible with its static environment.
  for(const b of active)b.visual.traverse(o=>{if(o.isMesh&&(!b.weight||o.material.metalness===1)&&!seen.has(o.material)){seen.add(o.material);backup.push([o.material,o.material.envMap]);o.material.envMap=getFoilChromeEnvironment()}});
  let ok=false;const start=performance.now();
- try{owner.visual.visible=false;for(const {mesh,offset}of cards){mesh.position.copy(center).add(offset);mesh.lookAt(center);mesh.visible=true}state.camera.position.copy(center);scene.updateMatrixWorld(true);state.camera.update(renderer,scene);state.target.texture.needsPMREMUpdate=true;ok=true}
+ try{owner.visual.visible=false;for(const {mesh,offset}of cards){mesh.position.copy(center).add(offset);mesh.lookAt(center);const bounds=new THREE.Box3(),half=new THREE.Vector3();for(let i=0;i<4;i++){mesh.updateMatrixWorld(true);bounds.setFromObject(mesh).getSize(half).multiplyScalar(.5);mesh.position.x=THREE.MathUtils.clamp(mesh.position.x,-ROOM_HALF+.04+half.x,ROOM_HALF-.04-half.x);mesh.position.y=THREE.MathUtils.clamp(mesh.position.y,.04+half.y,ROOM_HEIGHT-.04-half.y);mesh.position.z=THREE.MathUtils.clamp(mesh.position.z,-ROOM_HALF+.04+half.z,ROOM_HALF-.04-half.z);mesh.lookAt(center)}mesh.visible=true}state.camera.position.copy(center);scene.updateMatrixWorld(true);state.camera.update(renderer,scene);state.target.texture.needsPMREMUpdate=true;ok=true}
  catch(error){state.retryAfter=now+5000;state.lastError=String(error?.message||error)}
  finally{owner.visual.visible=wasVisible;for(const {mesh}of cards)mesh.visible=false;for(const [material,env]of backup)material.envMap=env}
  if(ok){owner.visual.traverse(o=>{if(o.isMesh&&(!owner.weight||o.material.metalness===1))o.material.envMap=state.target.texture});state.signature=signature;state.captures++;state.ownerId=owner.id;state.center=center.toArray();state.lastCaptureCpuMs=performance.now()-start;state.retryAfter=0;delete state.lastError}
@@ -686,7 +686,7 @@ function applyCompositionRibbonStyle(f){
  for(const seg of f.segments)applyRibbonMaterial(seg.ribbon.mesh.material,f.ribbonStyle);
  for(const j of Object.values(f.junctions))applyRibbonMaterial(j.mesh.material,f.ribbonStyle);
  const seen=new Set();f.weight.visual?.traverse(o=>{if(o.isMesh&&o.material.userData.ribbonAccent&&!seen.has(o.material)){seen.add(o.material);applyRibbonMaterial(o.material,f.ribbonStyle)}});
- // Only vertex strip width and visual node radius change; bodies, sensor radii and rope lengths stay as in v50.
+ // Only vertex strip width and visual node radius change; bodies, sensor radii and rope lengths stay as in v51.
  for(const b of f.balloons){b.ribbon.frozen=false;drawRibbon(b)}for(const seg of f.segments)drawRibbon(seg);
 }
 function setCompositionRibbonStyle(f,key){
@@ -790,7 +790,16 @@ async function setupRoomFloorTexture(){
  if(image.naturalWidth!==2000||image.naturalHeight!==2000)throw Error('Неверный размер текстуры пола');
  const size=Math.min(foilReflectionMobile()?1000:2000,renderer.capabilities.maxTextureSize),canvas=document.createElement('canvas');canvas.width=canvas.height=size;canvas.getContext('2d').drawImage(image,0,0,2000,2000,0,0,size,size);const map=new THREE.CanvasTexture(canvas);map.colorSpace=THREE.SRGBColorSpace;map.anisotropy=Math.min(4,renderer.capabilities.getMaxAnisotropy());roomFloorTexture=map;roomFloorMesh.material.map=map;roomFloorMesh.material.color.setHex(0xffffff);roomFloorMesh.material.needsUpdate=true;
 }
+const ROOM_CEILING_IMAGE='./assets/ceiling-greige-b152d0405a45.webp';
+let roomCeilingMesh=null,roomCeilingTexture=null;
+async function setupRoomCeilingTexture(){
+ const image=await new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>resolve(img);img.onerror=()=>reject(Error('Не удалось загрузить оформление потолка'));img.src=ROOM_CEILING_IMAGE});
+ if(image.naturalWidth!==2000||image.naturalHeight!==2000)throw Error('Неверный размер текстуры потолка');
+ const size=Math.min(foilReflectionMobile()?1000:2000,renderer.capabilities.maxTextureSize),canvas=document.createElement('canvas');canvas.width=canvas.height=size;canvas.getContext('2d').drawImage(image,0,0,size,size);const map=new THREE.CanvasTexture(canvas);map.colorSpace=THREE.SRGBColorSpace;map.anisotropy=Math.min(4,renderer.capabilities.getMaxAnisotropy());roomCeilingTexture=map;roomCeilingMesh.material.map=map;roomCeilingMesh.material.needsUpdate=true;
+}
 function addRoom(){
+ const ceiling=new THREE.Mesh(new THREE.PlaneGeometry(5,5),new THREE.MeshStandardMaterial({color:0xffffff,roughness:1,metalness:0}));ceiling.rotation.x=Math.PI/2;ceiling.position.y=ROOM_HEIGHT+.001;ceiling.name='room-ceiling-greige';roomCeilingMesh=ceiling;scene.add(ceiling);
+
  addRoomWallSurfaces();
  const floor=new THREE.Mesh(new THREE.PlaneGeometry(5,5),new THREE.MeshStandardMaterial({color:0x7d8187,roughness:1}));floor.rotation.x=-Math.PI/2;floor.position.y=-.001;floor.name='room-floor-dark-oak';roomFloorMesh=floor;scene.add(floor);
  const mat=new THREE.LineBasicMaterial({color:0xb0c2c0,transparent:true,opacity:.52}),corners=[[-2.5,-2.5],[2.5,-2.5],[2.5,2.5],[-2.5,2.5]];
@@ -1229,7 +1238,7 @@ function setupButtons(){setupBalloonEditor();setupLooseButtons();setupRibbonStyl
 
 
 async function readPreviousDraft(name='candysky-3d-multifountain-v23-drafts'){return new Promise((resolve,reject)=>{const req=indexedDB.open(name,1);req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains('scenes'))req.result.createObjectStore('scenes')};req.onerror=()=>reject(req.error);req.onsuccess=()=>{const db=req.result,tx=db.transaction('scenes','readonly'),read=tx.objectStore('scenes').get('current');let result;read.onsuccess=()=>{result=read.result};tx.oncomplete=()=>{db.close();resolve(result)};tx.onabort=()=>{db.close();reject(tx.error)}}})}
-const DRAFT_DB='candysky-3d-multifountain-v50-drafts',DRAFT_STORE='scenes',DRAFT_SCHEMA=3;
+const DRAFT_DB='candysky-3d-multifountain-v51-drafts',DRAFT_STORE='scenes',DRAFT_SCHEMA=3;
 let draftSaveTimer=null,dbPromise=null,restoringDraft=false,draftWritesBlocked=false;
 function openDraftDb(){if(!('indexedDB' in window))return Promise.reject(Error('IndexedDB недоступен'));
  if(!dbPromise)dbPromise=new Promise((resolve,reject)=>{const req=indexedDB.open(DRAFT_DB,1);
@@ -1303,16 +1312,16 @@ async function restoreDraft(preloaded=null){if(!ready||testing||restoringDraft)r
  draftWritesBlocked=false;renderControls();metrics();el('draftStatus').textContent='Сцена восстановлена · '+s.createdAt+(s.roomAdjustedFountains?.length?' · высокие фонтаны пересобраны под потолок 3 м':'');msg('Восстановлено '+fountains.length+' фонтана из локального черновика.');return true;
  }catch(err){draftWritesBlocked=true;el('draftStatus').textContent='Ошибка восстановления: '+String(err.message||err)+'. Исходный черновик сохранён. Автосохранение выключено до нажатия «Сохранить сцену». ';console.warn(err);return false}finally{restoringDraft=false}
 }
-async function initialize(){if(booting||ready)return;booting=true;lastLoadReport='CandySky v50 / '+new Date().toISOString()+'\n'+location.href+'\n';
+async function initialize(){if(booting||ready)return;booting=true;lastLoadReport='CandySky v51 / '+new Date().toISOString()+'\n'+location.href+'\n';
  el('loading').hidden=false;el('retry').hidden=true;el('copyError').hidden=true;
  try{el('loadText').textContent='Подготавливаю утверждённые модели…';await loadDigitModels();el('loadText').textContent='Загружаю Three.js…';THREE=await loadThree();el('loadText').textContent='Загружаю Rapier WASM…';RAPIER=await loadRapier();
-  createScene();el('loadText').textContent='Подготавливаю оформление комнаты…';await setupRoomWallTextures();await setupRoomFloorTexture();if(!pointersBound){setupPointer();pointersBound=true}if(!controlsBound){setupButtons();controlsBound=true}
+  createScene();el('loadText').textContent='Подготавливаю оформление комнаты…';await setupRoomWallTextures();await setupRoomFloorTexture();await setupRoomCeilingTexture();if(!pointersBound){setupPointer();pointersBound=true}if(!controlsBound){setupButtons();controlsBound=true}
   ready=true;try{
-   let saved=await draftRecord('get');if(!saved){try{saved=await readPreviousDraft('candysky-3d-multifountain-v49-drafts');if(!saved)saved=await readPreviousDraft('candysky-3d-multifountain-v48-drafts');if(!saved)saved=await readPreviousDraft('candysky-3d-multifountain-v45-drafts');if(!saved)saved=await readPreviousDraft('candysky-3d-multifountain-v44-drafts')||await readPreviousDraft('candysky-3d-multifountain-v43-drafts')||await readPreviousDraft('candysky-3d-multifountain-v42-drafts')||await readPreviousDraft('candysky-3d-multifountain-v41-drafts')||await readPreviousDraft('candysky-3d-multifountain-v40-drafts')||await readPreviousDraft('candysky-3d-multifountain-v39-drafts')||await readPreviousDraft('candysky-3d-multifountain-v38-drafts')||await readPreviousDraft('candysky-3d-multifountain-v37-drafts')||await readPreviousDraft('candysky-3d-multifountain-v36-drafts')||await readPreviousDraft('candysky-3d-multifountain-v35-drafts')||await readPreviousDraft('candysky-3d-multifountain-v34-drafts')||await readPreviousDraft('candysky-3d-multifountain-v33-drafts')||await readPreviousDraft('candysky-3d-multifountain-v32-drafts')||await readPreviousDraft('candysky-3d-multifountain-v31-drafts')||await readPreviousDraft('candysky-3d-multifountain-v30-drafts')||await readPreviousDraft('candysky-3d-multifountain-v29-drafts')||await readPreviousDraft('candysky-3d-multifountain-v28-drafts')||await readPreviousDraft('candysky-3d-multifountain-v27-drafts')||await readPreviousDraft('candysky-3d-multifountain-v26-drafts')||await readPreviousDraft('candysky-3d-multifountain-v25-drafts')||await readPreviousDraft()||await readPreviousDraft('candysky-3d-multifountain-v21-drafts')}catch(err){console.warn('Предыдущий черновик недоступен',err)}}
+   let saved=await draftRecord('get');if(!saved){try{saved=await readPreviousDraft('candysky-3d-multifountain-v50-drafts');if(!saved)saved=await readPreviousDraft('candysky-3d-multifountain-v49-drafts');if(!saved)saved=await readPreviousDraft('candysky-3d-multifountain-v48-drafts');if(!saved)saved=await readPreviousDraft('candysky-3d-multifountain-v45-drafts');if(!saved)saved=await readPreviousDraft('candysky-3d-multifountain-v44-drafts')||await readPreviousDraft('candysky-3d-multifountain-v43-drafts')||await readPreviousDraft('candysky-3d-multifountain-v42-drafts')||await readPreviousDraft('candysky-3d-multifountain-v41-drafts')||await readPreviousDraft('candysky-3d-multifountain-v40-drafts')||await readPreviousDraft('candysky-3d-multifountain-v39-drafts')||await readPreviousDraft('candysky-3d-multifountain-v38-drafts')||await readPreviousDraft('candysky-3d-multifountain-v37-drafts')||await readPreviousDraft('candysky-3d-multifountain-v36-drafts')||await readPreviousDraft('candysky-3d-multifountain-v35-drafts')||await readPreviousDraft('candysky-3d-multifountain-v34-drafts')||await readPreviousDraft('candysky-3d-multifountain-v33-drafts')||await readPreviousDraft('candysky-3d-multifountain-v32-drafts')||await readPreviousDraft('candysky-3d-multifountain-v31-drafts')||await readPreviousDraft('candysky-3d-multifountain-v30-drafts')||await readPreviousDraft('candysky-3d-multifountain-v29-drafts')||await readPreviousDraft('candysky-3d-multifountain-v28-drafts')||await readPreviousDraft('candysky-3d-multifountain-v27-drafts')||await readPreviousDraft('candysky-3d-multifountain-v26-drafts')||await readPreviousDraft('candysky-3d-multifountain-v25-drafts')||await readPreviousDraft()||await readPreviousDraft('candysky-3d-multifountain-v21-drafts')}catch(err){console.warn('Предыдущий черновик недоступен',err)}}
    if(saved){const restored=await restoreDraft(saved);if(!restored&&!fountains.length)addFountain(7,{x:0,z:0})}
    else addFountain(7,{x:0,z:0});
   }catch(err){draftWritesBlocked=true;el('draftStatus').textContent='Черновик недоступен: '+String(err.message||err)+'. Автосохранение выключено до нажатия «Сохранить сцену». ';if(!fountains.length)addFountain(7,{x:0,z:0})}
-  renderControls();el('offlineStatus').textContent='Тестовый v50: Three.js/Rapier с jsDelivr. Офлайн не готов.';
+  renderControls();el('offlineStatus').textContent='Тестовый v51: Three.js/Rapier с jsDelivr. Офлайн не готов.';
   el('loading').hidden=true;cancelAnimationFrame(frameReq);lastFrame=0;animate(0);msg('Общая сцена готова: '+fountains.length+' фонтан(ов).');
  }catch(err){ready=false;lastLoadReport+='\nОшибка: '+String(err.message||err);el('loadText').textContent='Запуск не удался: '+String(err.message||err)+'; нужен интернет для CDN.';el('retry').hidden=false;el('copyError').hidden=false;msg('Не удалось запустить Rapier',true);console.error(err)}finally{booting=false}
 }

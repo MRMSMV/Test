@@ -1,0 +1,23 @@
+{
+  "version": "v51",
+  "base": "v50",
+  "rollback": "v50",
+  "scope": "public release payload",
+  "retainedBuilds": [
+    "v51",
+    "v50"
+  ],
+  "sha256": {
+    "candysky-rapier-lab-1-v51-greige-ceiling.html": "96b62695897514425491f59616c4628ee43feb22a9062838fbf5c3df317799c0",
+    "test-report-v51.json": "e9d7e6f1b07487da861e5f6aa63f2c71389f8f6d1fc618e67696ed128c5ab88e",
+    "foil-baseline-check-v51.json": "918da6b6f79428933582cec2e399dafd57b7ff7ee5de84fa35e38303ffdc8232",
+    "approved/ceilings/ceiling-source.json": "77d64f279ccba2fdebac506e4f96ac7a6cb1c79fa4e02cf8a323cc992bcb4871",
+    "version-retention.json": "96a166c0e1a77a26a7619c1b54154d135dd226b4e3010e81f8bd1aa495e7b5f9",
+    "v51-ceiling-room.png": "d29d9359f3a1855dbf3561a900d82adbdbccf5c9d5ef65c04b54fdad64db4592",
+    "v51-ceiling-mobile.png": "3db3409402624e4cf005476cfc60aa2755cf36091a8b09a47ebddf33a4308548",
+    "README.md": "a83484e6b068983551f9967600c690ebdb10688798fd5faff6bafe6adeed907e",
+    "assets/ceiling-greige-b152d0405a45.webp": "b152d0405a45e2d680ba0650b78a0dab8e233e90405f8c914c082216058c1a22"
+  },
+  "privateDocumentationIncluded": false,
+  "realIPhoneTested": false
+}
