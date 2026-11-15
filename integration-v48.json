@@ -1,0 +1,27 @@
+{
+  "version": "v48",
+  "base": "v45",
+  "rollback": "v45",
+  "photoMode": "deferred",
+  "retainedBuilds": [
+    "v48",
+    "v45"
+  ],
+  "realIPhoneTested": false,
+  "sha256": {
+    "candysky-rapier-lab-1-v48-single-ceiling-balloons.html": "aa449629fd883efc085fe7f24e7b722e6f6ae7fb2206ca6b9c7ea2e792b4ca73",
+    "test-report-v48.json": "a0b6a2ffb84f5aefef02ae769418312818fc8bb46365e7d48454ecbf998da19d",
+    "foil-baseline-check-v48.json": "918da6b6f79428933582cec2e399dafd57b7ff7ee5de84fa35e38303ffdc8232",
+    "technical-spec.md": "a6f0eb72e2c268d4d56225b67079055470ea7708f67ef5312fad32b93ac3dd43",
+    "changelog.md": "c357aade2b8df3adc50b856f85976d14700c616b8fd580e32a2d7735be1a582b",
+    "instructions.md": "31aa2df18bf4bcc359548cc9f4b8be78c49a2a1cdb42000c610525f0337825c0",
+    "README.md": "9c44a60c2da108517c30f82713cb7bf580c6f6b2f03440bce1e24f13fce97b86",
+    "version-retention.json": "9c2d20438273395b1db41348125bf8bdfe5ab88aff461d43c8d3546822328e24"
+  },
+  "protectedLegacySha256": {
+    "v16": "4ed81f9f46093c7ee3a07f8db8eed0009a082ba46ec20c5b2d7bd152dd2a6a75",
+    "v17": "839376c440df773315b9b99f6d622b00dc1eadad60e45cefce6649263a0c7666",
+    "v18": "4bf671a006ac6a4aea1c4ba5b85906607c69a11cf2e25e27fb7f21e209f96610",
+    "v19": "8d7a3a0ef3271cd6fb9acba2f95f864f1a2ee2c3a311fb857c7bcddecf58adc6"
+  }
+}

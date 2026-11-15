@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#fffaf8">
-<title>CandySky — Rapier Lab 1.9 · несколько фонтанов · v45</title>
+<title>CandySky — Rapier Lab 1.9 · несколько фонтанов · v48</title>
 <style>
 :root{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#26313a;background:#fffaf8;color-scheme:light}
 *{box-sizing:border-box}
@@ -163,15 +163,19 @@ button:hover{background:#faf4f3}button.primary{background:#f4d4d2;border-color:#
 <body>
 <div class="app" id="app">
  <canvas id="view" aria-label="Единая 3D-сцена нескольких фонтанов CandySky"></canvas>
- <header class="topbar"><div class="brand"><strong>CandySky · Фонтаны · v45</strong><small>Несколько композиций · высота сцены 3 м</small></div><div class="state" id="status"><i></i><span id="statusText">Загрузка движка</span></div></header>
+ <header class="topbar"><div class="brand"><strong>CandySky · Фонтаны · v48</strong><small>Несколько композиций · высота сцены 3 м</small></div><div class="state" id="status"><i></i><span id="statusText">Загрузка движка</span></div></header>
  <div class="panel-backdrop" id="panelBackdrop" aria-hidden="true"></div>
  <button type="button" class="panel-toggle" id="panelToggle" aria-controls="labPanel" aria-expanded="false" aria-label="Открыть управление фонтанами"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16M9 4v6M15 14v6"/></svg><span>Управление</span><span class="panel-toggle-count" id="panelToggleCount">0</span></button>
  <section class="panel" id="labPanel" aria-label="Управление фонтанами" aria-hidden="true" inert>
   <div class="panel-grabber" id="panelGrabber" aria-hidden="true"></div>
-  <div class="panel-head"><div><h2>Конструктор фонтанов</h2><p id="compositionInfo">Выбери шаблон и добавь в сцену</p></div><div class="panel-head-actions"><button class="detail-toggle" type="button" id="toggleDetails" aria-controls="labDetails" aria-expanded="false"><span id="toggleDetailsText">Показатели</span><span class="arrow" aria-hidden="true">⌄</span></button><button class="panel-close" type="button" id="closePanel" aria-label="Скрыть управление"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div></div>
+  <div class="panel-head"><div><h2>Конструктор шаров</h2><p id="compositionInfo">Выбери шаблон и добавь в сцену</p></div><div class="panel-head-actions"><button class="detail-toggle" type="button" id="toggleDetails" aria-controls="labDetails" aria-expanded="false"><span id="toggleDetailsText">Показатели</span><span class="arrow" aria-hidden="true">⌄</span></button><button class="panel-close" type="button" id="closePanel" aria-label="Скрыть управление"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div></div>
   <div class="action-heading">Новый фонтан</div>
   <div class="library-grid"><select id="presetSelect" aria-label="Выбрать шаблон для добавления"><option value="7">7 шаров · 1+3+3</option><option value="11">11 шаров · 1+3+3+4</option><option value="13">13 шаров · 1+3+4+5</option><option value="15">15 шаров · 1+3+3+4+4</option></select><button class="primary" id="addFountain" type="button">+ Добавить</button></div>
-  <div class="action-heading">Фонтаны в комнате (коснись для выбора)</div>
+  <div class="action-heading">Отдельные шары</div>
+  <p class="blurb">Тип, размер и цвет — в настройках шара ниже. Под потолком пока доступен гелиевый латекс.</p>
+  <div class="actions"><button id="addSingle" type="button">+ Шар с грузиком</button><button id="addCeiling" type="button">+ Под потолок</button></div>
+  <label class="labelrow" for="ceilingCount">Количество под потолок <input id="ceilingCount" type="number" min="1" max="20" value="1" style="width:65px"></label>
+  <div class="action-heading">Композиции в комнате (коснись для выбора)</div>
   <div class="fountain-list" id="fountainList" role="group" aria-label="Добавленные фонтаны"></div>
   <div class="actions"><button id="deleteFountain" type="button">Удалить выбранный</button><button id="resetFountain" type="button">Сбросить выбранный</button></div>
   <div class="fountain-summary" id="fountainSummary">Выбери фонтан для редактирования. Каждый имеет независимый грузик и свой граф лент.</div>
@@ -196,13 +200,13 @@ button:hover{background:#faf4f3}button.primary{background:#f4d4d2;border-color:#
   <div id="draftStatus" class="quickline" aria-live="polite">Черновики: проверка...</div>
   <div id="offlineStatus" class="quickline">Сетевые библиотеки: офлайн пока не реализован.</div>
   <div id="quickline" class="quickline" aria-live="polite">Перетаскивай грузики и шары внутри общей комнаты.</div>
-  <div id="labDetails" class="panel-details"><div class="diagnostics"><span>Фонтанов</span><strong id="metricFountains">0</strong><span>Шаров всего</span><strong id="metricBalloons">0</strong><span>Узлов / лент</span><strong id="metricNodes">0 / 0</strong><span>Минимум между шарами</span><strong id="metricDistance">—</strong><span>Время</span><strong id="metricTime">0 с</strong></div><div class="log" id="log" role="status">Загрузка…</div></div>
+  <div id="labDetails" class="panel-details"><div class="diagnostics"><span>Композиций</span><strong id="metricFountains">0</strong><span>Шаров всего</span><strong id="metricBalloons">0</strong><span>Узлов / лент</span><strong id="metricNodes">0 / 0</strong><span>Минимум между шарами</span><strong id="metricDistance">—</strong><span>Время</span><strong id="metricTime">0 с</strong></div><div class="log" id="log" role="status">Загрузка…</div></div>
  </section>
- <div class="tip">Выбери 7, 11, 13 или 15 шаров и добавляй несколько фонтанов. Касание грузика выбирает фонтан. Все шары и грузы существуют в одной физической сцене Rapier.</div>
+ <div class="tip">Добавляй фонтаны, отдельные шары с грузиком и латекс под потолок. Перетаскивай грузик или шар для размещения. Все объекты находятся в общей физической сцене.</div>
  <div class="load" id="loading"><h2>Загрузка CandySky 3D</h2><p id="loadText">Подключаю Three.js и Rapier…</p><button id="retry" hidden>Повторить</button><button id="copyError" hidden>Скопировать ошибку</button></div>
 </div>
 <script type="module">
-// CandySky v45: единый экспериментальный мир для нескольких независимых фонтанов.
+// CandySky v48: единый экспериментальный мир для нескольких независимых фонтанов.
 // Оригинальные v16 / v17 / v18 / v19 остаются неизменными файлами.
 // Реальная физика Rapier + XPBD локально, библиотеки тестово загружаются с CDN (не production/offline).
 const THREE_SOURCES=[['jsDelivr · Three.js 0.164.1','https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js']];
@@ -226,7 +230,7 @@ const loadRapier=()=>loadLibrary('Rapier',RAPIER_SOURCES,async m=>{
 const LENGTH_MIN=.10,LENGTH_MAX=1.80,DT=1/60,ROOM_HALF=2.5,ROOM_HEIGHT=3.0;
 const AIR_DENSITY=1.225,GRAVITY=9.81,RIBBON_AIR_DAMPING=8.5,RIBBON_BEND_COMPLIANCE=.00012,RIBBON_WIND_DECAY=2.8;
 const FOUNTAIN_BALLOON_FRICTION=0,FOUNTAIN_LINEAR_DAMPING=1.0,FOUNTAIN_ANGULAR_DAMPING=1.8;
-const BALLOON_FRICTION=.08,MAX_FOUNTAINS=4,COLORS=[0xf0bbc8,0xa5daca,0xf3cf84,0xb9b1e9,0xa8d1ed,0xf0b7a4,0xd6a8d6,0xb9d2ac];
+const BALLOON_FRICTION=.08,MAX_FOUNTAINS=4,MAX_LOOSE=40,COLORS=[0xf0bbc8,0xa5daca,0xf3cf84,0xb9b1e9,0xa8d1ed,0xf0b7a4,0xd6a8d6,0xb9d2ac];
 const LATEX_PROFILE=[[0,0],[.025,.153],[.083,.291],[.183,.418],[.327,.488],[.435,.500],[.548,.484],[.657,.423],[.774,.328],[.870,.215],[.957,.100],[1,.044]];
 // Test products: illustrative physical estimates, not commercial SKUs.
 const PRODUCT_RULES={latex:{topOnly:false},foilDigit:{topOnly:true},foilStar:{topOnly:false},foilHeart:{topOnly:false}};
@@ -499,7 +503,7 @@ function productSpec(product=null){
 function productLabelBase(b){const s=productSpec(b.product);return FOIL_SHAPES[s.kind]?(s.label||FOIL_SHAPES[s.kind].label)+' · '+[s.width,s.height,s.depth].map(v=>(v*100).toLocaleString('ru-RU',{maximumFractionDigits:1})).join('×')+' см':s.kind==='latex'?'Sempertex '+s.series+' · '+s.sizeCm+' см · '+LATEX_FINISHES[s.finish].label:'Agura SLIM '+s.digit+' · 102 см (надутый '+s.bodyHeightCm+' см)'}
 
 function productLabel(b){return productLabelBase(b)+(b.product?.foilFinish==='chrome'?' · Хром':'')}
-function slotLabel(b){const f=getFountain(b.fountainId),i=f.balloons.indexOf(b);return '№'+(i+1)+(b.fountainRole==='top'?' · Верхний':' · Ярус '+(f.preset.tiers.findIndex(t=>t.key===b.junctionKey)+1))}
+function slotLabel(b){if(b.placementMode)return b.placementMode==='ceiling'?'Под потолком':'С грузиком';const f=getFountain(b.fountainId),i=f.balloons.indexOf(b);return '№'+(i+1)+(b.fountainRole==='top'?' · Верхний':' · Ярус '+(f.preset.tiers.findIndex(t=>t.key===b.junctionKey)+1))}
 function editorProduct(){const kind=el('productKind').value;return {kind,...(kind!=='latex'&&FOIL_CHROME_COLORS.some(([,color])=>color===Number(el('productColor').value))?{foilFinish:'chrome'}:{}),sizeCm:Number(el('productSize').value),...(kind==='foilDigit'?{digit:Number(el('productDigit').value)}:kind==='latex'?{finish:el('productFinish').value}:{})}}
 function updateProductSizes(){updateEditorColors();const kind=el('productKind').value,select=el('productSize');select.replaceChildren();for(const size of FOIL_SHAPES[kind]?FOIL_SHAPE_SIZES[kind]:kind==='latex'?SEMPERTEX_DATA.map(d=>d.maxDiameterCm):[102]){const o=document.createElement('option');o.value=size;o.textContent=FOIL_SHAPES[kind]?foilSizeLabel(kind,size):kind==='latex'?'Sempertex '+SEMPERTEX_DATA.find(d=>d.maxDiameterCm===size).series+' · '+size.toLocaleString('ru-RU')+' см':"Agura SLIM 40″ / 102 см";select.append(o)}select.value=FOIL_SHAPES[kind]?String(FOIL_SHAPES[kind].sizeCm):kind==='latex'?'30':'102';el('digitField').hidden=kind!=='foilDigit';el('finishField').hidden=kind!=='latex';el('latexReference').hidden=kind!=='latex';el('shapeReference').hidden=!FOIL_SHAPES[kind];el('digitReference').hidden=kind!=='foilDigit';updateSizeReference()}
 function updateSizeReference(){updateTopRibbonHint();if(FOIL_SHAPES[el('productKind').value]){const p=editorProduct(),spec=foilShapeSpec(p.kind,p.sizeCm);el('shapeReference').textContent=p.kind==='foilHeart'&&spec.sizeCm===61?'Agura 30″: расчётные надутые размеры 61×60×33 см, гелий 53 л. Размеры и масса оболочки оценочные.':p.kind==='foilHeart'&&spec.sizeCm===75?'Grabo 36″: 75×70×41 см, гелий 111 л. Масса оболочки оценочная.':spec.sizeCm===64?'Agura 30″: расчётные надутые размеры 64×60,5×30 см, гелий 47 л. Размеры и масса оболочки оценочные.':spec.nominalInches?'Grabo 36″: 86×81×39 см, гелий 94 л. Масса оболочки оценочная.':'Контур по Agura; размеры по согласованному аналогу Grabo. Масса оболочки приблизительная.'}if(el('productKind').value==='foilDigit'){const d=Number(el('productDigit').value);el('digitReference').textContent='Agura SLIM 40″ / 102 см — номинал. Надутый корпус: высота '+DIGIT_HEIGHTS[d]+' см, глубина 17 см. Пропорции оценочные по согласованному Grabo.'}}
@@ -602,6 +606,7 @@ function fitReplacement(b,spec,length=b.length){if(FOIL_SHAPES[spec.kind])return
 async function replaceBalloonProduct(b,product,color){
  if(!ready||testing||restoringDraft||!b)return false;
  const spec=productSpec(product);
+ if(b.placementMode)return replaceLooseProduct(b,product,color);
  if((PRODUCT_RULES[spec.kind].topOnly||spec.sizeCm>=61)&&b.fountainRole!=='top'){
   el('editorStatus').textContent=(spec.kind==='foilDigit'?'Фольгированная цифра':'Крупный шар')+(spec.kind==='foilDigit'?' допустима':' допустим')+' только наверху. Можно выбрать верхнюю позицию.';
   el('useTopSlot').hidden=false;return false;
@@ -627,7 +632,40 @@ function setupBalloonEditor(){
  el('useTopSlot').addEventListener('click',async()=>{const top=selectedFountain()?.balloons[0];if(!top)return;if(!confirm('Заменить верхний шар выбранного фонтана?'))return;try{await replaceBalloonProduct(top,editorProduct(),Number(el('productColor').value));selectBalloon(top.id)}catch(e){el('editorStatus').textContent=e.message}});
 }
 
+
+let looseAdding=false;
+function looseMaxLength(product,mode){const s=productSpec(product);return mode==='ceiling'?Math.max(.05,Math.min(2.3,ROOM_HEIGHT-s.top+s.tie-.08)):Math.max(.05,Math.min(2.3,ROOM_HEIGHT-.153-s.top+s.tie-.025))}
+function loosePosition(product,mode,length,preferred=null,ignore=null){
+ const spec=productSpec(product),box=spec.geometry.boundingBox,poses=[],shapes=spec.kind==='latex'?spec.parts.map(p=>({shape:new RAPIER.Ball(p.r+.006),offset:p})):spec.hulls.map(v=>({shape:new RAPIER.ConvexPolyhedron(v),offset:{x:0,y:0,z:0}}));
+ if(preferred)poses.push(preferred);
+ for(let z=-1.9;z<=1.91;z+=.38)for(let x=-1.9;x<=1.91;x+=.38)poses.push({x,z});
+ poses.sort((a,b)=>((a.x-(preferred?.x||0))**2+(a.z-(preferred?.z||0))**2)-((b.x-(preferred?.x||0))**2+(b.z-(preferred?.z||0))**2));
+ for(const p of poses){const y=mode==='ceiling'?ROOM_HEIGHT-spec.top-.04:.153+length-spec.tie;
+  const candidate={x:p.x,y,z:p.z};if(p.x+box.min.x< -2.47||p.x+box.max.x>2.47||p.z+box.min.z< -2.47||p.z+box.max.z>2.47||y+box.max.y>ROOM_HEIGHT-.015)continue;
+  if(mode==='single'&&fountains.some(f=>f!==getFountain(ignore?.fountainId)&&f.mode!=='ceiling'&&Math.hypot(f.weight.x-p.x,f.weight.z-p.z)<.35))continue;
+  // Real collider queries avoid overlapping existing bodies of any shape.
+  let clear=true;for(const b of balloons){if(b===ignore)continue;for(const part of shapes){const center={x:p.x+part.offset.x,y:y+part.offset.y,z:p.z+part.offset.z};for(let i=0;i<b.body.numColliders();i++)if(b.body.collider(i).intersectsShape(part.shape,center,{x:0,y:0,z:0,w:1})){clear=false;break}if(!clear)break}if(!clear)break}
+  if(clear)return candidate;
+ }throw Error('Нет свободного места. Перемести соседние шары или выбери меньший размер.');
+}
+async function addLoose(mode,product,color){
+ const spec=productSpec(product);if(mode==='ceiling'&&(spec.kind!=='latex'||spec.gas!=='helium'))throw Error('Под потолок выбери гелиевый латекс: R-5 наполнен воздухом.');
+ await ensureProductAssets(product);const length=Math.min(mode==='ceiling'?.65:1.2,looseMaxLength(product,mode)),pos=loosePosition(product,mode,length);
+ return addFountain(1,pos,{mode,height:length,products:[product],colors:[color],positions:[pos],restorePlacement:true});
+}
+async function replaceLooseProduct(b,product,color){
+ const mode=b.placementMode,spec=productSpec(product);if(mode==='ceiling'&&(spec.kind!=='latex'||spec.gas!=='helium'))throw Error('Под потолком доступен только гелиевый латекс.');
+ await ensureProductAssets(product);if(!balloons.includes(b))return false;const f=getFountain(b.fountainId),length=Math.min(b.length,looseMaxLength(product,mode)),p=b.body.translation(),preferred=mode==='single'?f.weight:p;
+ const spawn=loosePosition(product,mode,length,preferred,b);if(mode==='single'&&(Math.hypot(spawn.x-f.weight.x,spawn.z-f.weight.z)>.001))throw Error('Новый шар не помещается над грузиком. Сначала перемести грузик.');
+ const old={product:b.product,color:b.color,length:b.length,spawn:{...p,rotation:{...b.body.rotation()}}};disposeBalloon(b);b.product={...product};b.color=color;b.length=length;b.spawn=spawn;
+ try{createBalloonPhysics(b)}catch(e){disposeBalloon(b);Object.assign(b,old);createBalloonPhysics(b);throw e}f.height=f.targetHeight=length;renderControls();requestDraftSave();el('editorStatus').textContent='Шар обновлён.';return true;
+}
+function setupLooseButtons(){for(const [id,mode]of [['addSingle','single'],['addCeiling','ceiling']])el(id).addEventListener('click',async()=>{
+ if(!ready||testing||looseAdding)return;looseAdding=true;el('addSingle').disabled=el('addCeiling').disabled=true;let added=0;try{const count=mode==='ceiling'?Number(el('ceilingCount').value):1;if(!Number.isInteger(count)||count<1||count>20)throw Error('Выбери от 1 до 20 шаров.');const product=editorProduct(),color=Number(el('productColor').value);for(let i=0;i<count;i++){await addLoose(mode,product,color);added++}msg('Добавлено: '+added+(mode==='ceiling'?' под потолок.':' с грузиком.'))}catch(e){msg((added?'Добавлено '+added+'. ':'')+e.message,true)}finally{looseAdding=false;renderControls()}
+ });}
+
 const PRESETS=Object.freeze({
+ 1:{name:'Одиночный шар',lowerMin:.05,lowerMax:2.3,lowerDefault:1.2,tiers:[]},
  7:{name:'1+3+3',lowerMin:.05,lowerMax:.85,lowerDefault:.55,tiers:[{key:'upper',count:3,radius:.18,phase:0},{key:'lower',count:3,radius:.18,phase:Math.PI/3}]},
  11:{name:'1+3+3+4',lowerMin:.05,lowerMax:.85,lowerDefault:.55,tiers:[{key:'upper',count:3,radius:.18,phase:0},{key:'middle',count:3,radius:.18,phase:Math.PI/3},{key:'lower',count:4,radius:.22,phase:Math.PI/4}]},
  13:{name:'1+3+4+5',lowerMin:.05,lowerMax:.85,lowerDefault:.55,tiers:[{key:'upper',count:3,radius:.18,phase:0},{key:'middle',count:4,radius:.22,phase:Math.PI/4},{key:'lower',count:5,radius:.265,phase:Math.PI/5}]},
@@ -635,8 +673,8 @@ const PRESETS=Object.freeze({
 });
 const TOP_LENGTH=.51,MIDDLE_LENGTH=.27,SIDE_LENGTH=.27,STAR_SIDE_LENGTH=.36,STAR_TOP_LENGTH=.58,LARGE_STAR_TOP_LENGTH=.64,MEDIUM_STAR_TOP_LENGTH=.61,MEDIUM_HEART_TOP_LENGTH=.56,LARGE_HEART_TOP_LENGTH=.59;
 function topRibbonLength(product){return product?.kind==='foilHeart'?(product.sizeCm===61?MEDIUM_HEART_TOP_LENGTH:product.sizeCm===75?LARGE_HEART_TOP_LENGTH:TOP_LENGTH):product?.kind==='foilStar'?(product.sizeCm===64?MEDIUM_STAR_TOP_LENGTH:product.sizeCm===86?LARGE_STAR_TOP_LENGTH:STAR_TOP_LENGTH):product?.kind==='latex'&&product.sizeCm===60?.57:product?.kind==='latex'&&product.sizeCm===91.5?.586:TOP_LENGTH}
-function balloonRibbonLength(b,product=b.product){return b.fountainRole==='top'?topRibbonLength(product):product?.kind==='foilStar'?STAR_SIDE_LENGTH:SIDE_LENGTH}
-function updateTopRibbonHint(){const product=editorProduct(),long=isLargeTopProduct(product);el('topRibbonHint').hidden=!long;el('topRibbonHint').textContent=long?(FOIL_SHAPES[product.kind]?(product.kind==='foilStar'?'Звезда ':'Сердечко ')+foilShapeSpec(product.kind,product.sizeCm).nominalInches+'″ '+(product.kind==='foilStar'?'доступна':'доступно')+' только наверху. Лента ':'В верхней позиции лента ')+(topRibbonLength(product)*100).toLocaleString('ru-RU',{maximumFractionDigits:1})+' см. При нехватке места под потолком уменьши высоту фонтана.':''}
+function balloonRibbonLength(b,product=b.product){if(b.placementMode)return b.length;return b.fountainRole==='top'?topRibbonLength(product):product?.kind==='foilStar'?STAR_SIDE_LENGTH:SIDE_LENGTH}
+function updateTopRibbonHint(){if(chosen()?.placementMode){el('topRibbonHint').hidden=true;return}const product=editorProduct(),long=isLargeTopProduct(product);el('topRibbonHint').hidden=!long;el('topRibbonHint').textContent=long?(FOIL_SHAPES[product.kind]?(product.kind==='foilStar'?'Звезда ':'Сердечко ')+foilShapeSpec(product.kind,product.sizeCm).nominalInches+'″ '+(product.kind==='foilStar'?'доступна':'доступно')+' только наверху. Лента ':'В верхней позиции лента ')+(topRibbonLength(product)*100).toLocaleString('ru-RU',{maximumFractionDigits:1})+' см. При нехватке места под потолком уменьши высоту фонтана.':''}
 
 const el=id=>document.getElementById(id),fmtCm=m=>(m*100).toFixed(1)+' см';
 let THREE,RAPIER,world,balloonGeometry,weightGeometry,weightMaterial,ringGeometry,ringMaterial,scene,camera,renderer,raycaster,ndc,dragPlane,dragOffset;
@@ -654,7 +692,7 @@ function msg(s,problem=false){el('log').textContent=s;el('quickline').textConten
 const junctionPoint=(f,key)=>f?.junctions[key]?.body?vec(f.junctions[key].body.translation()):null;
 function getRing(b){const f=getFountain(b.fountainId);if(!f)return null;
  if(b.role==='connector'){if(b.fromKey!=='weight')return junctionPoint(f,b.fromKey);const p=f.weight.body.translation();return new THREE.Vector3(p.x,p.y+.081,p.z)}
- return junctionPoint(f,b.junctionKey);
+ if(b.placementMode==='ceiling')return null;if(b.placementMode==='single'){const p=f.weight.body.translation();return new THREE.Vector3(p.x,p.y+.081,p.z)}return junctionPoint(f,b.junctionKey);
 }
 function getTie(b){if(b.role==='connector')return junctionPoint(getFountain(b.fountainId),b.toKey);
  const p=b.body.translation(),q=b.body.rotation();return new THREE.Vector3(b.tieX||0,b.tieY??tieY,0).applyQuaternion(new THREE.Quaternion(q.x,q.y,q.z,q.w)).add(vec(p))}
@@ -754,13 +792,13 @@ function createConnector(f,fromKey,toKey,length){
  segment.joint=world.createImpulseJoint(RAPIER.JointData.rope(length,{x:0,y:0,z:0},parentAnchor),child,parent,true);
  f.segments.push(segment);segments.push(segment);initializeRibbon(segment);return segment;
 }
-function createFountainJunctions(f){const p=f.weight.body.translation(),baseY=p.y+.081;
+function createFountainJunctions(f){if(f.mode)return;const p=f.weight.body.translation(),baseY=p.y+.081;
  const keys=f.preset.tiers.map(t=>t.key).reverse(); // снизу вверх; порядок/длины эталонов сохранены
  keys.forEach((key,i)=>createJunction(f,key,baseY+f.height+i*MIDDLE_LENGTH,f.weight.x,f.weight.z));
  createConnector(f,'weight',keys[0],f.height);
  for(let i=1;i<keys.length;i++)createConnector(f,keys[i-1],keys[i],MIDDLE_LENGTH);
 }
-function reelFountain(f){if(Math.abs(f.targetHeight-f.height)<.000001)return;
+function reelFountain(f){if(f.mode){const b=f.balloons[0];if(b&&Math.abs(b.length-f.targetHeight)>.000001){b.length+=Math.sign(f.targetHeight-b.length)*Math.min(.015,Math.abs(f.targetHeight-b.length));f.height=b.length;if(b.joint){if(typeof b.joint.setLimits==="function")b.joint.setLimits(0,b.length);else{world.removeImpulseJoint(b.joint,true);b.joint=world.createImpulseJoint(RAPIER.JointData.rope(b.length,{x:b.tieX||0,y:b.tieY,z:0},{x:0,y:.081,z:0}),b.body,f.weight.body,true)}}b.ribbon.segmentLength=b.length/(b.ribbon.nodes.length-1);b.body.wakeUp()}return}if(Math.abs(f.targetHeight-f.height)<.000001)return;
  const segment=f.segments[0],diff=f.targetHeight-f.height;
  f.height+=Math.sign(diff)*Math.min(.015,Math.abs(diff));
  if(typeof segment.joint?.setLimits==='function')segment.joint.setLimits(0,f.height);
@@ -777,7 +815,7 @@ function fountainMetadata(f,index){const tiers=f.preset.tiers;
  let cursor=1;for(const tier of tiers){if(index<cursor+tier.count)return {length:SIDE_LENGTH,junctionKey:tier.key,fountainRole:tier.key,fountainSlot:index-cursor,fountainTierCount:tier.count};cursor+=tier.count}
  throw Error('Ошибка топологии фонтана '+f.presetKey+' при шаре '+index);
 }
-function spawnPosition(b){const f=getFountain(b.fountainId),j=junctionPoint(f,b.junctionKey),top=b.fountainRole==='top';
+function spawnPosition(b){if(b.placementMode){if(b.spawn)return b.spawn;const f=getFountain(b.fountainId),spec=productSpec(b.product);return {x:f.weight.x,y:b.placementMode==='ceiling'?Math.max(.5,ROOM_HEIGHT-spec.top-.35):.153+b.length-spec.tie,z:f.weight.z}}const f=getFountain(b.fountainId),j=junctionPoint(f,b.junctionKey),top=b.fountainRole==='top';
  if(b.spawn&&[b.spawn.x,b.spawn.y,b.spawn.z].every(Number.isFinite))return b.spawn;
  if(top)return {x:j.x,y:Math.min(ROOM_HEIGHT-(b.topY??topY)-.015,j.y+b.length-.009-(b.tieY??tieY)),z:j.z};
  const tier=f.preset.tiers.find(t=>t.key===b.junctionKey);
@@ -789,25 +827,25 @@ function placeForNextFountain(){const candidates=[{x:-1.15,z:0},{x:1.15,z:0},{x:
  const ordered=candidates.map(p=>({...p,score:score(p)})).sort((a,b)=>b.score-a.score);
  return ordered[0];
 }
-function addFountain(type,coords=null,{height=null,colors=null,positions=null,id=null,products=null,restorePlacement=false}={}){
+function addFountain(type,coords=null,{height=null,colors=null,positions=null,id=null,products=null,restorePlacement=false,mode=null}={}){
  if(!PRESETS[type])throw Error('Неизвестный фонтан: '+type);
- if(fountains.length>=MAX_FOUNTAINS)throw Error('Пока максимум '+MAX_FOUNTAINS+' фонтана в общей сцене.');
+ if((!mode&&fountains.filter(f=>!f.mode).length>=MAX_FOUNTAINS)||(mode&&fountains.filter(f=>f.mode).length>=MAX_LOOSE))throw Error(mode?'Пока максимум '+MAX_LOOSE+' отдельных шаров.':'Пока максимум '+MAX_FOUNTAINS+' фонтана в общей сцене.');
  const pos=coords||placeForNextFountain(),preset=PRESETS[type];
  if(![pos.x,pos.z].every(Number.isFinite)||Math.abs(pos.x)>2.3||Math.abs(pos.z)>2.3)throw Error('Грузик вне комнаты');
- if(!restorePlacement&&fountains.some(f=>Math.hypot(f.weight.x-pos.x,f.weight.z-pos.z)<.60))throw Error('Между грузиками недостаточно места');
+ if(!restorePlacement&&mode!=='ceiling'&&fountains.some(f=>f.mode!=='ceiling'&&Math.hypot(f.weight.x-pos.x,f.weight.z-pos.z)<.60))throw Error('Между грузиками недостаточно места');
  const fid=id===null?nextFountainId++:id;nextFountainId=Math.max(nextFountainId,fid+1);
  const weight={id:nextWeightId++,fountainId:fid,x:pos.x,z:pos.z};
- const f={id:fid,presetKey:Number(type),preset,weight,junctions:{},segments:[],balloons:[],height:height===null?preset.lowerDefault:THREE.MathUtils.clamp(height,preset.lowerMin,preset.lowerMax),targetHeight:0};f.targetHeight=f.height;
- fountains.push(f);weights.push(weight);
+ const f={mode,id:fid,presetKey:Number(type),preset,weight,junctions:{},segments:[],balloons:[],height:height===null?preset.lowerDefault:THREE.MathUtils.clamp(height,preset.lowerMin,preset.lowerMax),targetHeight:0};f.targetHeight=f.height;
+ fountains.push(f);if(mode!=='ceiling')weights.push(weight);
  try{
-  createWeightPhysics(weight);createFountainJunctions(f);
+  if(mode!=='ceiling')createWeightPhysics(weight);createFountainJunctions(f);
   for(let i=0;i<Number(type);i++){
-   const b={id:nextBalloonId++,fountainId:fid,weightId:weight.id,color:Array.isArray(colors)?Number(colors[i])>>>0:COLORS[(i+fid-1)%COLORS.length],...fountainMetadata(f,i)};
+   const b={id:nextBalloonId++,fountainId:fid,weightId:weight.id,color:Array.isArray(colors)?Number(colors[i])>>>0:COLORS[(i+fid-1)%COLORS.length],...(mode?{placementMode:mode,length:f.height,fountainRole:'top',junctionKey:null}:fountainMetadata(f,i))};
    if(products?.[i])b.product={...products[i]};
    if(positions?.[i]&&[positions[i].x,positions[i].y,positions[i].z].every(Number.isFinite))b.spawn=positions[i];
    f.balloons.push(b);balloons.push(b);createBalloonPhysics(b);
   }
- const top=f.balloons[0];if(top?.product?.kind==='latex'&&[60,91.5].includes(top.product.sizeCm)){
+ const top=f.balloons[0];if(!mode&&top?.product?.kind==='latex'&&[60,91.5].includes(top.product.sizeCm)){
   const start=fitReplacement(top,productSpec(top.product));top.body.setTranslation(start,true);top.body.setRotation(start.rotation,true);initializeRibbon(top);syncBalloon(top);
  }
  }catch(error){removeFountain(f,false);throw error}
@@ -827,10 +865,10 @@ function removeFountain(f,announce=true){if(!f||!fountains.includes(f))return;re
 }
 function resetSelectedFountain(){if(!ready||testing)return;const f=selectedFountain();if(!f)return;
  const {x,z}=f.weight,kind=f.presetKey,id=f.id,colors=f.balloons.map(b=>b.color),products=f.balloons.map(b=>b.product||null),height=f.targetHeight;
- removeFountain(f,false);addFountain(kind,{x,z},{id,height,colors,products,restorePlacement:true});renderControls();requestDraftSave();msg('Сброшен только фонтан №'+id+'. Остальные не пересоздавались.')
+ removeFountain(f,false);addFountain(kind,{x,z},{id,height,colors,products,mode:f.mode,restorePlacement:true});renderControls();requestDraftSave();msg('Сброшен только фонтан №'+id+'. Остальные не пересоздавались.')
 }
 function changeFountainHeight(target){const f=selectedFountain();if(!ready||testing||!f)return;
- f.targetHeight=THREE.MathUtils.clamp(target,f.preset.lowerMin,f.preset.lowerMax);
+ f.targetHeight=THREE.MathUtils.clamp(target,f.preset.lowerMin,f.mode?looseMaxLength(f.balloons[0].product,f.mode):f.preset.lowerMax);
  el('fountainHeightOut').textContent=Math.round(f.targetHeight*100)+' см';renderControls();requestDraftSave();
 }
 
@@ -917,6 +955,7 @@ function solveRibbonDistance(nodes,i,j,rest,weights,compliance,lambdas,index){
 }
 function simulateRibbon(b){
  const r=b.ribbon,nodes=r.nodes,prev=r.previous,last=nodes.length-1;if(last<1)return;
+ if(b.placementMode==='ceiling'){const still=b.body.isSleeping()&&Math.hypot(r.wind.x,r.wind.z)<.001&&nodes[last].distanceToSquared(getTie(b))<1e-12;if(!still){r.restFrames=0;r.frozen=false}else{r.restFrames=(r.restFrames||0)+1;if(r.restFrames>90){r.frozen=true;return}}}
  const anchor=getRing(b),attach=getTie(b),free=!anchor;
  const span=free?0:anchor.distanceTo(attach),ratio=span/Math.max(b.length,.00001);
  const tension=free?0:THREE.MathUtils.smoothstep(ratio,.95,.995);r.tension=tension;
@@ -949,10 +988,11 @@ function simulateRibbon(b){
   nodes[0].copy(anchor);prev[0].copy(anchor);
  }
  nodes[last].copy(attach);prev[last].copy(attach);r.maxOffset=maxOffset;
+ if(b.placementMode==='ceiling')for(let i=last-1;i>=0;i--){const d=nodes[i].clone().sub(nodes[i+1]);if(d.lengthSq()<1e-12)d.set(0,-1,0);nodes[i].copy(nodes[i+1]).addScaledVector(d.normalize(),r.segmentLength)}
  let maxError=0;for(let i=0;i<last;i++)maxError=Math.max(maxError,Math.abs(nodes[i].distanceTo(nodes[i+1])-r.segmentLength));r.maxError=maxError;
 }
 function drawRibbon(b){
- const r=b.ribbon;if(!r?.mesh||r.nodes.length<2)return;
+ const r=b.ribbon;if(!r?.mesh||r.nodes.length<2||r.frozen)return;
  const positions=r.mesh.geometry.attributes.position,nodes=r.nodes,last=nodes.length-1;
  const tangent=new THREE.Vector3(),side=r.baseSide.clone(),beforeSide=new THREE.Vector3(),fallback=new THREE.Vector3(),width=.014;
  for(let i=0;i<=last;i++){
@@ -974,28 +1014,29 @@ function syncBody(){for(const w of weights)if(w.body&&w.visual){const p=w.body.t
 }
 function selectWeight(id){const f=fountains.find(f=>f.weight.id===id);if(!f)return;selectedFountainId=f.id;selectedId=f.balloons[0]?.id||null;renderControls();metrics()}
 function selectBalloon(id){const b=balloons.find(x=>x.id===id);if(!b)return;selectedId=id;selectedFountainId=b.fountainId;renderControls();metrics()}
-function renderControls(){renderBalloonEditor();const f=selectedFountain(),p=f?.preset;
- el('compositionInfo').textContent=fountains.length+' фонтан(ов) · '+balloons.length+' шар(ов) · '+segments.length+' лент';
+function renderControls(){renderBalloonEditor();updateTopRibbonHint();const f=selectedFountain(),p=f?.preset;
+ el('compositionInfo').textContent=fountains.filter(f=>!f.mode).length+' фонтан(ов) · '+balloons.length+' шар(ов) · '+segments.length+' лент';
  el('panelToggleCount').textContent=String(fountains.length);
- el('addFountain').disabled=!ready||testing||fountains.length>=MAX_FOUNTAINS;
+ el('addFountain').disabled=!ready||testing||fountains.filter(f=>!f.mode).length>=MAX_FOUNTAINS;
  el('deleteFountain').disabled=!ready||testing||!f;
  el('resetFountain').disabled=!ready||testing||!f;
  const input=el('fountainHeight');input.disabled=!ready||testing||!f;
- if(f){input.min=String(Math.round(p.lowerMin*100));input.max=String(Math.round(p.lowerMax*100));input.value=String(Math.round(f.targetHeight*100));el('fountainHeightOut').textContent=Math.round(f.targetHeight*100)+' см';
+ if(f){input.min=String(Math.round(p.lowerMin*100));input.max=String(Math.round((f.mode?looseMaxLength(f.balloons[0].product,f.mode):p.lowerMax)*100));input.value=String(Math.round(f.targetHeight*100));el('fountainHeightOut').textContent=Math.round(f.targetHeight*100)+' см';
   el('fountainSummary').textContent='Фонтан №'+f.id+' · '+f.presetKey+' шаров ('+p.name+') · '+p.tiers.length+' узла · '+(f.balloons.length+p.tiers.length)+' лент. Перемещается отдельным грузиком. Меняется только нижняя лента.';
   el('heightHint').textContent='Допустимый диапазон '+Math.round(p.lowerMin*100)+'–'+Math.round(p.lowerMax*100)+' см. Все внутренние ленты остаются исходными.';
  }else{el('fountainSummary').textContent='Добавь фонтан из каталога. Все добавленные композиции будут видны одновременно.';el('fountainHeightOut').textContent='—';el('heightHint').textContent='Сначала выбери фонтан.'}
- const list=el('fountainList');list.replaceChildren();for(const item of fountains){const btn=document.createElement('button');btn.type='button';btn.className='fountain-chip';btn.dataset.fountainId=String(item.id);btn.setAttribute('aria-pressed',String(item.id===selectedFountainId));btn.disabled=testing;const title=document.createElement('strong');title.textContent='№'+item.id+' · '+item.presetKey+' шаров';const detail=document.createElement('small');detail.textContent=item.preset.name+' · '+Math.round(item.targetHeight*100)+' см';btn.append(title,detail);list.append(btn)}
+ if(f?.mode){el('fountainSummary').textContent=(f.mode==='ceiling'?'Шар под потолком · без грузика':'Одиночный шар · собственный грузик')+' · '+productLabel(f.balloons[0]);el('heightHint').textContent=f.mode==='ceiling'?'Длина свободно свисающей ленты. Перетаскивай шар, чтобы разместить его.':'Длина ленты от грузика до узла шара.'}el('fountainHeight').previousElementSibling.querySelector('label').textContent=f?.mode?'Длина ленты':'Нижняя лента выбранного';el('addSingle').disabled=el('addCeiling').disabled=!ready||testing||looseAdding||fountains.filter(f=>f.mode).length>=MAX_LOOSE;
+ const list=el('fountainList');list.replaceChildren();for(const item of fountains){const btn=document.createElement('button');btn.type='button';btn.className='fountain-chip';btn.dataset.fountainId=String(item.id);btn.setAttribute('aria-pressed',String(item.id===selectedFountainId));btn.disabled=testing;const title=document.createElement('strong');title.textContent=item.mode?(item.mode==='ceiling'?'☁ Под потолком':'◉ С грузиком')+' · №'+item.id:'№'+item.id+' · '+item.presetKey+' шаров';const detail=document.createElement('small');detail.textContent=(item.mode==='ceiling'?'Свободная лента':item.preset.name)+' · '+Math.round(item.targetHeight*100)+' см';btn.append(title,detail);list.append(btn)}
 }
 function applyForces(){for(const b of balloons){
- b.body.resetForces(false);const buoyancy=b.buoyancy??buoyantForceN;let f={x:0,y:buoyancy,z:0};
+ b.body.resetForces(false);if(b.placementMode==='ceiling'&&b.body.isSleeping()&&drag?.id!==b.id)continue;const buoyancy=b.buoyancy??buoyantForceN;let f={x:0,y:buoyancy,z:0};
  if(drag?.kind==='balloon'&&drag.id===b.id&&drag.goal){const p=b.body.translation(),v=b.body.linvel(),goal=drag.goal,mass=b.body.mass(),kp=38,kd=13;
   const control={x:mass*(kp*(goal.x-p.x)-kd*v.x),y:mass*(kp*(goal.y-p.y)-kd*v.y),z:mass*(kp*(goal.z-p.z)-kd*v.z)};
   const norm=Math.hypot(control.x,control.y,control.z),scale=norm>.85?.85/norm:1;
   // A held balloon needs the hand to balance net lift; limit only the movement force.
   const holdingForce=mass*GRAVITY-buoyancy;
   f={x:control.x*scale,y:buoyancy+holdingForce+control.y*scale,z:control.z*scale};
- }b.body.addForce(f,false);
+ }if(b.placementMode==='ceiling'){b.body.resetTorques(false);const load=.00025*b.length*GRAVITY,attach=getTie(b),com=b.body.worldCom(),q=b.body.rotation(),up=new THREE.Vector3(0,1,0).applyQuaternion(new THREE.Quaternion(q.x,q.y,q.z,q.w)),moment=buoyancy*.025;f.y-=load;b.body.addTorque({x:(attach.z-com.z)*load-up.z*moment,y:0,z:-(attach.x-com.x)*load+up.x*moment},false)}b.body.addForce(f,false);
 }}
 function queueWeightMove(w,goal){const top=getFountain(w.fountainId)?.balloons[0],p=top?.product;w.moveTarget={x:goal.x,z:goal.z,smooth:top?.fountainRole==='top'&&isLargeTopProduct(p)}}
 function moveWeights(){
@@ -1069,7 +1110,7 @@ function setupPointer(){const canvas=el('view');
    const b=hit.balloon,w=hit.weight;if(b)selectBalloon(b.id);if(w)selectWeight(w.id);
    const p=hit.kind==='balloon'?vec(b.body.translation()):vec(w.body.translation());drag={kind:hit.kind,id:b?.id??w?.id??null,pointerId:e.pointerId,goal:p.clone()};pointerNdc(e);
    if(hit.kind==='weight')dragPlane.setFromNormalAndCoplanarPoint(new THREE.Vector3(0,1,0),new THREE.Vector3(0,.072,0));
-   else{const normal=new THREE.Vector3();camera.getWorldDirection(normal);dragPlane.setFromNormalAndCoplanarPoint(normal,p)}
+   else if(b?.placementMode==='ceiling')dragPlane.setFromNormalAndCoplanarPoint(new THREE.Vector3(0,1,0),p);else{const normal=new THREE.Vector3();camera.getWorldDirection(normal);dragPlane.setFromNormalAndCoplanarPoint(normal,p)}
    const point=new THREE.Vector3();raycaster.ray.intersectPlane(dragPlane,point);dragOffset.copy(p).sub(point);
    if(b)b.body.wakeUp();else balloons.filter(item=>item.weightId===w.id).forEach(item=>item.body.wakeUp());
   }else orbitDrag={id:e.pointerId,x:e.clientX,y:e.clientY,yaw:orbit.yaw,pitch:orbit.pitch};
@@ -1077,7 +1118,7 @@ function setupPointer(){const canvas=el('view');
  canvas.addEventListener('pointermove',e=>{
   if(touchPoints.has(e.pointerId))touchPoints.set(e.pointerId,{x:e.clientX,y:e.clientY});
   if(pinch&&touchPoints.size>=2){const pts=[...touchPoints.values()],gap=Math.max(5,Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y));orbit.distance=THREE.MathUtils.clamp(pinch.distance*pinch.gap/gap,2.0,9.5);updateCamera();return}
-  if(drag?.pointerId===e.pointerId){pointerNdc(e);const point=new THREE.Vector3();if(raycaster.ray.intersectPlane(dragPlane,point)){point.add(dragOffset);if(drag.kind==='weight'){point.y=.072;point.x=THREE.MathUtils.clamp(point.x,-2.3,2.3);point.z=THREE.MathUtils.clamp(point.z,-2.3,2.3)}else clampTarget(point);drag.goal=point}}
+  if(drag?.pointerId===e.pointerId){pointerNdc(e);const point=new THREE.Vector3();if(raycaster.ray.intersectPlane(dragPlane,point)){point.add(dragOffset);if(drag.kind==='weight'){point.y=.072;point.x=THREE.MathUtils.clamp(point.x,-2.3,2.3);point.z=THREE.MathUtils.clamp(point.z,-2.3,2.3)}else if(balloons.find(b=>b.id===drag.id)?.placementMode==='ceiling'){point.x=THREE.MathUtils.clamp(point.x,-2.3,2.3);point.z=THREE.MathUtils.clamp(point.z,-2.3,2.3);point.y=drag.goal.y}else clampTarget(point);drag.goal=point}}
   else if(orbitDrag?.id===e.pointerId){orbit.yaw=orbitDrag.yaw-(e.clientX-orbitDrag.x)*.007;orbit.pitch=THREE.MathUtils.clamp(orbitDrag.pitch+(e.clientY-orbitDrag.y)*.005,-.36,1.22);updateCamera()}
  });
  const release=e=>{touchPoints.delete(e.pointerId);if(touchPoints.size<2)pinch=null;if(drag?.pointerId===e.pointerId){if(drag.kind==='weight'&&drag.goal){const w=getWeight(drag.id);if(w?.body){if(e.type==='pointercancel'||paused)delete w.moveTarget;else queueWeightMove(w,drag.goal)}}const b=drag.kind==='balloon'?balloons.find(item=>item.id===drag.id):null;drag=null;if(b)b.body.wakeUp();requestDraftSave()}if(orbitDrag?.id===e.pointerId)orbitDrag=null};
@@ -1091,11 +1132,11 @@ function animate(now){frameReq=requestAnimationFrame(animate);if(!ready)return;
  if(!paused&&!testing){accumulator+=delta;let count=0;while(accumulator>=DT&&count<5){step();accumulator-=DT;count++}if(count===5)accumulator=0}
  syncBody();for(const b of balloons)drawRibbon(b);for(const seg of segments)drawRibbon(seg);if(now-lastMetrics>180){lastMetrics=now;metrics()}updateFoilReflections(now);renderer.render(scene,camera);
 }
-function setupButtons(){setupBalloonEditor();
+function setupButtons(){setupBalloonEditor();setupLooseButtons();
  el('addFountain').addEventListener('click',()=>{if(!ready||testing)return;try{const kind=Number(el('presetSelect').value),f=addFountain(kind);msg('Добавлен фонтан №'+f.id+': '+kind+' шаров. Общая сцена: '+fountains.length+' фонтана, '+balloons.length+' шаров.')}catch(e){msg(String(e.message||e),true)}});
  el('fountainList').addEventListener('click',e=>{const btn=e.target.closest('[data-fountain-id]');if(!btn)return;const id=Number(btn.dataset.fountainId),f=getFountain(id);if(!f)return;selectedFountainId=id;selectedId=f.balloons[0]?.id;renderControls();metrics()});
- el('deleteFountain').addEventListener('click',()=>{const f=selectedFountain();if(!ready||testing||!f)return;if(!confirm('Удалить фонтан №'+f.id+' ('+f.presetKey+' шаров)? Остальные сохранятся.'))return;removeFountain(f)});
- el('resetFountain').addEventListener('click',()=>{const f=selectedFountain();if(!ready||testing||!f)return;if(!confirm('Вернуть фонтан №'+f.id+' в начальное положение? Остальные не изменятся.'))return;resetSelectedFountain()});
+ el('deleteFountain').addEventListener('click',()=>{const f=selectedFountain();if(!ready||testing||!f)return;if(!confirm('Удалить '+(f.mode?'шар':'фонтан')+' №'+f.id+'? Остальные сохранятся.'))return;removeFountain(f)});
+ el('resetFountain').addEventListener('click',()=>{const f=selectedFountain();if(!ready||testing||!f)return;if(!confirm('Вернуть '+(f.mode?'шар':'фонтан')+' №'+f.id+' в начальное положение? Остальные не изменятся.'))return;resetSelectedFountain()});
  el('fountainHeight').addEventListener('input',e=>changeFountainHeight(Number(e.target.value)/100));
  el('gust').addEventListener('click',()=>{if(!ready||testing)return;for(const b of balloons){const angle=b.id*2.399963;b.body.applyImpulse({x:.008*Math.cos(angle),y:0,z:.008*Math.sin(angle)},true);b.ribbon.wind={x:3*Math.cos(angle),z:3*Math.sin(angle)}}msg('Порыв действует на все '+fountains.length+' фонтанов.')});
  el('pause').addEventListener('click',()=>{if(!ready||testing)return;paused=!paused;el('pause').textContent=paused?'Продолжить':'Пауза';msg(paused?'Сцена остановлена.':'Физика продолжается.')});
@@ -1104,7 +1145,7 @@ function setupButtons(){setupBalloonEditor();
 
 
 async function readPreviousDraft(name='candysky-3d-multifountain-v23-drafts'){return new Promise((resolve,reject)=>{const req=indexedDB.open(name,1);req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains('scenes'))req.result.createObjectStore('scenes')};req.onerror=()=>reject(req.error);req.onsuccess=()=>{const db=req.result,tx=db.transaction('scenes','readonly'),read=tx.objectStore('scenes').get('current');let result;read.onsuccess=()=>{result=read.result};tx.oncomplete=()=>{db.close();resolve(result)};tx.onabort=()=>{db.close();reject(tx.error)}}})}
-const DRAFT_DB='candysky-3d-multifountain-v45-drafts',DRAFT_STORE='scenes',DRAFT_SCHEMA=3;
+const DRAFT_DB='candysky-3d-multifountain-v48-drafts',DRAFT_STORE='scenes',DRAFT_SCHEMA=3;
 let draftSaveTimer=null,dbPromise=null,restoringDraft=false,draftWritesBlocked=false;
 function openDraftDb(){if(!('indexedDB' in window))return Promise.reject(Error('IndexedDB недоступен'));
  if(!dbPromise)dbPromise=new Promise((resolve,reject)=>{const req=indexedDB.open(DRAFT_DB,1);
@@ -1122,7 +1163,7 @@ async function draftRecord(mode,value){const db=await openDraftDb();return new P
  tx.onabort=()=>reject(tx.error||Error('Транзакция отменена'));
 })}
 function snapshotScene(){return {schema:DRAFT_SCHEMA,roomHeight:ROOM_HEIGHT,createdAt:new Date().toISOString(),nextFountainId,selectedFountainId,orbit:{...orbit},
- fountains:fountains.map(f=>({id:f.id,type:f.presetKey,height:f.targetHeight,weight:{x:f.weight.body?.translation().x??f.weight.x,z:f.weight.body?.translation().z??f.weight.z},
+ fountains:fountains.map(f=>({id:f.id,type:f.presetKey,height:f.targetHeight,...(f.mode?{mode:f.mode}:{}),weight:{x:f.weight.body?.translation().x??f.weight.x,z:f.weight.body?.translation().z??f.weight.z},
   products:f.balloons.map(b=>b.product||null),colors:f.balloons.map(b=>b.color),positions:f.balloons.map(b=>{const p=b.body.translation(),q=b.body.rotation();return {x:p.x,y:p.y,z:p.z,rotation:{x:q.x,y:q.y,z:q.z,w:q.w},...(Number.isFinite(b.placementTarget)?{placementLength:b.length}:{})}})}))}}
 async function saveDraftNow(explicit=false){if(!ready||testing||restoringDraft||(draftWritesBlocked&&!explicit))return;if(draftSaveTimer){clearTimeout(draftSaveTimer);draftSaveTimer=null}
  try{await draftRecord('put',snapshotScene());draftWritesBlocked=false;el('draftStatus').textContent='Сцена сохранена на устройстве · '+new Date().toLocaleTimeString('ru-RU')}
@@ -1144,14 +1185,14 @@ function migrateSnapshot(raw){
  }
  copy.migratedFromSchema=raw.schema;return copy;
 }
-function validateSnapshot(s){if(!s||![1,2,3].includes(s.schema)||!Array.isArray(s.fountains)||s.fountains.length>MAX_FOUNTAINS)throw Error('Неверный формат черновика');
+function validateSnapshot(s){if(!s||![1,2,3].includes(s.schema)||!Array.isArray(s.fountains)||s.fountains.length>MAX_FOUNTAINS+MAX_LOOSE)throw Error('Неверный формат черновика');
  const isNum=n=>typeof n==='number'&&Number.isFinite(n);
  const savedRoomHeight=s.roomHeight??3.2;if(!isNum(savedRoomHeight)||savedRoomHeight<2.5||savedRoomHeight>3.2)throw Error('Неверная высота комнаты в черновике');
- const ids=new Set();for(const f of s.fountains){if(!Number.isSafeInteger(f.id)||f.id<1||ids.has(f.id)||!PRESETS[f.type]||!isNum(f.height)||!f.weight||![f.weight.x,f.weight.z].every(isNum)||
+ const ids=new Set();for(const f of s.fountains){if(!Number.isSafeInteger(f.id)||f.id<1||ids.has(f.id)||!PRESETS[f.type]||!isNum(f.height)||(f.mode!==undefined&&!['single','ceiling'].includes(f.mode))||(f.type===1&&!f.mode)||(f.mode&&f.type!==1)||!f.weight||![f.weight.x,f.weight.z].every(isNum)||
  Math.abs(f.weight.x)>2.3||Math.abs(f.weight.z)>2.3||!Array.isArray(f.colors)||f.colors.length!==Number(f.type)||!f.colors.every(isNum)||!Array.isArray(f.positions)||f.positions.length!==Number(f.type)||!f.positions.every(p=>p&&[p.x,p.y,p.z].every(isNum)&&Math.abs(p.x)<=2.5&&Math.abs(p.z)<=2.5&&p.y>=0&&p.y<=savedRoomHeight))throw Error('Повреждённые данные фонтана');ids.add(f.id)}
  for(const f of s.fountains){for(let i=0;i<f.positions.length;i++){const p=f.positions[i];if(p.placementLength!==undefined&&(!isNum(p.placementLength)||p.placementLength<(i===0?TOP_LENGTH:SIDE_LENGTH)||p.placementLength>.75||!FOIL_SHAPES[f.products?.[i]?.kind]))throw Error('Повреждённая длина размещения фигуры');}
  for(const p of f.positions){if(p.rotation){const q=p.rotation,values=[q.x,q.y,q.z,q.w];if(!values.every(isNum)||Math.abs(Math.hypot(...values)-1)>.01)throw Error('Повреждённая ориентация шара')}}if(f.products!==undefined){if(!Array.isArray(f.products)||f.products.length!==Number(f.type))throw Error('Повреждённый состав шаров');f.products.forEach((p,i)=>{if(p){const spec=productSpec(p);if(i>0&&(PRODUCT_RULES[spec.kind].topOnly||spec.sizeCm>=61))throw Error('Неверная позиция товара')}})}}
- return s;
+ for(const f of s.fountains)if(f.mode){const product=f.products?.[0]||null,spec=productSpec(product);if(f.height<.05||f.height>looseMaxLength(product,f.mode)+.001)throw Error('Неверная длина одиночной ленты');if(f.mode==='ceiling'&&(spec.kind!=='latex'||spec.gas!=='helium'))throw Error('Под потолком доступен только гелиевый латекс')}if(s.fountains.filter(f=>!f.mode).length>MAX_FOUNTAINS||s.fountains.filter(f=>f.mode).length>MAX_LOOSE)throw Error('Превышено количество объектов');return s;
 }
 function adaptSnapshotToRoom(s){
  if((s.roomHeight??3.2)<=ROOM_HEIGHT)return s;
@@ -1163,25 +1204,25 @@ async function restoreDraft(preloaded=null){if(!ready||testing||restoringDraft)r
  await Promise.all(s.fountains.flatMap(f=>(f.products||[]).map(ensureProductAssets)));
  const backup=snapshotScene();try{
   for(const f of fountains.slice())removeFountain(f,false);
-  for(const saved of s.fountains)addFountain(saved.type,saved.weight,{height:saved.height,colors:saved.colors,products:saved.products,positions:saved.rebuildPositions?null:saved.positions,id:saved.id,restorePlacement:true});
+  for(const saved of s.fountains)addFountain(saved.type,saved.weight,{height:saved.height,colors:saved.colors,products:saved.products,positions:saved.rebuildPositions?null:saved.positions,id:saved.id,mode:saved.mode,restorePlacement:true});
   nextFountainId=Math.max(nextFountainId,s.nextFountainId||1);
   selectedFountainId=getFountain(s.selectedFountainId)?.id||fountains[0]?.id||null;
   selectedId=selectedFountain()?.balloons[0]?.id||null;
   if(s.orbit&&[s.orbit.yaw,s.orbit.pitch,s.orbit.distance].every(Number.isFinite)){orbit={yaw:s.orbit.yaw,pitch:THREE.MathUtils.clamp(s.orbit.pitch,-.36,1.22),distance:THREE.MathUtils.clamp(s.orbit.distance,2,9.5)};updateCamera()}
- }catch(error){for(const f of fountains.slice())removeFountain(f,false);for(const old of backup.fountains)addFountain(old.type,old.weight,{height:old.height,colors:old.colors,products:old.products,positions:old.positions,id:old.id,restorePlacement:true});throw error}
+ }catch(error){for(const f of fountains.slice())removeFountain(f,false);for(const old of backup.fountains)addFountain(old.type,old.weight,{height:old.height,colors:old.colors,products:old.products,positions:old.positions,id:old.id,mode:old.mode,restorePlacement:true});throw error}
  draftWritesBlocked=false;renderControls();metrics();el('draftStatus').textContent='Сцена восстановлена · '+s.createdAt+(s.roomAdjustedFountains?.length?' · высокие фонтаны пересобраны под потолок 3 м':'');msg('Восстановлено '+fountains.length+' фонтана из локального черновика.');return true;
  }catch(err){draftWritesBlocked=true;el('draftStatus').textContent='Ошибка восстановления: '+String(err.message||err)+'. Исходный черновик сохранён. Автосохранение выключено до нажатия «Сохранить сцену». ';console.warn(err);return false}finally{restoringDraft=false}
 }
-async function initialize(){if(booting||ready)return;booting=true;lastLoadReport='CandySky v45 / '+new Date().toISOString()+'\n'+location.href+'\n';
+async function initialize(){if(booting||ready)return;booting=true;lastLoadReport='CandySky v48 / '+new Date().toISOString()+'\n'+location.href+'\n';
  el('loading').hidden=false;el('retry').hidden=true;el('copyError').hidden=true;
  try{el('loadText').textContent='Подготавливаю утверждённые модели…';await loadDigitModels();el('loadText').textContent='Загружаю Three.js…';THREE=await loadThree();el('loadText').textContent='Загружаю Rapier WASM…';RAPIER=await loadRapier();
   createScene();el('loadText').textContent='Подготавливаю оформление комнаты…';await setupRoomWallTextures();await setupRoomFloorTexture();if(!pointersBound){setupPointer();pointersBound=true}if(!controlsBound){setupButtons();controlsBound=true}
   ready=true;try{
-   let saved=await draftRecord('get');if(!saved){try{saved=await readPreviousDraft('candysky-3d-multifountain-v44-drafts')||await readPreviousDraft('candysky-3d-multifountain-v43-drafts')||await readPreviousDraft('candysky-3d-multifountain-v42-drafts')||await readPreviousDraft('candysky-3d-multifountain-v41-drafts')||await readPreviousDraft('candysky-3d-multifountain-v40-drafts')||await readPreviousDraft('candysky-3d-multifountain-v39-drafts')||await readPreviousDraft('candysky-3d-multifountain-v38-drafts')||await readPreviousDraft('candysky-3d-multifountain-v37-drafts')||await readPreviousDraft('candysky-3d-multifountain-v36-drafts')||await readPreviousDraft('candysky-3d-multifountain-v35-drafts')||await readPreviousDraft('candysky-3d-multifountain-v34-drafts')||await readPreviousDraft('candysky-3d-multifountain-v33-drafts')||await readPreviousDraft('candysky-3d-multifountain-v32-drafts')||await readPreviousDraft('candysky-3d-multifountain-v31-drafts')||await readPreviousDraft('candysky-3d-multifountain-v30-drafts')||await readPreviousDraft('candysky-3d-multifountain-v29-drafts')||await readPreviousDraft('candysky-3d-multifountain-v28-drafts')||await readPreviousDraft('candysky-3d-multifountain-v27-drafts')||await readPreviousDraft('candysky-3d-multifountain-v26-drafts')||await readPreviousDraft('candysky-3d-multifountain-v25-drafts')||await readPreviousDraft()||await readPreviousDraft('candysky-3d-multifountain-v21-drafts')}catch(err){console.warn('Предыдущий черновик недоступен',err)}}
+   let saved=await draftRecord('get');if(!saved){try{saved=await readPreviousDraft('candysky-3d-multifountain-v45-drafts');if(!saved)saved=await readPreviousDraft('candysky-3d-multifountain-v44-drafts')||await readPreviousDraft('candysky-3d-multifountain-v43-drafts')||await readPreviousDraft('candysky-3d-multifountain-v42-drafts')||await readPreviousDraft('candysky-3d-multifountain-v41-drafts')||await readPreviousDraft('candysky-3d-multifountain-v40-drafts')||await readPreviousDraft('candysky-3d-multifountain-v39-drafts')||await readPreviousDraft('candysky-3d-multifountain-v38-drafts')||await readPreviousDraft('candysky-3d-multifountain-v37-drafts')||await readPreviousDraft('candysky-3d-multifountain-v36-drafts')||await readPreviousDraft('candysky-3d-multifountain-v35-drafts')||await readPreviousDraft('candysky-3d-multifountain-v34-drafts')||await readPreviousDraft('candysky-3d-multifountain-v33-drafts')||await readPreviousDraft('candysky-3d-multifountain-v32-drafts')||await readPreviousDraft('candysky-3d-multifountain-v31-drafts')||await readPreviousDraft('candysky-3d-multifountain-v30-drafts')||await readPreviousDraft('candysky-3d-multifountain-v29-drafts')||await readPreviousDraft('candysky-3d-multifountain-v28-drafts')||await readPreviousDraft('candysky-3d-multifountain-v27-drafts')||await readPreviousDraft('candysky-3d-multifountain-v26-drafts')||await readPreviousDraft('candysky-3d-multifountain-v25-drafts')||await readPreviousDraft()||await readPreviousDraft('candysky-3d-multifountain-v21-drafts')}catch(err){console.warn('Предыдущий черновик недоступен',err)}}
    if(saved){const restored=await restoreDraft(saved);if(!restored&&!fountains.length)addFountain(7,{x:0,z:0})}
    else addFountain(7,{x:0,z:0});
   }catch(err){draftWritesBlocked=true;el('draftStatus').textContent='Черновик недоступен: '+String(err.message||err)+'. Автосохранение выключено до нажатия «Сохранить сцену». ';if(!fountains.length)addFountain(7,{x:0,z:0})}
-  renderControls();el('offlineStatus').textContent='Тестовый v45: Three.js/Rapier с jsDelivr. Офлайн не готов.';
+  renderControls();el('offlineStatus').textContent='Тестовый v48: Three.js/Rapier с jsDelivr. Офлайн не готов.';
   el('loading').hidden=true;cancelAnimationFrame(frameReq);lastFrame=0;animate(0);msg('Общая сцена готова: '+fountains.length+' фонтан(ов).');
  }catch(err){ready=false;lastLoadReport+='\nОшибка: '+String(err.message||err);el('loadText').textContent='Запуск не удался: '+String(err.message||err)+'; нужен интернет для CDN.';el('retry').hidden=false;el('copyError').hidden=false;msg('Не удалось запустить Rapier',true);console.error(err)}finally{booting=false}
 }
