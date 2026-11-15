@@ -1413,5 +1413,11 @@
   },
   "realIPhoneTested": false,
   "fpsMeasured": false,
-  "physicsAlgorithmsUnchanged": true
+  "physicsAlgorithmsUnchanged": true,
+  "reflections": {
+    "stationaryColorChangeInvalidatesMaps": true,
+    "queuedCapturesRefreshMaps": true,
+    "newCamerasCreated": false,
+    "errors": []
+  }
 }

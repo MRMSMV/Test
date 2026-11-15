@@ -690,7 +690,7 @@ function applyCompositionRibbonStyle(f){
  for(const b of f.balloons){b.ribbon.frozen=false;drawRibbon(b)}for(const seg of f.segments)drawRibbon(seg);
 }
 function setCompositionRibbonStyle(f,key){
- if(!f||!Object.hasOwn(RIBBON_STYLES,key))throw Error('Неизвестный цвет лент');f.ribbonStyle=key;applyCompositionRibbonStyle(f);renderRibbonStyleControls();requestDraftSave();
+ if(!f||!Object.hasOwn(RIBBON_STYLES,key))throw Error('Неизвестный цвет лент');f.ribbonStyle=key;applyCompositionRibbonStyle(f);for(const state of foilReflectionStates.values())state.signature=null;renderRibbonStyleControls();requestDraftSave();
 }
 function renderRibbonStyleControls(){
  const f=selectedFountain(),select=el('ribbonColor');select.disabled=!ready||testing||!f;select.value=f?.ribbonStyle||'';
