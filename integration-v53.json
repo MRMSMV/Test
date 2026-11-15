@@ -1,0 +1,14 @@
+{
+  "version": "v53",
+  "rollback": "v52",
+  "privateDocumentationIncluded": false,
+  "realIPhoneTested": false,
+  "sha256": {
+    "candysky-rapier-lab-1-v53-fountain-bases.html": "831b21565d6bda9e05d9a9844658ba53781aff0fa391d89fa38f1b37391742d9",
+    "assets/wall04-cs-e293a47d6d58.webp": "e293a47d6d58126c25675b529e133275559059c24e3ea15d1f0db0527a48d14e",
+    "approved/walls/wall04-v53-source.json": "f90d246d64182b6a242744e4248747fa468b76550115fb4333af118ce8aea974",
+    "README.md": "f13bcc473dcc1e1f63dd6265dd1226205d16dfb7a5a8541f11b96a524a5e67c7",
+    "test-report-v53.json": "ce693d49481a54a1c6bd1a5e211903b1d16855eb52cbd02a62a98ce20818c1b6",
+    "version-retention.json": "c026fbb286549cf0753dd7fea3b18c72ab44ee2e0fa5ef9e7334cfad9bbc3cf6"
+  }
+}

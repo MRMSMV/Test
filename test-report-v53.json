@@ -1,0 +1,30 @@
+{
+  "version": "v53",
+  "buildSha256": "831b21565d6bda9e05d9a9844658ba53781aff0fa391d89fa38f1b37391742d9",
+  "browser": "Chromium / Rapier WASM",
+  "realIPhoneSafariTested": false,
+  "uniformScenes": 16,
+  "mixedScenes": 16,
+  "upperVariants": 82,
+  "replacementOperations": 232,
+  "movementRetainsLengths": true,
+  "physicalConstraintToleranceMm": 3,
+  "base30LengthsCm": {
+    "top": 51,
+    "side": 27,
+    "betweenTierNodes": 27
+  },
+  "mobileEditorAndReverseReplacement": true,
+  "exactDraftReload": true,
+  "pendingLatexPlacementReload": true,
+  "v52ImportedReadOnly": true,
+  "limits": {
+    "fountains": 4,
+    "balloons": 100,
+    "fifthBlocked": true,
+    "hundredOneBlocked": true
+  },
+  "modelsMaterialsForcesAndReflectionsUnchanged": true,
+  "newWallSource": "CandySky_Wall_04_CS_2000x1200.png",
+  "jsErrors": []
+}
