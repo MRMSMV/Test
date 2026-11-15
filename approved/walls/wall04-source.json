@@ -1,0 +1,42 @@
+{
+  "source": "1-CandySky_Wall_04_2000x1200.png",
+  "sourceSize": [
+    2000,
+    1200
+  ],
+  "sourceSha256": "5b38747421577d7ece18ee5a260bf760e6bbb3158ab59aada781095f82c38a57",
+  "assetPath": "assets/wall04-46f5c8f24a50.webp",
+  "webPQuality": 92,
+  "webPBytes": 260210,
+  "webPSha256": "46f5c8f24a50b902ff65343ff7026d7716ecf5996e6ec02c2944e12df0826040",
+  "surfaceMeters": [
+    5,
+    3
+  ],
+  "position": [
+    0,
+    1.5,
+    2.499
+  ],
+  "normal": [
+    0,
+    0,
+    -1
+  ],
+  "repeat": [
+    1,
+    1
+  ],
+  "insideOnly": true,
+  "toneMapped": false,
+  "material": "MeshBasicMaterial, matching the original three walls",
+  "desktopTextureSize": [
+    2000,
+    1200
+  ],
+  "mobileTextureSize": [
+    1000,
+    600
+  ],
+  "newPhysicalColliders": false
+}

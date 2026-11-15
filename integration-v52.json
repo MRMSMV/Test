@@ -1,0 +1,23 @@
+{
+  "version": "v52",
+  "base": "v51",
+  "rollback": "v51",
+  "scope": "public release payload",
+  "retainedBuilds": [
+    "v52",
+    "v51"
+  ],
+  "sha256": {
+    "candysky-rapier-lab-1-v52-fourth-wall.html": "b79c5521fb7391a7b48315bef25a2885d1ee1af97598c179f44dd63a44b96b7d",
+    "assets/wall04-46f5c8f24a50.webp": "46f5c8f24a50b902ff65343ff7026d7716ecf5996e6ec02c2944e12df0826040",
+    "approved/walls/wall04-source.json": "516dad39eea1b04891a8388105bfe25d1ff2613b39a62c0823a26ccfc9d9b585",
+    "test-report-v52.json": "ceb961fe1bf7f8a3403860da9ef3cb0a36191aca5e13aa998392badf2caac2f3",
+    "foil-baseline-check-v52.json": "918da6b6f79428933582cec2e399dafd57b7ff7ee5de84fa35e38303ffdc8232",
+    "version-retention.json": "b8265941495c67e3c6eb41ad2b232fec1d1eac2d2c48ce7abad9a7dd0bb3df0a",
+    "v52-wall04-inside.png": "26d35d0613e1ddfc9e9df7252d98045ae5e825d590ab048ec6d582cfe459d52c",
+    "v52-wall04-outside.png": "50c4430a982de9ba17e78e87c2efe096621de0101c58db5d4e3c90f17dc573d8",
+    "README.md": "a3ef20d8cc0bed171e9d5d8b0137a2c5e3835080a312cc80137011b357d80bf8"
+  },
+  "privateDocumentationIncluded": false,
+  "realIPhoneTested": false
+}

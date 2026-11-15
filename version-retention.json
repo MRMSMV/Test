@@ -3,10 +3,10 @@
   "branch": "main",
   "keepLatestBuilds": 2,
   "retainedBuilds": [
-    "v51",
-    "v50"
+    "v52",
+    "v51"
   ],
-  "indexBuild": "v51",
+  "indexBuild": "v52",
   "gitHistoryRewrite": false,
   "localArchivesUnchanged": true,
   "preservedModelSources": [
@@ -702,8 +702,8 @@
       "sha": "18a5ef42e3a4f3f923489fc35b73ecf9aa947db0"
     }
   ],
-  "currentTask": "Утверждённый матовый потолок Greige",
-  "rollbackBuild": "v50",
+  "currentTask": "Утверждённая четвёртая стена",
+  "rollbackBuild": "v51",
   "photoStatus": "deferred",
   "removedForV48": [
     "candysky-rapier-lab-1-v44-panorama-walls.html",
@@ -744,5 +744,13 @@
     "v49-weight-close.png",
     "v49-weight-fountain.png",
     "v49-weight-mobile.png"
+  ],
+  "removedForV52": [
+    "candysky-rapier-lab-1-v50-ribbon-colors.html",
+    "foil-baseline-check-v50.json",
+    "integration-v50.json",
+    "test-report-v50.json",
+    "v50-ribbon-colors.png",
+    "v50-ribbon-selector.png"
   ]
 }
