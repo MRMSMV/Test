@@ -1,0 +1,18 @@
+{
+  "build": "v54",
+  "sha256": "5b420b98bdfc7edeff74ea228a48f22164fe98d029d015f8628059bd63f07169",
+  "uniformOnlyBases": [
+    23,
+    25,
+    45
+  ],
+  "base30AndMixedLayoutUnchanged": true,
+  "draftSchema": 4,
+  "contactLayoutVersion": 1,
+  "importV53ReadOnly": true,
+  "savedUniformFountainsUpgradeSmoothly": true,
+  "mixedAndLegacySavedFountainsPreserved": true,
+  "exactReloadPassed": true,
+  "pendingRibbonLengthReloadPassed": true,
+  "rulesAndLimitsUnchanged": true
+}

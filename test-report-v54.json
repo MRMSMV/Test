@@ -1,0 +1,18 @@
+{
+  "build": "v54",
+  "uniformCases": 12,
+  "base30RegressionCases": 4,
+  "allContactCasesPassed": true,
+  "restMaxPhysicalGapMm": 5.997955799102783,
+  "afterMovementWholeFountainConnected": true,
+  "afterMovementNeighborsMayChangeNaturally": true,
+  "newBalloonToBalloonJoints": 0,
+  "replacementRoundTrips": 6,
+  "replacementOperations": 36,
+  "sourceV53DraftUnchanged": true,
+  "mobileChromiumEmulation": "390x844",
+  "realIPhoneSafariTested": false,
+  "embeddedModelsAndImagesExact": true,
+  "rollbackV53Exact": true,
+  "errors": []
+}

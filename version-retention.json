@@ -1,18 +1,18 @@
 {
   "retainedBuilds": [
-    "v53",
-    "v52"
+    "v54",
+    "v53"
   ],
-  "indexBuild": "v53",
-  "rollbackBuild": "v52",
+  "indexBuild": "v54",
+  "rollbackBuild": "v53",
   "previousBuildPreservedByteForByte": true,
   "removedFromCurrentTree": [
-    "candysky-rapier-lab-1-v51-greige-ceiling.html",
-    "foil-baseline-check-v51.json",
-    "integration-v51.json",
-    "test-report-v51.json",
-    "v51-ceiling-mobile.png",
-    "v51-ceiling-room.png"
+    "candysky-rapier-lab-1-v52-fourth-wall.html",
+    "foil-baseline-check-v52.json",
+    "integration-v52.json",
+    "test-report-v52.json",
+    "v52-wall04-inside.png",
+    "v52-wall04-outside.png"
   ],
   "gitHistoryPreserved": true
 }
