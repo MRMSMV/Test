@@ -1,0 +1,9 @@
+{
+  "build": "v55",
+  "sha256": "4886370fbcfa0c0d2fc8df50cf0f5cec797a2b57befa2db39cbdb265f56257a0",
+  "rollback": "candysky-rapier-lab-1-v54-compact-tiers.html",
+  "packetLimit": "remaining places within the shared 100-balloon limit",
+  "draftSchema": 4,
+  "readPreviousDraft": "v54 (read-only)",
+  "physicsAndFountainLayoutUnchanged": true
+}
