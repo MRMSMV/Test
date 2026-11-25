@@ -1,0 +1,18 @@
+{
+  "build": "v56",
+  "entry": "index.html",
+  "source": "candysky-rapier-lab-1-v56-mixed-packing.html",
+  "sha256": "666816e1108d9047a66c411fa3432788c01936b04848817bb8006ad03b7d4262",
+  "worker": "assets/packing-worker-26ac569dc607.mjs",
+  "core": "assets/packing-core-081fd9e70df1.mjs",
+  "rollback": "candysky-rapier-lab-1-v55-ceiling-batches.html",
+  "rollbackSha256": "4886370fbcfa0c0d2fc8df50cf0f5cec797a2b57befa2db39cbdb265f56257a0",
+  "nativeModelsEmbeddedDataUnchanged": true,
+  "standardLengthsUnchanged": true,
+  "roomHeightM": 3,
+  "maxFountains": 4,
+  "maxBalloons": 100,
+  "noExtraBalloonLinks": true,
+  "draftDatabase": "candysky-3d-multifountain-v56-drafts",
+  "previousDraftReadOnly": true
+}

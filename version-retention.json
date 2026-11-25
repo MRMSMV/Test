@@ -1,15 +1,15 @@
 {
   "retainedBuilds": [
-    "v55",
-    "v54"
+    "v56",
+    "v55"
   ],
-  "indexBuild": "v55",
-  "rollbackBuild": "v54",
+  "indexBuild": "v56",
+  "rollbackBuild": "v55",
   "previousBuildPreservedByteForByte": true,
   "removedFromCurrentTree": [
-    "candysky-rapier-lab-1-v53-fountain-bases.html",
-    "integration-v53.json",
-    "test-report-v53.json"
+    "candysky-rapier-lab-1-v54-compact-tiers.html",
+    "integration-v54.json",
+    "test-report-v54.json"
   ],
   "gitHistoryPreserved": true
 }
