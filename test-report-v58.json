@@ -1,0 +1,128 @@
+{
+  "build": "v58",
+  "date": "2026-11-27",
+  "firstChange": {
+    "prepareWorkerOnEditorOpen": true,
+    "prepareSelectedTexture": true,
+    "speculativeTextureKeysLimit": 2,
+    "sceneUnchangedUntilApply": true,
+    "reorderOnlyAfterBadDefault": true,
+    "fullPrecisionMovementValidationUnchanged": true
+  },
+  "validation": {
+    "initialMatrixAccepted": 20,
+    "preparationConsistencyRetests": 5,
+    "finalReorderFocusedTests": 3,
+    "exactStandardLayouts": 16,
+    "migrationSave100": {
+      "v57ImportExactNoRepacking": true,
+      "v58OwnSaveReloadV57Untouched": true,
+      "fourFountains40Ceiling100SaveReload": true
+    },
+    "mobile": {
+      "actualMobileCacheHit": true,
+      "mobileSaveReload": true,
+      "mobileCancelAtomic": true
+    },
+    "safety": {
+      "standards": [
+        [
+          23,
+          7
+        ],
+        [
+          23,
+          11
+        ],
+        [
+          23,
+          13
+        ],
+        [
+          23,
+          15
+        ],
+        [
+          25,
+          7
+        ],
+        [
+          25,
+          11
+        ],
+        [
+          25,
+          13
+        ],
+        [
+          25,
+          15
+        ],
+        [
+          30,
+          7
+        ],
+        [
+          30,
+          11
+        ],
+        [
+          30,
+          13
+        ],
+        [
+          30,
+          15
+        ],
+        [
+          45,
+          7
+        ],
+        [
+          45,
+          11
+        ],
+        [
+          45,
+          13
+        ],
+        [
+          45,
+          15
+        ]
+      ],
+      "reverseToStandard": true,
+      "invalidAtomic": true,
+      "queueCancelAndOtherControls": true,
+      "restoreCancelsJobs": true,
+      "failureAtomic": true,
+      "structuralEditRejectsStalePlan": true,
+      "twoQueuedCommits": true
+    }
+  },
+  "controlledFirstSearch": {
+    "sameSceneNoCache": true,
+    "v57Ms": 26293.800000000745,
+    "v58Ms": 14633.5,
+    "v57Attempts": 6,
+    "v58Attempts": 2,
+    "desktopOnly": true
+  },
+  "firstUiPreparation": {
+    "selectionPauseMs": 1000,
+    "workerStarted": true,
+    "workerReady": true,
+    "heartMapsReady": true,
+    "busy": false
+  },
+  "invariants": {
+    "const qualify=": true,
+    "function check(": true,
+    "function step(){": true,
+    "function build(": true,
+    "const correctLayout=": true,
+    "modelData": true
+  },
+  "realIPhonePerformanceMeasured": false,
+  "allCompositionsInstant": false
+}
