@@ -1527,7 +1527,7 @@ function instantContact(a,p,q,b,op,oq,prediction=.002){const shape=instantRawSha
 function instantStamp(f){const p=f.weight.body.translation();return [f.targetHeight,p.x,p.z].join(':')}
 function stopInstantJob(f){const task=instantJobs.get(f);if(task){clearTimeout(task.timer);instantJobs.delete(f)}cancelFountainPacking(f);f.layoutPending=false}
 function scheduleInstantPacking(f){
- stopInstantJob(f);const task={stamp:instantStamp(f),epoch:packingSceneEpoch};instantJobs.set(f,task);f.layoutPending=true;
+ stopInstantJob(f);const task={stamp:instantStamp(f),epoch:packingSceneEpoch};instantJobs.set(f,task);f.layoutPending=true;renderControls();if(selectedFountainId===f.id)el('editorStatus').textContent='Сборка уточняется в фоне. Можно менять шары дальше.';
  task.timer=setTimeout(async()=>{
   if(instantJobs.get(f)!==task||getFountain(f.id)!==f||task.epoch!==packingSceneEpoch)return;if(instantStamp(f)!==task.stamp){stopInstantJob(f);renderControls();return}
   const products=f.balloons.map(b=>({...b.product}));

@@ -2,7 +2,7 @@
   "build": "v59",
   "entry": "index.html",
   "source": "candysky-rapier-lab-1-v59-instant-replacement.html",
-  "sha256": "aaa722725fd21ab27030847dd74dd3673f46aea3694aa43d7b81266219323aa8",
+  "sha256": "f6891d8f1f16624c789ef574b529d1671206d796eb5d694610300efb4e1a8255",
   "worker": "assets/packing-worker-3895a46426c7.mjs",
   "core": "assets/packing-core-081fd9e70df1.mjs",
   "rollback": "candysky-rapier-lab-1-v58-first-change.html",
