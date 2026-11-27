@@ -1,0 +1,15 @@
+{
+  "build": "v59",
+  "entry": "index.html",
+  "source": "candysky-rapier-lab-1-v59-instant-replacement.html",
+  "sha256": "aaa722725fd21ab27030847dd74dd3673f46aea3694aa43d7b81266219323aa8",
+  "worker": "assets/packing-worker-3895a46426c7.mjs",
+  "core": "assets/packing-core-081fd9e70df1.mjs",
+  "rollback": "candysky-rapier-lab-1-v58-first-change.html",
+  "rollbackSha256": "d3319beed7be408e46c69343859c09cd02934e0bb6bcd8b32dc2d0d8cdcb14c1",
+  "draftDatabase": "candysky-3d-multifountain-v59-drafts",
+  "previousDraftReadOnly": "candysky-3d-multifountain-v58-drafts",
+  "schema": 4,
+  "maxFountains": 4,
+  "maxBalloons": 100
+}
