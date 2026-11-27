@@ -1,0 +1,18 @@
+{
+  "build": "v55",
+  "case": "two fountains plus 40 ceiling balloons in one click",
+  "fountainSizesTested": [
+    7,
+    15
+  ],
+  "onePacket40Passed": true,
+  "fullPhysicsAndRibbonsFinite": true,
+  "exact100ObjectsPassed": true,
+  "invalidAndOverCapacityRejectedWithoutAdding": true,
+  "reload70And100Passed": true,
+  "importV54WithoutChangingSource": true,
+  "mobileChromiumEmulation": "390x844",
+  "realIPhoneSafariTested": false,
+  "physicsAndModelsUnchanged": true,
+  "errors": []
+}
